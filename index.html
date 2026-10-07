@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -2836,8 +2836,6 @@ footer{
               class="coreva-video"
               id="corevaIntroVideo"
               src="coreva-intro.mp4"
-              autoplay
-              muted
               loop
               playsinline
               preload="metadata"
@@ -5031,39 +5029,30 @@ const corevaIntroVideo =
 
 if(corevaIntroVideo){
 
-  const videoObserver =
-    new IntersectionObserver(
-      entries=>{
+  corevaIntroVideo.addEventListener("click", ()=>{
 
-        entries.forEach(entry=>{
+    if(corevaIntroVideo.paused){
 
-          if(entry.isIntersecting){
+      // Sound is enabled only after the user's tap/click.
+      corevaIntroVideo.muted = false;
 
-            const playPromise =
-              corevaIntroVideo.play();
+      const playPromise =
+        corevaIntroVideo.play();
 
-            if(playPromise &&
-               typeof playPromise.catch==="function"){
+      if(playPromise &&
+         typeof playPromise.catch === "function"){
 
-              playPromise.catch(()=>{});
+        playPromise.catch(()=>{});
 
-            }
-
-          }else{
-
-            corevaIntroVideo.pause();
-
-          }
-
-        });
-
-      },
-      {
-        threshold:.2
       }
-    );
 
-  videoObserver.observe(corevaIntroVideo);
+    }else{
+
+      corevaIntroVideo.pause();
+
+    }
+
+  });
 
 }
 
