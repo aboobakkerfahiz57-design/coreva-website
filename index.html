@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -2019,6 +2019,59 @@ footer{
   transform:scale(1.015);
 }
 
+.coreva-video-play{
+  position:absolute;
+  left:50%;
+  top:50%;
+  z-index:8;
+  transform:translate(-50%,-50%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  min-width:150px;
+  min-height:58px;
+  padding:12px 18px;
+  border:1px solid rgba(255,255,255,.32);
+  border-radius:999px;
+  background:rgba(8,8,8,.62);
+  color:#fff;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  box-shadow:0 18px 55px rgba(0,0,0,.5), inset 0 0 24px rgba(255,255,255,.05);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:opacity .3s ease, transform .3s ease, border-color .3s ease, background .3s ease;
+}
+
+.coreva-video-play:hover{
+  transform:translate(-50%,-50%) scale(1.04);
+  border-color:rgba(255,255,255,.6);
+  background:rgba(20,20,20,.72);
+}
+
+.coreva-video-play.is-hidden{
+  opacity:0;
+  pointer-events:none;
+  transform:translate(-50%,-50%) scale(.94);
+}
+
+.coreva-video-play-icon{
+  width:0;
+  height:0;
+  border-top:9px solid transparent;
+  border-bottom:9px solid transparent;
+  border-left:14px solid #fff;
+  filter:drop-shadow(0 0 8px rgba(255,255,255,.22));
+}
+
+.coreva-video-play-text{
+  line-height:1;
+}
+
 .coreva-video-ui{
   position:absolute;
   left:22px;
@@ -2847,6 +2900,16 @@ footer{
 
             <div class="coreva-video-corner tl"></div>
             <div class="coreva-video-corner br"></div>
+
+            <button
+              class="coreva-video-play"
+              id="corevaVideoPlay"
+              type="button"
+              aria-label="Play COREVA introduction video"
+            >
+              <span class="coreva-video-play-icon" aria-hidden="true"></span>
+              <span class="coreva-video-play-text">Play Video</span>
+            </button>
 
             <div class="coreva-video-ui">
 
@@ -5027,32 +5090,56 @@ $$(".stat-number").forEach(counter=>{
 const corevaIntroVideo =
   document.querySelector("#corevaIntroVideo");
 
+const corevaVideoPlay =
+  document.querySelector("#corevaVideoPlay");
+
 if(corevaIntroVideo){
 
-  corevaIntroVideo.addEventListener("click", ()=>{
+  const updateCorevaPlayButton = ()=>{
+    if(!corevaVideoPlay) return;
 
     if(corevaIntroVideo.paused){
-
-      // Sound is enabled only after the user's tap/click.
-      corevaIntroVideo.muted = false;
-
-      const playPromise =
-        corevaIntroVideo.play();
-
-      if(playPromise &&
-         typeof playPromise.catch === "function"){
-
-        playPromise.catch(()=>{});
-
-      }
-
+      corevaVideoPlay.classList.remove("is-hidden");
+      corevaVideoPlay.setAttribute("aria-label", "Play COREVA introduction video");
     }else{
-
-      corevaIntroVideo.pause();
-
+      corevaVideoPlay.classList.add("is-hidden");
+      corevaVideoPlay.setAttribute("aria-label", "Pause COREVA introduction video");
     }
+  };
 
+  const playCorevaVideo = ()=>{
+    // Sound is enabled only after the user's tap/click.
+    corevaIntroVideo.muted = false;
+
+    const playPromise =
+      corevaIntroVideo.play();
+
+    if(playPromise &&
+       typeof playPromise.catch === "function"){
+      playPromise.catch(()=>{});
+    }
+  };
+
+  corevaIntroVideo.addEventListener("click", ()=>{
+    if(corevaIntroVideo.paused){
+      playCorevaVideo();
+    }else{
+      corevaIntroVideo.pause();
+    }
   });
+
+  if(corevaVideoPlay){
+    corevaVideoPlay.addEventListener("click", (event)=>{
+      event.stopPropagation();
+      playCorevaVideo();
+    });
+  }
+
+  corevaIntroVideo.addEventListener("play", updateCorevaPlayButton);
+  corevaIntroVideo.addEventListener("pause", updateCorevaPlayButton);
+  corevaIntroVideo.addEventListener("ended", updateCorevaPlayButton);
+
+  updateCorevaPlayButton();
 
 }
 
