@@ -1,4333 +1,4534 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>COREVA | Business Solutions</title>
-
-  <meta
-    name="description"
-    content="COREVA Business Solutions — Property, Digital, Finance, Business Support, Construction & Interiors and Business Growth."
-  />
-
-  <meta
-    name="keywords"
-    content="COREVA, business solutions, Mangalore, Mangaluru, property, digital solutions, finance, business support, construction, interiors, business growth"
-  />
-
-  <meta name="theme-color" content="#050505" />
-
-  <link rel="icon" type="image/png" href="coreva-logo.png" />
-
-  <style>
-    /* =========================================================
-       COREVA BUSINESS SOLUTIONS
-       Premium 3D Website
-       ========================================================= */
-
-    :root {
-      --bg: #030303;
-      --bg2: #080808;
-      --panel: rgba(14, 14, 14, 0.72);
-      --panel-light: rgba(255, 255, 255, 0.055);
-
-      --white: #ffffff;
-      --silver: #d8d8d8;
-      --silver2: #999999;
-      --muted: #a3a3a3;
-
-      --line: rgba(255,255,255,0.13);
-      --line2: rgba(255,255,255,0.08);
-
-      --shadow:
-        0 25px 80px rgba(0,0,0,.55);
-
-      --radius: 24px;
-
-      --max: 1400px;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background:
-        radial-gradient(circle at 50% -10%, rgba(255,255,255,.08), transparent 32%),
-        var(--bg);
-
-      color: var(--white);
-
-      font-family:
-        Inter,
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-
-      overflow-x: hidden;
-    }
-
-    body.menu-open {
-      overflow: hidden;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button,
-    input,
-    textarea,
-    select {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    ::selection {
-      background: white;
-      color: black;
-    }
-
-    /* =========================================================
-       PRELOADER
-       ========================================================= */
-
-    #preloader {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background: #020202;
-
-      transition:
-        opacity .8s ease,
-        visibility .8s ease;
-    }
-
-    #preloader.hide {
-      opacity: 0;
-      visibility: hidden;
-    }
-
-    .loader {
-      text-align: center;
-    }
-
-    .loader-logo {
-      width: 220px;
-      margin: 0 auto 30px;
-      filter:
-        drop-shadow(0 0 20px rgba(255,255,255,.15));
-      animation: loaderFloat 2s ease-in-out infinite;
-    }
-
-    .loader-line {
-      width: 180px;
-      height: 1px;
-      background: rgba(255,255,255,.12);
-      overflow: hidden;
-      margin: auto;
-    }
-
-    .loader-line::after {
-      content: "";
-      display: block;
-      width: 50%;
-      height: 100%;
-      background: white;
-      animation: loaderLine 1.3s ease-in-out infinite;
-    }
-
-    @keyframes loaderFloat {
-      50% {
-        transform: translateY(-7px);
-      }
-    }
-
-    @keyframes loaderLine {
-      0% {
-        transform: translateX(-120%);
-      }
-      100% {
-        transform: translateX(300%);
-      }
-    }
-
-    /* =========================================================
-       GLOBAL BACKGROUND
-       ========================================================= */
-
-    .noise {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-
-      opacity: .035;
-
-      background-image:
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
-    }
-
-    .cursor-glow {
-      position: fixed;
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-
-      pointer-events: none;
-      z-index: 1;
-
-      background:
-        radial-gradient(
-          circle,
-          rgba(255,255,255,.06),
-          transparent 65%
-        );
-
-      transform: translate(-50%, -50%);
-      transition: opacity .3s ease;
-    }
-
-    /* =========================================================
-       NAVBAR
-       ========================================================= */
-
-    .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-
-      z-index: 500;
-
-      height: 86px;
-
-      display: flex;
-      align-items: center;
-
-      border-bottom: 1px solid rgba(255,255,255,.08);
-
-      background:
-        linear-gradient(
-          to bottom,
-          rgba(0,0,0,.82),
-          rgba(0,0,0,.25)
-        );
-
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-
-      transition: .4s ease;
-    }
-
-    .navbar.scrolled {
-      height: 70px;
-      background: rgba(3,3,3,.86);
-    }
-
-    .nav-inner {
-      width: min(var(--max), calc(100% - 50px));
-      margin: auto;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 30px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-    }
-
-    .brand img {
-      width: 175px;
-      height: auto;
-
-      filter:
-        drop-shadow(0 0 12px rgba(255,255,255,.12));
-
-      transition: .35s ease;
-    }
-
-    .brand:hover img {
-      transform: scale(1.03);
-      filter:
-        drop-shadow(0 0 20px rgba(255,255,255,.25));
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 34px;
-    }
-
-    .nav-links a {
-      position: relative;
-
-      font-size: 14px;
-      color: #cfcfcf;
-
-      transition: .3s ease;
-    }
-
-    .nav-links a::after {
-      content: "";
-
-      position: absolute;
-      left: 0;
-      bottom: -8px;
-
-      width: 0;
-      height: 1px;
-
-      background: white;
-
-      transition: .3s ease;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: white;
-    }
-
-    .nav-links a:hover::after,
-    .nav-links a.active::after {
-      width: 100%;
-    }
-
-    .nav-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-
-      padding: 13px 21px;
-
-      border: 1px solid rgba(255,255,255,.32);
-      border-radius: 100px;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(255,255,255,.12),
-          rgba(255,255,255,.025)
-        );
-
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.12),
-        0 10px 35px rgba(0,0,0,.25);
-
-      font-size: 13px;
-      font-weight: 600;
-
-      transition: .35s ease;
-    }
-
-    .nav-cta:hover {
-      transform: translateY(-2px);
-      border-color: white;
-      box-shadow:
-        0 15px 45px rgba(255,255,255,.08);
-    }
-
-    .mobile-toggle {
-      display: none;
-
-      width: 45px;
-      height: 45px;
-
-      border: 1px solid var(--line);
-      border-radius: 50%;
-
-      background: rgba(255,255,255,.04);
-      color: white;
-    }
-
-    .mobile-toggle span {
-      display: block;
-      width: 18px;
-      height: 1px;
-      background: white;
-      margin: 4px auto;
-      transition: .3s ease;
-    }
-
-    /* =========================================================
-       HERO
-       ========================================================= */
-
-    .hero {
-      min-height: 100svh;
-
-      position: relative;
-      overflow: hidden;
-
-      display: flex;
-      align-items: center;
-
-      padding:
-        140px 25px
-        100px;
-    }
-
-    .hero-background {
-      position: absolute;
-      inset: 0;
-
-      background:
-        linear-gradient(
-          90deg,
-          rgba(0,0,0,.88) 0%,
-          rgba(0,0,0,.68) 35%,
-          rgba(0,0,0,.22) 75%,
-          rgba(0,0,0,.48) 100%
-        ),
-        url("coreva-hero-background.png")
-        center / cover no-repeat;
-
-      transform: scale(1.04);
-
-      animation:
-        heroZoom 16s ease-in-out infinite alternate;
-
-      z-index: -4;
-    }
-
-    @keyframes heroZoom {
-      from {
-        transform: scale(1.04);
-      }
-      to {
-        transform: scale(1.10);
-      }
-    }
-
-    .hero::before {
-      content: "";
-
-      position: absolute;
-      inset: 0;
-
-      background:
-        radial-gradient(
-          circle at 70% 50%,
-          transparent 0,
-          rgba(0,0,0,.15) 45%,
-          rgba(0,0,0,.72) 100%
-        );
-
-      z-index: -3;
-    }
-
-    .hero-grid {
-      position: absolute;
-      inset: auto 0 0;
-
-      height: 35%;
-
-      opacity: .12;
-
-      background-image:
-        linear-gradient(
-          rgba(255,255,255,.16) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(255,255,255,.16) 1px,
-          transparent 1px
-        );
-
-      background-size: 70px 70px;
-
-      transform:
-        perspective(600px)
-        rotateX(65deg)
-        translateY(30%);
-
-      transform-origin: bottom;
-
-      mask-image:
-        linear-gradient(
-          to top,
-          black,
-          transparent
-        );
-
-      pointer-events: none;
-    }
-
-    .hero-inner {
-      width: min(var(--max), 100%);
-      margin: auto;
-
-      position: relative;
-      z-index: 2;
-    }
-
-    .hero-content {
-      max-width: 700px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 11px;
-
-      margin-bottom: 24px;
-
-      color: #d0d0d0;
-
-      font-size: 11px;
-      font-weight: 600;
-
-      letter-spacing: .38em;
-      text-transform: uppercase;
-    }
-
-    .eyebrow::before {
-      content: "";
-
-      width: 35px;
-      height: 1px;
-
-      background: #ddd;
-    }
-
-    .hero h1 {
-      font-size: clamp(54px, 8vw, 115px);
-      line-height: .87;
-
-      letter-spacing: -.065em;
-
-      font-weight: 600;
-
-      margin-bottom: 28px;
-
-      text-wrap: balance;
-    }
-
-    .hero h1 span {
-      display: block;
-
-      color: transparent;
-
-      -webkit-text-stroke:
-        1px rgba(255,255,255,.85);
-
-      text-shadow:
-        0 0 35px rgba(255,255,255,.05);
-    }
-
-    .hero-subtitle {
-      color: #e0e0e0;
-
-      font-size: 15px;
-      line-height: 1.8;
-
-      max-width: 650px;
-
-      margin-bottom: 35px;
-    }
-
-    .hero-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 13px;
-    }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-
-      min-height: 54px;
-
-      padding: 0 24px;
-
-      border-radius: 10px;
-
-      border: 1px solid rgba(255,255,255,.24);
-
-      font-size: 13px;
-      font-weight: 700;
-
-      transition:
-        transform .35s ease,
-        box-shadow .35s ease,
-        background .35s ease,
-        border-color .35s ease;
-    }
-
-    .button-primary {
-      background: white;
-      color: black;
-
-      box-shadow:
-        0 18px 50px rgba(0,0,0,.3);
-    }
-
-    .button-primary:hover {
-      transform: translateY(-4px);
-      box-shadow:
-        0 22px 55px rgba(255,255,255,.12);
-    }
-
-    .button-secondary {
-      background: rgba(0,0,0,.25);
-      color: white;
-
-      backdrop-filter: blur(15px);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>COREVA | Business Solutions</title>
+
+<meta name="description" content="COREVA Business Solutions — Property, Digital, Finance, Business Support, Construction & Interiors and Business Growth.">
+<meta name="theme-color" content="#050505">
+
+<link rel="icon" type="image/png" href="coreva-logo.png">
+
+<style>
+
+/* =========================================================
+   COREVA BUSINESS SOLUTIONS
+   PREMIUM 3D WEBSITE
+   ========================================================= */
+
+:root{
+  --black:#030303;
+  --black2:#070707;
+  --black3:#0d0d0d;
+
+  --white:#fff;
+  --silver:#d9d9d9;
+  --muted:#929292;
+
+  --line:rgba(255,255,255,.12);
+  --line2:rgba(255,255,255,.07);
+
+  --glass:rgba(12,12,12,.68);
+
+  --max:1450px;
+
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  background:var(--black);
+  color:white;
+  font-family:
+    Inter,
+    Arial,
+    Helvetica,
+    sans-serif;
+  overflow-x:hidden;
+}
+
+body.lock{
+  overflow:hidden;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+img{
+  max-width:100%;
+  display:block;
+}
+
+::selection{
+  background:white;
+  color:black;
+}
+
+/* =========================================================
+   PRELOADER
+   ========================================================= */
+
+.preloader{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:#020202;
+
+  transition:.8s ease;
+}
+
+.preloader.hide{
+  opacity:0;
+  visibility:hidden;
+}
+
+.preloader img{
+  width:220px;
+  animation:preFloat 2s ease-in-out infinite;
+}
+
+.preloader-line{
+  width:170px;
+  height:1px;
+  background:#222;
+  margin:30px auto 0;
+  overflow:hidden;
+}
+
+.preloader-line span{
+  display:block;
+  width:45%;
+  height:100%;
+  background:white;
+  animation:loader 1.4s infinite;
+}
+
+@keyframes preFloat{
+  50%{transform:translateY(-8px)}
+}
+
+@keyframes loader{
+  from{transform:translateX(-150%)}
+  to{transform:translateX(300%)}
+}
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+.noise{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:1000;
+  opacity:.025;
+
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.cursor{
+  position:fixed;
+  width:280px;
+  height:280px;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:0;
+
+  background:radial-gradient(
+    circle,
+    rgba(255,255,255,.055),
+    transparent 70%
+  );
+
+  transform:translate(-50%,-50%);
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.navbar{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  height:88px;
+
+  z-index:900;
+
+  display:flex;
+  align-items:center;
+
+  border-bottom:1px solid rgba(255,255,255,.08);
+
+  background:linear-gradient(
+    to bottom,
+    rgba(0,0,0,.82),
+    rgba(0,0,0,.2)
+  );
+
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  transition:.4s var(--ease);
+}
+
+.navbar.scrolled{
+  height:70px;
+  background:rgba(3,3,3,.92);
+}
+
+.nav-inner{
+  width:min(var(--max),calc(100% - 50px));
+  margin:auto;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:30px;
+}
+
+.logo{
+  width:175px;
+  transition:.35s;
+}
+
+.logo:hover{
+  transform:scale(1.035);
+  filter:drop-shadow(0 0 18px rgba(255,255,255,.18));
+}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:34px;
+}
+
+.nav-links a{
+  position:relative;
+  color:#bdbdbd;
+  font-size:13px;
+  transition:.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active{
+  color:white;
+}
+
+.nav-links a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-9px;
+  width:0;
+  height:1px;
+  background:white;
+  transition:.3s;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after{
+  width:100%;
+}
+
+.nav-start{
+  padding:13px 21px;
+
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:100px;
+
+  background:rgba(255,255,255,.045);
+
+  font-size:12px;
+  font-weight:600;
+
+  transition:.35s;
+}
+
+.nav-start:hover{
+  background:white;
+  color:black;
+  transform:translateY(-2px);
+}
+
+.mobile-menu{
+  display:none;
+
+  width:45px;
+  height:45px;
+
+  border:1px solid var(--line);
+  border-radius:50%;
+
+  background:rgba(255,255,255,.04);
+  color:white;
+}
+
+.mobile-menu span{
+  display:block;
+  width:18px;
+  height:1px;
+  background:white;
+  margin:4px auto;
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero{
+  position:relative;
+  min-height:100svh;
+
+  display:flex;
+  align-items:center;
+
+  padding:150px 25px 340px;
+
+  overflow:hidden;
+}
+
+.hero-bg{
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.92),
+      rgba(0,0,0,.64) 40%,
+      rgba(0,0,0,.22) 80%,
+      rgba(0,0,0,.48)
+    ),
+    url("coreva-hero-background.png")
+    center/cover no-repeat;
+
+  z-index:-5;
+
+  transform:scale(1.04);
+
+  animation:heroZoom 18s ease-in-out infinite alternate;
+}
+
+@keyframes heroZoom{
+  to{transform:scale(1.1)}
+}
+
+.hero-overlay{
+  position:absolute;
+  inset:0;
+
+  background:
+    radial-gradient(
+      circle at 75% 45%,
+      transparent,
+      rgba(0,0,0,.7) 85%
+    );
+
+  z-index:-4;
+}
+
+.hero-light{
+  position:absolute;
+
+  width:500px;
+  height:500px;
+
+  right:-180px;
+  top:15%;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.08),
+      transparent 70%
+    );
+
+  filter:blur(20px);
+
+  animation:lightFloat 7s ease-in-out infinite;
+}
+
+@keyframes lightFloat{
+  50%{
+    transform:translate(-40px,30px) scale(1.1);
+  }
+}
+
+.hero-grid{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-20%;
+  height:55%;
+
+  opacity:.13;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.17) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.17) 1px,
+      transparent 1px
+    );
+
+  background-size:70px 70px;
+
+  transform:
+    perspective(700px)
+    rotateX(65deg);
+
+  transform-origin:bottom;
+
+  mask-image:linear-gradient(
+    to top,
+    black,
+    transparent
+  );
+}
+
+.hero-inner{
+  width:min(var(--max),100%);
+  margin:auto;
+
+  position:relative;
+  z-index:2;
+}
+
+.hero-content{
+  max-width:760px;
+}
+
+.eyebrow{
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  color:#cfcfcf;
+
+  font-size:10px;
+  font-weight:600;
+
+  letter-spacing:.4em;
+  text-transform:uppercase;
+
+  margin-bottom:25px;
+}
+
+.eyebrow::before{
+  content:"";
+  width:38px;
+  height:1px;
+  background:#ddd;
+}
+
+.hero h1{
+  font-size:clamp(55px,8vw,118px);
+  line-height:.87;
+  letter-spacing:-.07em;
+  font-weight:600;
+}
+
+.hero h1 .outline{
+  color:transparent;
+  -webkit-text-stroke:1px rgba(255,255,255,.85);
+}
+
+.hero-description{
+  max-width:670px;
+
+  margin-top:30px;
+
+  color:#d1d1d1;
+
+  font-size:15px;
+  line-height:1.85;
+}
+
+.hero-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+
+  margin-top:34px;
+}
+
+.btn{
+  min-height:54px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:11px;
+
+  padding:0 25px;
+
+  border-radius:10px;
+
+  border:1px solid rgba(255,255,255,.22);
+
+  font-size:13px;
+  font-weight:700;
+
+  transition:.35s var(--ease);
+}
+
+.btn-primary{
+  background:white;
+  color:black;
+}
+
+.btn-primary:hover{
+  transform:translateY(-4px);
+  box-shadow:0 20px 55px rgba(255,255,255,.1);
+}
+
+.btn-dark{
+  background:rgba(0,0,0,.3);
+  color:white;
+  backdrop-filter:blur(15px);
+}
+
+.btn-dark:hover{
+  transform:translateY(-4px);
+  border-color:white;
+  background:rgba(255,255,255,.08);
+}
+
+/* =========================================================
+   HERO 3D ORBIT
+   ========================================================= */
+
+.orbit{
+  position:absolute;
+
+  right:7%;
+  top:50%;
+
+  width:420px;
+  height:420px;
+
+  transform:translateY(-50%);
+
+  perspective:1000px;
+
+  pointer-events:none;
+}
+
+.orbit-ring{
+  position:absolute;
+  inset:0;
+
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:50%;
+
+  transform:rotateX(67deg) rotateZ(20deg);
+
+  animation:orbitSpin 18s linear infinite;
+}
+
+.orbit-ring:nth-child(2){
+  inset:45px;
+  animation-duration:13s;
+  transform:rotateX(67deg) rotateZ(-20deg);
+}
+
+.orbit-ring:nth-child(3){
+  inset:90px;
+  animation-duration:9s;
+}
 
-    .button-secondary:hover {
-      transform: translateY(-4px);
-      border-color: white;
-      background: rgba(255,255,255,.08);
-    }
-
-    .button svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    /* =========================================================
-       FLOATING HERO INFO
-       ========================================================= */
-
-    .hero-floating {
-      position: absolute;
-
-      right: 30px;
-      bottom: 140px;
-
-      width: 190px;
+@keyframes orbitSpin{
+  to{
+    transform:
+      rotateX(67deg)
+      rotateZ(380deg);
+  }
+}
+
+.orbit-core{
+  position:absolute;
 
-      padding: 20px;
-
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 18px;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(255,255,255,.10),
-          rgba(255,255,255,.025)
-        );
-
-      backdrop-filter: blur(18px);
-
-      box-shadow: var(--shadow);
-
-      animation:
-        floatingCard 5s ease-in-out infinite;
-    }
-
-    @keyframes floatingCard {
-      0%,100% {
-        transform: translateY(0) rotateY(0);
-      }
-      50% {
-        transform: translateY(-12px) rotateY(-3deg);
-      }
-    }
-
-    .floating-number {
-      font-size: 34px;
-      font-weight: 700;
-      letter-spacing: -.06em;
-    }
-
-    .floating-text {
-      margin-top: 5px;
-
-      color: #aaa;
-
-      font-size: 11px;
-      line-height: 1.5;
-    }
-
-    /* =========================================================
-       SOCIAL RAIL
-       ========================================================= */
-
-    .social-rail {
-      position: fixed;
-
-      right: 24px;
-      bottom: 30px;
-
-      z-index: 100;
-
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .social-rail a {
-      width: 40px;
-      height: 40px;
-
-      display: grid;
-      place-items: center;
-
-      border: 1px solid rgba(255,255,255,.16);
-      border-radius: 50%;
-
-      background: rgba(0,0,0,.45);
-
-      backdrop-filter: blur(12px);
-
-      transition: .3s ease;
-    }
-
-    .social-rail a:hover {
-      transform: translateY(-3px) scale(1.06);
-      border-color: white;
-    }
-
-    .social-rail svg {
-      width: 17px;
-      height: 17px;
-    }
-
-    /* =========================================================
-       SERVICE STRIP
-       ========================================================= */
-
-    .service-strip {
-      position: absolute;
-
-      left: 50%;
-      bottom: 25px;
-
-      transform: translateX(-50%);
-
-      width: min(var(--max), calc(100% - 50px));
-
-      display: grid;
-      grid-template-columns:
-        repeat(6, 1fr);
-
-      gap: 8px;
-
-      z-index: 4;
-    }
-
-    .service-mini {
-      min-height: 110px;
-
-      padding: 18px;
-
-      border:
-        1px solid rgba(255,255,255,.16);
-
-      border-radius: 15px;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(0,0,0,.58),
-          rgba(255,255,255,.045)
-        );
-
-      backdrop-filter: blur(15px);
-
-      transition:
-        transform .4s cubic-bezier(.2,.8,.2,1),
-        border-color .4s ease,
-        background .4s ease;
-
-      transform-style: preserve-3d;
-    }
-
-    .service-mini:hover {
-      transform:
-        translateY(-9px)
-        perspective(600px)
-        rotateX(4deg)
-        rotateY(-3deg);
-
-      border-color: rgba(255,255,255,.42);
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(255,255,255,.10),
-          rgba(255,255,255,.03)
-        );
-    }
-
-    .service-mini-icon {
-      width: 30px;
-      height: 30px;
-
-      margin-bottom: 13px;
-
-      color: #ddd;
-    }
-
-    .service-mini h3 {
-      font-size: 12px;
-      line-height: 1.4;
-      font-weight: 600;
-    }
-
-    .service-mini span {
-      display: block;
-
-      margin-top: 8px;
-
-      color: #aaa;
-
-      font-size: 18px;
-
-      transition: .3s ease;
-    }
-
-    .service-mini:hover span {
-      transform: translateX(6px);
-      color: white;
-    }
-
-    /* =========================================================
-       SECTIONS
-       ========================================================= */
-
-    section:not(.hero) {
-      position: relative;
-      padding: 130px 25px;
-    }
-
-    .section-inner {
-      width: min(var(--max), 100%);
-      margin: auto;
-    }
-
-    .section-heading {
-      max-width: 800px;
-      margin-bottom: 60px;
-    }
-
-    .section-label {
-      color: #aaa;
-
-      font-size: 11px;
-      font-weight: 600;
-
-      letter-spacing: .35em;
-      text-transform: uppercase;
-
-      margin-bottom: 17px;
-    }
-
-    .section-heading h2 {
-      font-size: clamp(38px, 5vw, 72px);
-      line-height: .98;
-
-      letter-spacing: -.055em;
-
-      font-weight: 600;
-    }
-
-    .section-heading p {
-      margin-top: 22px;
-
-      color: #999;
-
-      line-height: 1.8;
-
-      max-width: 650px;
-    }
-
-    /* =========================================================
-       ABOUT
-       ========================================================= */
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 80px;
-
-      align-items: center;
-    }
-
-    .about-copy {
-      color: #aaa;
-
-      font-size: 16px;
-      line-height: 1.9;
-    }
-
-    .about-copy strong {
-      color: white;
-    }
-
-    .about-copy p + p {
-      margin-top: 22px;
-    }
-
-    .about-visual {
-      position: relative;
-
-      min-height: 470px;
-
-      perspective: 1200px;
-    }
-
-    .cube-scene {
-      position: absolute;
-      inset: 0;
-
-      display: grid;
-      place-items: center;
-
-      transform-style: preserve-3d;
-    }
-
-    .cube {
-      position: relative;
-
-      width: 220px;
-      height: 220px;
-
-      transform-style: preserve-3d;
-
-      animation:
-        cubeRotate 15s linear infinite;
-    }
-
-    @keyframes cubeRotate {
-      from {
-        transform: rotateX(-18deg) rotateY(0deg);
-      }
-      to {
-        transform: rotateX(-18deg) rotateY(360deg);
-      }
-    }
-
-    .cube-face {
-      position: absolute;
-      inset: 0;
-
-      border:
-        1px solid rgba(255,255,255,.35);
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(255,255,255,.10),
-          rgba(255,255,255,.015)
-        );
-
-      backdrop-filter: blur(5px);
-
-      display: grid;
-      place-items: center;
-
-      box-shadow:
-        inset 0 0 40px rgba(255,255,255,.025);
-    }
-
-    .cube-face::after {
-      content: "COREVA";
-
-      color: rgba(255,255,255,.8);
-
-      font-size: 24px;
-      letter-spacing: .15em;
-      font-weight: 600;
-    }
-
-    .cube-front {
-      transform: translateZ(110px);
-    }
-
-    .cube-back {
-      transform: rotateY(180deg) translateZ(110px);
-    }
-
-    .cube-right {
-      transform:
-        rotateY(90deg)
-        translateZ(110px);
-    }
-
-    .cube-left {
-      transform:
-        rotateY(-90deg)
-        translateZ(110px);
-    }
-
-    .cube-top {
-      transform:
-        rotateX(90deg)
-        translateZ(110px);
-    }
-
-    .cube-bottom {
-      transform:
-        rotateX(-90deg)
-        translateZ(110px);
-    }
-
-    /* =========================================================
-       SERVICES
-       ========================================================= */
-
-    .services-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(3, 1fr);
-
-      gap: 16px;
-    }
-
-    .service-card {
-      position: relative;
-
-      min-height: 350px;
-
-      padding: 32px;
-
-      overflow: hidden;
-
-      border:
-        1px solid rgba(255,255,255,.12);
-
-      border-radius: var(--radius);
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255,255,255,.075),
-          rgba(255,255,255,.018)
-        );
-
-      backdrop-filter: blur(15px);
-
-      transform-style: preserve-3d;
-
-      transition:
-        transform .5s cubic-bezier(.2,.8,.2,1),
-        border-color .4s ease,
-        box-shadow .4s ease;
-    }
-
-    .service-card::before {
-      content: "";
-
-      position: absolute;
-
-      width: 180px;
-      height: 180px;
-
-      top: -70px;
-      right: -70px;
-
-      border-radius: 50%;
-
-      background:
-        radial-gradient(
-          circle,
-          rgba(255,255,255,.12),
-          transparent 70%
-        );
-
-      filter: blur(8px);
-
-      transition: .5s ease;
-    }
-
-    .service-card:hover {
-      transform:
-        perspective(1000px)
-        rotateX(3deg)
-        rotateY(-4deg)
-        translateY(-8px);
-
-      border-color:
-        rgba(255,255,255,.35);
-
-      box-shadow:
-        0 30px 80px rgba(0,0,0,.35);
-    }
-
-    .service-card:hover::before {
-      transform: scale(1.5);
-    }
-
-    .service-number {
-      color: #666;
-
-      font-size: 12px;
-      letter-spacing: .2em;
-
-      margin-bottom: 50px;
-    }
-
-    .service-icon {
-      width: 48px;
-      height: 48px;
-
-      margin-bottom: 24px;
-
-      color: #eee;
-    }
-
-    .service-card h3 {
-      font-size: 25px;
-      letter-spacing: -.03em;
-
-      margin-bottom: 14px;
-    }
-
-    .service-card p {
-      color: #969696;
-
-      font-size: 14px;
-      line-height: 1.7;
-
-      max-width: 400px;
-    }
-
-    .service-action {
-      position: absolute;
-
-      bottom: 27px;
-      right: 30px;
-
-      width: 45px;
-      height: 45px;
-
-      display: grid;
-      place-items: center;
-
-      border:
-        1px solid rgba(255,255,255,.18);
-
-      border-radius: 50%;
-
-      transition: .35s ease;
-    }
-
-    .service-card:hover .service-action {
-      background: white;
-      color: black;
-
-      transform: rotate(-45deg);
-    }
-
-    /* =========================================================
-       WHY COREVA
-       ========================================================= */
-
-    .why-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(4, 1fr);
-
-      gap: 14px;
-    }
-
-    .why-card {
-      padding: 30px 25px;
-
-      min-height: 220px;
-
-      border-top:
-        1px solid rgba(255,255,255,.18);
-
-      background:
-        linear-gradient(
-          to bottom,
-          rgba(255,255,255,.045),
-          transparent
-        );
-    }
-
-    .why-card span {
-      display: block;
-
-      color: #555;
-
-      font-size: 12px;
-
-      margin-bottom: 45px;
-    }
-
-    .why-card h3 {
-      font-size: 20px;
-      margin-bottom: 12px;
-    }
-
-    .why-card p {
-      color: #888;
-
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    /* =========================================================
-       PROJECTS
-       ========================================================= */
-
-    .projects-grid {
-      display: grid;
-
-      grid-template-columns:
-        1.2fr .8fr;
-
-      gap: 16px;
-    }
-
-    .project-card {
-      position: relative;
-
-      min-height: 420px;
-
-      overflow: hidden;
-
-      border-radius: var(--radius);
-
-      border:
-        1px solid rgba(255,255,255,.12);
-
-      background:
-        linear-gradient(
-          135deg,
-          #151515,
-          #050505
-        );
-    }
-
-    .project-card.large {
-      min-height: 560px;
-    }
-
-    .project-card::before {
-      content: "";
-
-      position: absolute;
-      inset: 0;
-
-      background:
-        radial-gradient(
-          circle at 70% 30%,
-          rgba(255,255,255,.12),
-          transparent 30%
-        ),
-        linear-gradient(
-          135deg,
-          rgba(255,255,255,.07),
-          transparent 60%
-        );
-    }
-
-    .project-shape {
-      position: absolute;
-
-      width: 300px;
-      height: 300px;
-
-      right: 10%;
-      top: 10%;
-
-      border:
-        1px solid rgba(255,255,255,.25);
-
-      transform:
-        rotate(35deg)
-        skew(-12deg);
-
-      box-shadow:
-        inset 0 0 70px rgba(255,255,255,.05),
-        0 30px 80px rgba(0,0,0,.4);
-
-      transition: .7s ease;
-    }
-
-    .project-card:hover .project-shape {
-      transform:
-        rotate(45deg)
-        scale(1.1)
-        translateY(-10px);
-    }
-
-    .project-content {
-      position: absolute;
-
-      left: 30px;
-      right: 30px;
-      bottom: 30px;
-
-      z-index: 2;
-    }
-
-    .project-content small {
-      color: #aaa;
-
-      font-size: 11px;
-
-      text-transform: uppercase;
-
-      letter-spacing: .2em;
-    }
-
-    .project-content h3 {
-      font-size: 32px;
-
-      margin-top: 10px;
-
-      letter-spacing: -.04em;
-    }
-
-    .project-content p {
-      margin-top: 8px;
-
-      color: #888;
-
-      font-size: 13px;
-    }
-
-    /* =========================================================
-       STATS
-       ========================================================= */
-
-    .stats {
-      border-top:
-        1px solid var(--line);
-
-      border-bottom:
-        1px solid var(--line);
-    }
-
-    .stats-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(4, 1fr);
-
-      gap: 0;
-    }
-
-    .stat {
-      padding: 55px 30px;
-
-      border-right:
-        1px solid var(--line);
-
-      text-align: center;
-    }
-
-    .stat:last-child {
-      border-right: 0;
-    }
-
-    .stat-number {
-      font-size: clamp(40px, 5vw, 70px);
-
-      letter-spacing: -.06em;
-
-      font-weight: 600;
-    }
-
-    .stat-label {
-      color: #888;
-
-      margin-top: 8px;
-
-      font-size: 12px;
-
-      text-transform: uppercase;
-      letter-spacing: .15em;
-    }
-
-    /* =========================================================
-       FOUNDER
-       ========================================================= */
-
-    .founder-grid {
-      display: grid;
-
-      grid-template-columns: .75fr 1.25fr;
-
-      gap: 80px;
-
-      align-items: center;
-    }
-
-    .founder-image {
-      min-height: 470px;
-
-      border:
-        1px solid rgba(255,255,255,.13);
-
-      border-radius: 28px;
-
-      background:
-        radial-gradient(
-          circle at 50% 35%,
-          rgba(255,255,255,.15),
-          transparent 28%
-        ),
-        linear-gradient(
-          145deg,
-          #181818,
-          #050505
-        );
-
-      position: relative;
-
-      overflow: hidden;
-    }
-
-    .founder-image::before {
-      content: "AF";
-
-      position: absolute;
-      inset: 0;
-
-      display: grid;
-      place-items: center;
-
-      color: rgba(255,255,255,.055);
-
-      font-size: 180px;
-      font-weight: 800;
-
-      letter-spacing: -.1em;
-    }
-
-    .founder-info small {
-      color: #999;
-
-      font-size: 11px;
-
-      text-transform: uppercase;
-
-      letter-spacing: .3em;
-    }
-
-    .founder-info h2 {
-      margin-top: 14px;
-
-      font-size: clamp(42px, 5vw, 70px);
-
-      letter-spacing: -.06em;
-    }
-
-    .founder-info p {
-      margin-top: 25px;
-
-      color: #999;
-
-      font-size: 15px;
-
-      line-height: 1.9;
-
-      max-width: 680px;
-    }
-
-    /* =========================================================
-       CONTACT
-       ========================================================= */
-
-    .contact {
-      background:
-        radial-gradient(
-          circle at 50% 0%,
-          rgba(255,255,255,.07),
-          transparent 40%
-        );
-    }
-
-    .contact-grid {
-      display: grid;
-
-      grid-template-columns: .8fr 1.2fr;
-
-      gap: 70px;
-    }
-
-    .contact-details {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    .contact-item {
-      padding: 22px;
-
-      border:
-        1px solid rgba(255,255,255,.10);
-
-      border-radius: 16px;
-
-      background: rgba(255,255,255,.025);
-
-      transition: .35s ease;
-    }
-
-    .contact-item:hover {
-      transform: translateX(5px);
-
-      border-color:
-        rgba(255,255,255,.28);
-    }
-
-    .contact-item small {
-      display: block;
-
-      color: #666;
-
-      font-size: 10px;
-
-      letter-spacing: .2em;
-
-      text-transform: uppercase;
-
-      margin-bottom: 7px;
-    }
-
-    .contact-item strong {
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .contact-form {
-      padding: 35px;
-
-      border:
-        1px solid rgba(255,255,255,.12);
-
-      border-radius: 25px;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255,255,255,.07),
-          rgba(255,255,255,.02)
-        );
-
-      backdrop-filter: blur(18px);
-
-      box-shadow:
-        0 30px 100px rgba(0,0,0,.3);
-    }
-
-    .form-grid {
-      display: grid;
-
-      grid-template-columns: 1fr 1fr;
-
-      gap: 15px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .field.full {
-      grid-column: 1 / -1;
-    }
-
-    .field label {
-      color: #888;
-
-      font-size: 11px;
-
-      text-transform: uppercase;
-
-      letter-spacing: .15em;
-    }
-
-    .field input,
-    .field textarea,
-    .field select {
-      width: 100%;
-
-      border:
-        1px solid rgba(255,255,255,.12);
-
-      border-radius: 11px;
-
-      background: rgba(0,0,0,.35);
-
-      color: white;
-
-      outline: none;
-
-      padding: 15px;
-
-      transition: .3s ease;
-    }
-
-    .field input:focus,
-    .field textarea:focus,
-    .field select:focus {
-      border-color: rgba(255,255,255,.55);
-
-      box-shadow:
-        0 0 0 3px rgba(255,255,255,.035);
-    }
-
-    .field textarea {
-      min-height: 145px;
-
-      resize: vertical;
-    }
-
-    .field select option {
-      background: #101010;
-    }
-
-    .form-submit {
-      margin-top: 18px;
-
-      width: 100%;
-    }
-
-    /* =========================================================
-       FOOTER
-       ========================================================= */
-
-    footer {
-      padding: 70px 25px 30px;
-
-      border-top:
-        1px solid rgba(255,255,255,.09);
-    }
-
-    .footer-inner {
-      width: min(var(--max), 100%);
-      margin: auto;
-    }
-
-    .footer-top {
-      display: grid;
-
-      grid-template-columns:
-        1.5fr 1fr 1fr 1fr;
-
-      gap: 40px;
-
-      padding-bottom: 60px;
-    }
-
-    .footer-brand img {
-      width: 190px;
-
-      margin-bottom: 22px;
-    }
-
-    .footer-brand p {
-      color: #777;
-
-      font-size: 13px;
-
-      line-height: 1.8;
-
-      max-width: 360px;
-    }
-
-    .footer-column h4 {
-      font-size: 12px;
-
-      text-transform: uppercase;
-
-      letter-spacing: .2em;
-
-      margin-bottom: 20px;
-    }
-
-    .footer-column a {
-      display: block;
-
-      color: #777;
-
-      font-size: 13px;
-
-      margin-bottom: 12px;
-
-      transition: .25s ease;
-    }
-
-    .footer-column a:hover {
-      color: white;
-      transform: translateX(3px);
-    }
-
-    .footer-bottom {
-      display: flex;
-
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 20px;
-
-      padding-top: 25px;
-
-      border-top:
-        1px solid rgba(255,255,255,.08);
-
-      color: #555;
-
-      font-size: 11px;
-    }
-
-    /* =========================================================
-       BACK TO TOP
-       ========================================================= */
-
-    .back-top {
-      position: fixed;
-
-      right: 24px;
-      bottom: 25px;
-
-      width: 44px;
-      height: 44px;
-
-      z-index: 300;
-
-      border:
-        1px solid rgba(255,255,255,.2);
-
-      border-radius: 50%;
-
-      background: rgba(0,0,0,.65);
-
-      color: white;
-
-      backdrop-filter: blur(12px);
-
-      opacity: 0;
-      visibility: hidden;
-
-      transform: translateY(15px);
-
-      transition: .35s ease;
-    }
-
-    .back-top.visible {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-
-    .back-top:hover {
-      background: white;
-      color: black;
-    }
-
-    /* =========================================================
-       MODAL
-       ========================================================= */
-
-    .modal {
-      position: fixed;
-
-      inset: 0;
-
-      z-index: 2000;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      padding: 20px;
-
-      background:
-        rgba(0,0,0,.78);
-
-      backdrop-filter: blur(15px);
-
-      opacity: 0;
-      visibility: hidden;
-
-      transition: .35s ease;
-    }
-
-    .modal.open {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .modal-box {
-      width: min(600px, 100%);
-
-      max-height: 90vh;
-      overflow-y: auto;
-
-      padding: 35px;
-
-      border:
-        1px solid rgba(255,255,255,.17);
-
-      border-radius: 25px;
-
-      background:
-        linear-gradient(
-          145deg,
-          #151515,
-          #050505
-        );
-
-      box-shadow:
-        0 40px 120px rgba(0,0,0,.7);
-
-      transform:
-        perspective(1000px)
-        rotateX(8deg)
-        scale(.94);
-
-      transition: .4s ease;
-    }
-
-    .modal.open .modal-box {
-      transform:
-        perspective(1000px)
-        rotateX(0)
-        scale(1);
-    }
-
-    .modal-close {
-      float: right;
-
-      width: 38px;
-      height: 38px;
-
-      border:
-        1px solid rgba(255,255,255,.15);
-
-      border-radius: 50%;
-
-      background: transparent;
-
-      color: white;
-
-      font-size: 20px;
-    }
-
-    .modal-box h2 {
-      font-size: 38px;
-
-      letter-spacing: -.05em;
-
-      margin-bottom: 15px;
-    }
-
-    .modal-box p {
-      color: #999;
-
-      line-height: 1.8;
-
-      margin-bottom: 25px;
-    }
-
-    /* =========================================================
-       REVEAL ANIMATION
-       ========================================================= */
-
-    .reveal {
-      opacity: 0;
-
-      transform:
-        translateY(35px);
-
-      transition:
-        opacity .9s ease,
-        transform .9s cubic-bezier(.2,.8,.2,1);
-    }
-
-    .reveal.show {
-      opacity: 1;
-
-      transform:
-        translateY(0);
-    }
-
-    /* =========================================================
-       RESPONSIVE
-       ========================================================= */
-
-    @media (max-width: 1100px) {
-
-      .nav-links {
-        gap: 20px;
-      }
-
-      .service-strip {
-        grid-template-columns:
-          repeat(3, 1fr);
-
-        bottom: 20px;
-      }
-
-      .hero {
-        padding-bottom: 330px;
-      }
-
-      .hero-floating {
-        display: none;
-      }
-
-      .services-grid {
-        grid-template-columns:
-          repeat(2, 1fr);
-      }
-
-      .why-grid {
-        grid-template-columns:
-          repeat(2, 1fr);
-      }
-
-      .footer-top {
-        grid-template-columns:
-          1.5fr 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 800px) {
-
-      .navbar {
-        height: 72px;
-      }
-
-      .nav-inner {
-        width: min(
-          var(--max),
-          calc(100% - 30px)
-        );
-      }
-
-      .brand img {
-        width: 145px;
-      }
-
-      .nav-links,
-      .nav-cta {
-        display: none;
-      }
-
-      .mobile-toggle {
-        display: block;
-      }
-
-      .nav-links.mobile-open {
-        position: fixed;
-
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-
-        top: 72px;
-        left: 15px;
-        right: 15px;
-
-        padding: 25px;
-
-        border:
-          1px solid rgba(255,255,255,.13);
-
-        border-radius: 20px;
-
-        background:
-          rgba(5,5,5,.94);
-
-        backdrop-filter: blur(25px);
-
-        box-shadow:
-          0 30px 80px rgba(0,0,0,.6);
-
-        gap: 24px;
-      }
-
-      .nav-links.mobile-open a {
-        font-size: 16px;
-      }
-
-      .hero {
-        min-height: 100svh;
-
-        padding:
-          120px 20px
-          330px;
-      }
-
-      .hero-background {
-        background-position:
-          63% center;
-      }
-
-      .hero h1 {
-        font-size:
-          clamp(48px, 15vw, 78px);
-      }
-
-      .hero-subtitle {
-        font-size: 14px;
-      }
-
-      .service-strip {
-        width: calc(100% - 30px);
-
-        grid-template-columns:
-          repeat(2, 1fr);
-
-        gap: 7px;
-
-        bottom: 15px;
-      }
-
-      .service-mini {
-        min-height: 95px;
-        padding: 14px;
-      }
-
-      .service-mini-icon {
-        width: 23px;
-        height: 23px;
-
-        margin-bottom: 9px;
-      }
-
-      .service-mini h3 {
-        font-size: 10px;
-      }
-
-      .service-mini span {
-        display: none;
-      }
-
-      section:not(.hero) {
-        padding:
-          90px 20px;
-      }
-
-      .about-grid,
-      .founder-grid,
-      .contact-grid,
-      .projects-grid {
-        grid-template-columns: 1fr;
-
-        gap: 40px;
-      }
-
-      .about-visual {
-        min-height: 350px;
-      }
-
-      .services-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .why-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .stats-grid {
-        grid-template-columns:
-          repeat(2, 1fr);
-      }
-
-      .stat {
-        border-bottom:
-          1px solid var(--line);
-      }
-
-      .stat:nth-child(2) {
-        border-right: 0;
-      }
-
-      .stat:nth-child(3) {
-        border-right:
-          1px solid var(--line);
-      }
-
-      .footer-top {
-        grid-template-columns:
-          1fr 1fr;
-      }
-
-      .footer-brand {
-        grid-column: 1 / -1;
-      }
-
-      .footer-bottom {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .social-rail {
-        display: none;
-      }
-
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .field.full {
-        grid-column: auto;
-      }
-
-      .contact-form {
-        padding: 22px;
-      }
-    }
-
-    @media (max-width: 500px) {
-
-      .hero {
-        padding-left: 16px;
-        padding-right: 16px;
-      }
-
-      .eyebrow {
-        font-size: 9px;
-        letter-spacing: .25em;
-      }
-
-      .hero-buttons {
-        flex-direction: column;
-      }
-
-      .button {
-        width: 100%;
-      }
-
-      .service-strip {
-        grid-template-columns:
-          repeat(2, 1fr);
-      }
-
-      .section-heading h2 {
-        font-size: 42px;
-      }
-
-      .cube {
-        width: 160px;
-        height: 160px;
-      }
-
-      .cube-front {
-        transform: translateZ(80px);
-      }
-
-      .cube-back {
-        transform:
-          rotateY(180deg)
-          translateZ(80px);
-      }
-
-      .cube-right {
-        transform:
-          rotateY(90deg)
-          translateZ(80px);
-      }
-
-      .cube-left {
-        transform:
-          rotateY(-90deg)
-          translateZ(80px);
-      }
-
-      .cube-top {
-        transform:
-          rotateX(90deg)
-          translateZ(80px);
-      }
-
-      .cube-bottom {
-        transform:
-          rotateX(-90deg)
-          translateZ(80px);
-      }
-
-      .cube-face::after {
-        font-size: 17px;
-      }
-
-      .footer-top {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Accessibility */
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-        transition-duration: .01ms !important;
-      }
-    }
-  </style>
+  left:50%;
+  top:50%;
+
+  width:150px;
+  height:150px;
+
+  transform:translate(-50%,-50%);
+
+  display:grid;
+  place-items:center;
+
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.13),
+      rgba(255,255,255,.02)
+    );
+
+  backdrop-filter:blur(15px);
+
+  box-shadow:
+    inset 0 0 60px rgba(255,255,255,.04),
+    0 30px 100px rgba(0,0,0,.55);
+
+  transform-style:preserve-3d;
+
+  animation:coreFloat 5s ease-in-out infinite;
+}
+
+.orbit-core img{
+  width:110px;
+}
+
+@keyframes coreFloat{
+  50%{
+    transform:
+      translate(-50%,-58%)
+      rotateY(8deg);
+  }
+}
+
+/* =========================================================
+   SIX SERVICES
+   ========================================================= */
+
+.service-strip{
+  position:absolute;
+
+  left:50%;
+  bottom:25px;
+
+  transform:translateX(-50%);
+
+  width:min(var(--max),calc(100% - 50px));
+
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:8px;
+
+  z-index:10;
+}
+
+.service-mini{
+  min-height:112px;
+
+  padding:18px;
+
+  text-align:left;
+
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:15px;
+
+  color:white;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.085),
+      rgba(0,0,0,.42)
+    );
+
+  backdrop-filter:blur(18px);
+
+  transition:.45s var(--ease);
+
+  transform-style:preserve-3d;
+}
+
+.service-mini:hover{
+  transform:
+    translateY(-10px)
+    rotateX(5deg)
+    rotateY(-4deg);
+
+  border-color:rgba(255,255,255,.4);
+
+  box-shadow:
+    0 25px 60px rgba(0,0,0,.45);
+}
+
+.service-mini .num{
+  color:#666;
+  font-size:9px;
+  letter-spacing:.2em;
+  margin-bottom:12px;
+}
+
+.service-mini h3{
+  font-size:12px;
+  line-height:1.45;
+}
+
+.service-mini .arrow{
+  display:block;
+  margin-top:10px;
+  color:#aaa;
+  transition:.3s;
+}
+
+.service-mini:hover .arrow{
+  color:white;
+  transform:translateX(6px);
+}
+
+/* =========================================================
+   GENERAL SECTIONS
+   ========================================================= */
+
+section:not(.hero){
+  position:relative;
+  padding:130px 25px;
+}
+
+.container{
+  width:min(var(--max),100%);
+  margin:auto;
+}
+
+.label{
+  color:#858585;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.35em;
+  text-transform:uppercase;
+  margin-bottom:18px;
+}
+
+.heading{
+  max-width:850px;
+}
+
+.heading h2{
+  font-size:clamp(40px,5vw,76px);
+  line-height:.98;
+  letter-spacing:-.065em;
+  font-weight:600;
+}
+
+.heading p{
+  max-width:650px;
+  margin-top:22px;
+  color:#8e8e8e;
+  line-height:1.8;
+  font-size:14px;
+}
+
+/* =========================================================
+   ABOUT
+   ========================================================= */
+
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:90px;
+  align-items:center;
+  margin-top:70px;
+}
+
+.about-copy{
+  color:#9b9b9b;
+  line-height:1.9;
+  font-size:15px;
+}
+
+.about-copy p+p{
+  margin-top:22px;
+}
+
+.about-copy strong{
+  color:white;
+}
+
+.about-3d{
+  height:500px;
+  position:relative;
+  perspective:1200px;
+}
+
+.about-box{
+  position:absolute;
+
+  width:250px;
+  height:250px;
+
+  left:50%;
+  top:50%;
+
+  transform:
+    translate(-50%,-50%)
+    rotateX(55deg)
+    rotateZ(35deg);
+
+  transform-style:preserve-3d;
+
+  animation:boxRotate 15s linear infinite;
+}
+
+@keyframes boxRotate{
+  to{
+    transform:
+      translate(-50%,-50%)
+      rotateX(55deg)
+      rotateZ(395deg);
+  }
+}
+
+.about-face{
+  position:absolute;
+  inset:0;
+
+  border:1px solid rgba(255,255,255,.3);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.1),
+      rgba(255,255,255,.015)
+    );
+
+  backdrop-filter:blur(5px);
+
+  display:grid;
+  place-items:center;
+}
+
+.about-face::after{
+  content:"COREVA";
+  letter-spacing:.25em;
+  font-size:20px;
+  color:#ddd;
+}
+
+.af1{transform:translateZ(125px)}
+.af2{transform:rotateY(180deg) translateZ(125px)}
+.af3{transform:rotateY(90deg) translateZ(125px)}
+.af4{transform:rotateY(-90deg) translateZ(125px)}
+.af5{transform:rotateX(90deg) translateZ(125px)}
+.af6{transform:rotateX(-90deg) translateZ(125px)}
+
+/* =========================================================
+   SERVICES
+   ========================================================= */
+
+.service-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+  margin-top:65px;
+}
+
+.service-card{
+  position:relative;
+
+  min-height:360px;
+
+  padding:30px;
+
+  overflow:hidden;
+
+  border:1px solid var(--line);
+  border-radius:24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.075),
+      rgba(255,255,255,.018)
+    );
+
+  backdrop-filter:blur(16px);
+
+  transform-style:preserve-3d;
+
+  transition:.45s var(--ease);
+}
+
+.service-card::before{
+  content:"";
+
+  position:absolute;
+
+  width:250px;
+  height:250px;
+
+  right:-120px;
+  top:-120px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.1),
+      transparent 70%
+    );
+
+  transition:.6s;
+}
+
+.service-card:hover{
+  transform:
+    perspective(1000px)
+    rotateX(4deg)
+    rotateY(-4deg)
+    translateY(-9px);
+
+  border-color:rgba(255,255,255,.35);
+
+  box-shadow:0 35px 90px rgba(0,0,0,.4);
+}
+
+.service-card:hover::before{
+  transform:scale(1.5);
+}
+
+.service-number{
+  color:#555;
+  font-size:10px;
+  letter-spacing:.2em;
+}
+
+.service-icon{
+  width:48px;
+  height:48px;
+
+  margin-top:45px;
+  margin-bottom:24px;
+
+  color:#ddd;
+}
+
+.service-card h3{
+  font-size:25px;
+  letter-spacing:-.035em;
+}
+
+.service-card p{
+  color:#858585;
+  font-size:13px;
+  line-height:1.75;
+  margin-top:13px;
+  max-width:390px;
+}
+
+.service-open{
+  position:absolute;
+
+  right:25px;
+  bottom:25px;
+
+  width:45px;
+  height:45px;
+
+  display:grid;
+  place-items:center;
+
+  border:1px solid var(--line);
+  border-radius:50%;
+
+  background:transparent;
+  color:white;
+
+  transition:.35s;
+}
+
+.service-card:hover .service-open{
+  background:white;
+  color:black;
+  transform:rotate(-45deg);
+}
+
+/* =========================================================
+   ECOSYSTEM
+   ========================================================= */
+
+.ecosystem{
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(255,255,255,.045),
+      transparent 45%
+    );
+}
+
+.ecosystem-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+  margin-top:65px;
+}
+
+.eco-card{
+  position:relative;
+
+  min-height:390px;
+
+  padding:35px;
+
+  overflow:hidden;
+
+  border:1px solid var(--line);
+  border-radius:28px;
+
+  background:#090909;
+
+  transform-style:preserve-3d;
+
+  transition:.55s var(--ease);
+}
+
+.eco-card:hover{
+  transform:
+    perspective(1200px)
+    rotateX(3deg)
+    rotateY(-3deg)
+    translateY(-8px);
+
+  border-color:rgba(255,255,255,.35);
+}
+
+.eco-visual{
+  position:absolute;
+  inset:0;
+
+  overflow:hidden;
+}
+
+.eco-visual::before{
+  content:"";
+
+  position:absolute;
+
+  width:420px;
+  height:420px;
+
+  right:-120px;
+  top:-120px;
+
+  border-radius:50%;
+
+  border:1px solid rgba(255,255,255,.15);
+
+  box-shadow:
+    0 0 100px rgba(255,255,255,.04),
+    inset 0 0 100px rgba(255,255,255,.04);
+
+  transition:.8s;
+}
+
+.eco-card:hover .eco-visual::before{
+  transform:scale(1.2) rotate(20deg);
+}
+
+.eco-lines{
+  position:absolute;
+  inset:0;
+
+  opacity:.16;
+
+  background:
+    linear-gradient(
+      135deg,
+      transparent 30%,
+      rgba(255,255,255,.2) 30.2%,
+      transparent 30.5%
+    ),
+    linear-gradient(
+      45deg,
+      transparent 50%,
+      rgba(255,255,255,.14) 50.2%,
+      transparent 50.5%
+    );
+}
+
+.eco-content{
+  position:absolute;
+
+  left:35px;
+  right:35px;
+  bottom:32px;
+
+  z-index:3;
+}
+
+.eco-category{
+  color:#777;
+  font-size:9px;
+  letter-spacing:.25em;
+  text-transform:uppercase;
+}
+
+.eco-content h3{
+  font-size:32px;
+  letter-spacing:-.045em;
+  margin-top:9px;
+}
+
+.eco-content p{
+  color:#888;
+  font-size:13px;
+  line-height:1.65;
+  max-width:470px;
+  margin-top:8px;
+}
+
+.eco-link{
+  display:inline-flex;
+  margin-top:18px;
+
+  color:#ddd;
+
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.eco-card.wide{
+  grid-column:1/-1;
+}
+
+/* =========================================================
+   MULTIPLE SOLUTIONS
+   ========================================================= */
+
+.innovation{
+  min-height:650px;
+
+  display:flex;
+  align-items:center;
+
+  overflow:hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(255,255,255,.08),
+      transparent 30%
+    );
+}
+
+.innovation-orb{
+  position:absolute;
+
+  width:550px;
+  height:550px;
+
+  right:5%;
+  top:50%;
+
+  transform:translateY(-50%);
+
+  border-radius:50%;
+
+  border:1px solid rgba(255,255,255,.15);
+
+  box-shadow:
+    inset 0 0 100px rgba(255,255,255,.03),
+    0 0 120px rgba(255,255,255,.025);
+
+  animation:innovationSpin 20s linear infinite;
+}
+
+.innovation-orb::before,
+.innovation-orb::after{
+  content:"";
+  position:absolute;
+  inset:45px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:50%;
+}
+
+.innovation-orb::after{
+  inset:100px;
+}
+
+@keyframes innovationSpin{
+  to{transform:translateY(-50%) rotate(360deg)}
+}
+
+.innovation-content{
+  position:relative;
+  z-index:3;
+  max-width:700px;
+}
+
+.innovation-content h2{
+  font-size:clamp(48px,7vw,105px);
+  line-height:.88;
+  letter-spacing:-.07em;
+}
+
+.innovation-content h2 span{
+  color:transparent;
+  -webkit-text-stroke:1px #aaa;
+}
+
+.innovation-content p{
+  color:#888;
+  max-width:620px;
+  line-height:1.8;
+  margin-top:25px;
+}
+
+/* =========================================================
+   PROJECTS
+   ========================================================= */
+
+.projects-grid{
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:15px;
+  margin-top:65px;
+}
+
+.project{
+  position:relative;
+  min-height:500px;
+
+  overflow:hidden;
+
+  border:1px solid var(--line);
+  border-radius:26px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #151515,
+      #050505
+    );
+}
+
+.project.small{
+  min-height:242px;
+  margin-bottom:15px;
+}
+
+.project:last-child{
+  margin-bottom:0;
+}
+
+.project-shape{
+  position:absolute;
+
+  width:340px;
+  height:340px;
+
+  right:7%;
+  top:10%;
+
+  border:1px solid rgba(255,255,255,.22);
+
+  transform:
+    rotate(35deg)
+    skew(-8deg);
+
+  box-shadow:
+    inset 0 0 80px rgba(255,255,255,.04),
+    0 40px 100px rgba(0,0,0,.5);
+
+  transition:.8s var(--ease);
+}
+
+.project:hover .project-shape{
+  transform:
+    rotate(48deg)
+    scale(1.12)
+    translateY(-15px);
+}
+
+.project-content{
+  position:absolute;
+  left:30px;
+  right:30px;
+  bottom:30px;
+  z-index:2;
+}
+
+.project-content small{
+  color:#777;
+  font-size:9px;
+  letter-spacing:.25em;
+  text-transform:uppercase;
+}
+
+.project-content h3{
+  font-size:35px;
+  letter-spacing:-.05em;
+  margin-top:8px;
+}
+
+.project-content p{
+  color:#888;
+  font-size:13px;
+  margin-top:7px;
+}
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.stats{
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+}
+
+.stat{
+  padding:60px 25px;
+  text-align:center;
+  border-right:1px solid var(--line);
+}
+
+.stat:last-child{
+  border-right:0;
+}
+
+.stat-number{
+  font-size:clamp(42px,5vw,72px);
+  letter-spacing:-.07em;
+}
+
+.stat-label{
+  color:#666;
+  font-size:9px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  margin-top:7px;
+}
+
+/* =========================================================
+   FOUNDER
+   ========================================================= */
+
+.founder-grid{
+  display:grid;
+  grid-template-columns:.8fr 1.2fr;
+  gap:85px;
+  align-items:center;
+}
+
+.founder-photo{
+  position:relative;
+
+  min-height:620px;
+
+  border:1px solid var(--line);
+  border-radius:28px;
+
+  overflow:hidden;
+
+  background:#0a0a0a;
+}
+
+.founder-photo img{
+  width:100%;
+  height:100%;
+  min-height:620px;
+  object-fit:cover;
+  object-position:center;
+  filter:saturate(.85) contrast(1.05);
+
+  transition:.8s;
+}
+
+.founder-photo:hover img{
+  transform:scale(1.035);
+}
+
+.founder-overlay{
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.72),
+      transparent 50%
+    );
+}
+
+.founder-badge{
+  position:absolute;
+
+  left:25px;
+  bottom:25px;
+
+  padding:14px 17px;
+
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:12px;
+
+  background:rgba(0,0,0,.5);
+
+  backdrop-filter:blur(15px);
+}
+
+.founder-badge small{
+  color:#888;
+  font-size:8px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+
+.founder-badge strong{
+  display:block;
+  margin-top:5px;
+  font-size:13px;
+}
+
+.founder-info h2{
+  font-size:clamp(44px,6vw,82px);
+  line-height:.9;
+  letter-spacing:-.07em;
+}
+
+.founder-info p{
+  max-width:680px;
+  color:#8d8d8d;
+  line-height:1.9;
+  margin-top:25px;
+  font-size:15px;
+}
+
+/* =========================================================
+   CONTACT
+   ========================================================= */
+
+.contact{
+  background:
+    radial-gradient(
+      circle at 50% 0,
+      rgba(255,255,255,.07),
+      transparent 40%
+    );
+}
+
+.contact-grid{
+  display:grid;
+  grid-template-columns:.75fr 1.25fr;
+  gap:60px;
+  margin-top:65px;
+}
+
+.contact-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.contact-item{
+  display:block;
+
+  padding:22px;
+
+  border:1px solid var(--line);
+  border-radius:16px;
+
+  background:rgba(255,255,255,.025);
+
+  transition:.35s;
+}
+
+.contact-item:hover{
+  transform:translateX(6px);
+  border-color:rgba(255,255,255,.3);
+}
+
+.contact-item small{
+  display:block;
+
+  color:#666;
+
+  font-size:9px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+
+  margin-bottom:8px;
+}
+
+.contact-item strong{
+  font-size:14px;
+  font-weight:500;
+}
+
+.form{
+  padding:35px;
+
+  border:1px solid var(--line);
+  border-radius:25px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.07),
+      rgba(255,255,255,.02)
+    );
+
+  backdrop-filter:blur(18px);
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+.field label{
+  color:#777;
+  font-size:9px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+
+  border:1px solid var(--line);
+  border-radius:10px;
+
+  background:rgba(0,0,0,.4);
+  color:white;
+
+  outline:none;
+
+  padding:15px;
+
+  transition:.3s;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  border-color:rgba(255,255,255,.5);
+  box-shadow:0 0 0 3px rgba(255,255,255,.03);
+}
+
+.field textarea{
+  min-height:150px;
+  resize:vertical;
+}
+
+.field select option{
+  background:#101010;
+}
+
+.submit{
+  width:100%;
+  margin-top:18px;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer{
+  padding:75px 25px 30px;
+  border-top:1px solid var(--line);
+}
+
+.footer-grid{
+  width:min(var(--max),100%);
+  margin:auto;
+
+  display:grid;
+  grid-template-columns:1.5fr 1fr 1fr 1fr;
+  gap:45px;
+
+  padding-bottom:60px;
+}
+
+.footer-logo{
+  width:190px;
+  margin-bottom:20px;
+}
+
+.footer-brand p{
+  max-width:360px;
+  color:#666;
+  font-size:13px;
+  line-height:1.8;
+}
+
+.footer-col h4{
+  font-size:10px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  margin-bottom:20px;
+}
+
+.footer-col a{
+  display:block;
+  color:#666;
+  font-size:12px;
+  margin-bottom:12px;
+  transition:.25s;
+}
+
+.footer-col a:hover{
+  color:white;
+  transform:translateX(4px);
+}
+
+.footer-bottom{
+  width:min(var(--max),100%);
+  margin:auto;
+
+  padding-top:25px;
+
+  border-top:1px solid var(--line);
+
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+
+  color:#4e4e4e;
+  font-size:10px;
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+
+  z-index:5000;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:20px;
+
+  background:rgba(0,0,0,.78);
+
+  backdrop-filter:blur(16px);
+
+  opacity:0;
+  visibility:hidden;
+
+  transition:.35s;
+}
+
+.modal.open{
+  opacity:1;
+  visibility:visible;
+}
+
+.modal-box{
+  width:min(620px,100%);
+
+  padding:35px;
+
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:25px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #151515,
+      #050505
+    );
+
+  box-shadow:0 40px 120px rgba(0,0,0,.7);
+
+  transform:translateY(20px) scale(.96);
+
+  transition:.4s;
+}
+
+.modal.open .modal-box{
+  transform:none;
+}
+
+.modal-close{
+  float:right;
+
+  width:38px;
+  height:38px;
+
+  border:1px solid var(--line);
+  border-radius:50%;
+
+  background:transparent;
+  color:white;
+
+  font-size:20px;
+}
+
+.modal-box h2{
+  font-size:42px;
+  letter-spacing:-.06em;
+  margin-top:20px;
+}
+
+.modal-box p{
+  color:#8c8c8c;
+  line-height:1.8;
+  margin:15px 0 25px;
+}
+
+/* =========================================================
+   ENQUIRY CHOICE
+   ========================================================= */
+
+.choice-buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:25px;
+}
+
+.choice{
+  min-height:100px;
+
+  border:1px solid var(--line);
+  border-radius:16px;
+
+  background:rgba(255,255,255,.035);
+  color:white;
+
+  text-align:left;
+
+  padding:20px;
+
+  transition:.35s;
+}
+
+.choice:hover{
+  transform:translateY(-4px);
+  border-color:rgba(255,255,255,.45);
+  background:rgba(255,255,255,.08);
+}
+
+.choice strong{
+  display:block;
+  font-size:15px;
+}
+
+.choice span{
+  display:block;
+  color:#777;
+  font-size:11px;
+  margin-top:8px;
+}
+
+/* =========================================================
+   BACK TO TOP
+   ========================================================= */
+
+.top{
+  position:fixed;
+
+  right:24px;
+  bottom:25px;
+
+  z-index:700;
+
+  width:45px;
+  height:45px;
+
+  border:1px solid var(--line);
+  border-radius:50%;
+
+  background:rgba(0,0,0,.7);
+  color:white;
+
+  opacity:0;
+  visibility:hidden;
+
+  transition:.3s;
+}
+
+.top.show{
+  opacity:1;
+  visibility:visible;
+}
+
+.top:hover{
+  background:white;
+  color:black;
+}
+
+/* =========================================================
+   REVEAL
+   ========================================================= */
+
+.reveal{
+  opacity:0;
+  transform:translateY(35px);
+  transition:
+    opacity .9s ease,
+    transform .9s var(--ease);
+}
+
+.reveal.show{
+  opacity:1;
+  transform:none;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media(max-width:1100px){
+
+  .nav-links{
+    gap:20px;
+  }
+
+  .orbit{
+    opacity:.35;
+    right:-100px;
+  }
+
+  .service-strip{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .hero{
+    padding-bottom:330px;
+  }
+
+  .service-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .ecosystem-grid{
+    grid-template-columns:1fr;
+  }
+
+  .eco-card.wide{
+    grid-column:auto;
+  }
+
+  .stats-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .stat:nth-child(2){
+    border-right:0;
+  }
+
+  .footer-grid{
+    grid-template-columns:1.5fr 1fr 1fr;
+  }
+
+}
+
+@media(max-width:800px){
+
+  .navbar{
+    height:72px;
+  }
+
+  .nav-inner{
+    width:calc(100% - 30px);
+  }
+
+  .logo{
+    width:145px;
+  }
+
+  .nav-links,
+  .nav-start{
+    display:none;
+  }
+
+  .mobile-menu{
+    display:block;
+  }
+
+  .nav-links.mobile{
+    position:fixed;
+
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+
+    top:82px;
+    left:15px;
+    right:15px;
+
+    padding:25px;
+
+    border:1px solid var(--line);
+    border-radius:20px;
+
+    background:rgba(5,5,5,.96);
+
+    backdrop-filter:blur(25px);
+
+    gap:22px;
+  }
+
+  .nav-links.mobile a{
+    font-size:16px;
+  }
+
+  .hero{
+    padding:
+      120px 18px
+      340px;
+  }
+
+  .hero-bg{
+    background-position:62% center;
+  }
+
+  .hero h1{
+    font-size:clamp(48px,14vw,75px);
+  }
+
+  .hero-description{
+    font-size:13px;
+  }
+
+  .orbit{
+    display:none;
+  }
+
+  .service-strip{
+    width:calc(100% - 30px);
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .service-mini{
+    min-height:90px;
+    padding:13px;
+  }
+
+  .service-mini h3{
+    font-size:10px;
+  }
+
+  .service-mini .arrow{
+    display:none;
+  }
+
+  section:not(.hero){
+    padding:90px 18px;
+  }
+
+  .about-grid,
+  .founder-grid,
+  .contact-grid,
+  .projects-grid{
+    grid-template-columns:1fr;
+    gap:45px;
+  }
+
+  .service-grid{
+    grid-template-columns:1fr;
+  }
+
+  .about-3d{
+    height:360px;
+  }
+
+  .ecosystem-grid{
+    grid-template-columns:1fr;
+  }
+
+  .innovation{
+    min-height:600px;
+  }
+
+  .innovation-orb{
+    width:400px;
+    height:400px;
+    right:-160px;
+    opacity:.5;
+  }
+
+  .founder-photo,
+  .founder-photo img{
+    min-height:520px;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .field.full{
+    grid-column:auto;
+  }
+
+  .footer-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .footer-brand{
+    grid-column:1/-1;
+  }
+
+}
+
+@media(max-width:500px){
+
+  .hero-buttons{
+    flex-direction:column;
+  }
+
+  .btn{
+    width:100%;
+  }
+
+  .service-strip{
+    gap:6px;
+  }
+
+  .service-mini{
+    min-height:82px;
+  }
+
+  .service-mini .num{
+    display:none;
+  }
+
+  .heading h2{
+    font-size:42px;
+  }
+
+  .founder-photo,
+  .founder-photo img{
+    min-height:450px;
+  }
+
+  .choice-buttons{
+    grid-template-columns:1fr;
+  }
+
+  .footer-grid{
+    grid-template-columns:1fr;
+  }
+
+  .footer-brand{
+    grid-column:auto;
+  }
+
+  .footer-bottom{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+}
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    animation:none!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
+
+}
+
+</style>
 </head>
 
 <body>
 
-  <!-- =======================================================
-       PRELOADER
-       ======================================================= -->
+<!-- =======================================================
+     PRELOADER
+     ======================================================= -->
 
-  <div id="preloader">
-    <div class="loader">
-      <img
-        class="loader-logo"
-        src="coreva-logo.png"
-        alt="COREVA Business Solutions"
-      />
+<div class="preloader" id="preloader">
 
-      <div class="loader-line"></div>
+  <div>
+    <img src="coreva-logo.png" alt="COREVA">
+    <div class="preloader-line">
+      <span></span>
     </div>
   </div>
 
-  <div class="noise"></div>
-  <div class="cursor-glow" id="cursorGlow"></div>
+</div>
 
-  <!-- =======================================================
-       NAVIGATION
-       ======================================================= -->
+<div class="noise"></div>
+<div class="cursor" id="cursor"></div>
 
-  <header class="navbar" id="navbar">
 
-    <div class="nav-inner">
+<!-- =======================================================
+     NAVIGATION
+     ======================================================= -->
 
-      <a href="#home" class="brand" aria-label="COREVA Home">
-        <img
-          src="coreva-logo.png"
-          alt="COREVA Business Solutions"
-        />
-      </a>
+<header class="navbar" id="navbar">
 
-      <nav class="nav-links" id="navLinks">
+  <div class="nav-inner">
 
-        <a href="#home" class="active">Home</a>
-
-        <a href="#about">About</a>
-
-        <a href="#services">Services</a>
-
-        <a href="#projects">Projects</a>
-
-        <a href="#why-coreva">Why COREVA</a>
-
-        <a href="#contact">Contact</a>
-
-      </nav>
-
-      <a
-        class="nav-cta"
-        href="#contact"
+    <a href="#home">
+      <img
+        class="logo"
+        src="coreva-logo.png"
+        alt="COREVA Business Solutions"
       >
-        Get Started
-        <span>→</span>
-      </a>
+    </a>
 
-      <button
-        class="mobile-toggle"
-        id="mobileToggle"
-        aria-label="Open menu"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+    <nav class="nav-links" id="navLinks">
+
+      <a href="#home" class="active">Home</a>
+      <a href="#about">About</a>
+      <a href="#services">Solutions</a>
+      <a href="#ecosystem">Ecosystem</a>
+      <a href="#founder">Founder</a>
+      <a href="#contact">Contact</a>
+
+    </nav>
+
+    <a href="#contact" class="nav-start">
+      Get Started →
+    </a>
+
+    <button
+      class="mobile-menu"
+      id="mobileMenu"
+      aria-label="Open menu"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </div>
+
+</header>
+
+
+<!-- =======================================================
+     HERO
+     ======================================================= -->
+
+<main>
+
+<section class="hero" id="home">
+
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-light"></div>
+
+  <div class="hero-inner">
+
+    <div class="hero-content reveal">
+
+      <div class="eyebrow">
+        Welcome to COREVA
+      </div>
+
+      <h1>
+        Solutions
+        <span class="outline">For A Bigger</span>
+        Tomorrow
+      </h1>
+
+      <p class="hero-description">
+        COREVA Business Solutions connects people,
+        businesses and opportunities through
+        property, digital, finance, business support,
+        construction, interiors and growth solutions.
+      </p>
+
+      <div class="hero-buttons">
+
+        <a
+          href="#contact"
+          class="btn btn-primary"
+        >
+          Start Your Requirement →
+        </a>
+
+        <a
+          href="#services"
+          class="btn btn-dark"
+        >
+          Explore Solutions ↓
+        </a>
+
+      </div>
 
     </div>
 
-  </header>
+  </div>
 
 
-  <!-- =======================================================
-       HERO
-       ======================================================= -->
+  <!-- 3D COREVA ORBIT -->
 
-  <main>
+  <div class="orbit">
 
-    <section
-      class="hero"
-      id="home"
+    <div class="orbit-ring"></div>
+    <div class="orbit-ring"></div>
+    <div class="orbit-ring"></div>
+
+    <div class="orbit-core">
+
+      <img
+        src="coreva-logo.png"
+        alt="COREVA"
+      >
+
+    </div>
+
+  </div>
+
+
+  <!-- SIX SOLUTIONS -->
+
+  <div class="service-strip">
+
+    <button
+      class="service-mini"
+      data-service="property"
     >
-
-      <div class="hero-background"></div>
-
-      <div class="hero-grid"></div>
-
-      <div class="hero-inner">
-
-        <div class="hero-content reveal">
-
-          <div class="eyebrow">
-            Welcome to COREVA
-          </div>
-
-          <h1>
-            Solutions
-            <span>For A Bigger</span>
-            Tomorrow
-          </h1>
-
-          <p class="hero-subtitle">
-            COREVA Business Solutions helps individuals,
-            businesses and investors move forward with
-            trusted solutions across property, digital,
-            finance, construction, interiors and business
-            support.
-          </p>
-
-          <div class="hero-buttons">
-
-            <a
-              href="#contact"
-              class="button button-primary"
-            >
-              Get Started
-              <span>→</span>
-            </a>
-
-            <a
-              href="#services"
-              class="button button-secondary"
-            >
-              Explore Services
-              <span>↓</span>
-            </a>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="hero-floating">
-
-        <div class="floating-number">
-          COREVA
-        </div>
-
-        <div class="floating-text">
-          Business Solutions for
-          growing businesses.
-        </div>
-
-      </div>
-
-
-      <!-- HERO SERVICE STRIP -->
-
-      <div class="service-strip">
-
-        <button
-          class="service-mini"
-          data-service="property"
-        >
-
-          <svg class="service-mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M3 21h18"/>
-            <path d="M5 21V8l7-5 7 5v13"/>
-            <path d="M9 21v-6h6v6"/>
-          </svg>
-
-          <h3>Property &<br>Real Estate</h3>
-
-          <span>→</span>
-
-        </button>
-
-
-        <button
-          class="service-mini"
-          data-service="digital"
-        >
-
-          <svg class="service-mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="3" y="4" width="18" height="13" rx="2"/>
-            <path d="M8 21h8"/>
-            <path d="M12 17v4"/>
-          </svg>
-
-          <h3>Digital<br>Solutions</h3>
-
-          <span>→</span>
-
-        </button>
-
-
-        <button
-          class="service-mini"
-          data-service="finance"
-        >
-
-          <svg class="service-mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <ellipse cx="12" cy="6" rx="7" ry="3"/>
-            <path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/>
-            <path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>
-          </svg>
-
-          <h3>Finance<br>Solutions</h3>
-
-          <span>→</span>
-
-        </button>
-
-
-        <button
-          class="service-mini"
-          data-service="support"
-        >
-
-          <svg class="service-mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="9" cy="8" r="3"/>
-            <circle cx="17" cy="9" r="2.5"/>
-            <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
-            <path d="M14 15c3.2-.5 6 1.8 6 5"/>
-          </svg>
-
-          <h3>Business<br>Support</h3>
-
-          <span>→</span>
-
-        </button>
-
-
-        <button
-          class="service-mini"
-          data-service="construction"
-        >
-
-          <svg class="service-mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M3 21h18"/>
-            <path d="M5 21V9l7-6 7 6v12"/>
-            <path d="M9 21v-6h6v6"/>
-          </svg>
-
-          <h3>Construction<br>& Interiors</h3>
-
-          <span>→</span>
-
-        </button>
-
-
-        <button
-          class="service-mini"
-          data-service="growth"
-        >
-
-          <svg class="service-mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M4 19V5"/>
-            <path d="M4 19h16"/>
-            <path d="m7 15 4-5 3 3 5-7"/>
-          </svg>
-
-          <h3>Business<br>Growth</h3>
-
-          <span>→</span>
-
-        </button>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         ABOUT
-         ===================================================== -->
-
-    <section id="about">
-
-      <div class="section-inner">
-
-        <div class="section-heading reveal">
-
-          <div class="section-label">
-            About COREVA
-          </div>
-
-          <h2>
-            One direction.
-            <br>
-            Multiple solutions.
-          </h2>
-
-          <p>
-            COREVA brings different business requirements
-            together under one professional ecosystem.
-          </p>
-
-        </div>
-
-
-        <div class="about-grid">
-
-          <div class="about-copy reveal">
-
-            <p>
-              <strong>
-                COREVA Business Solutions
-              </strong>
-              is built around a simple idea:
-              businesses and individuals should be able
-              to find the right direction without dealing
-              with unnecessary complexity.
-            </p>
-
-            <p>
-              From property and digital solutions to
-              finance, construction, interiors and
-              business support, COREVA is designed to
-              connect people with practical solutions.
-            </p>
-
-            <p>
-              Our long-term vision is to build a connected
-              business ecosystem where customers,
-              professionals, projects and services can
-              work together through technology.
-            </p>
-
-            <br>
-
-            <a
-              href="#contact"
-              class="button button-secondary"
-            >
-              Talk to COREVA →
-            </a>
-
-          </div>
-
-
-          <div class="about-visual reveal">
-
-            <div class="cube-scene">
-
-              <div class="cube">
-
-                <div class="cube-face cube-front"></div>
-                <div class="cube-face cube-back"></div>
-                <div class="cube-face cube-right"></div>
-                <div class="cube-face cube-left"></div>
-                <div class="cube-face cube-top"></div>
-                <div class="cube-face cube-bottom"></div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         SERVICES
-         ===================================================== -->
-
-    <section id="services">
-
-      <div class="section-inner">
-
-        <div class="section-heading reveal">
-
-          <div class="section-label">
-            What We Do
-          </div>
-
-          <h2>
-            Business solutions
-            <br>
-            built around you.
-          </h2>
-
-          <p>
-            Explore COREVA's solution areas and find
-            the right direction for your requirement.
-          </p>
-
-        </div>
-
-
-        <div class="services-grid">
-
-
-          <article
-            class="service-card reveal"
-            data-service="property"
-          >
-
-            <div class="service-number">
-              01 / 06
-            </div>
-
-            <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-              <path d="M3 21h18"/>
-              <path d="M5 21V8l7-5 7 5v13"/>
-              <path d="M9 21v-6h6v6"/>
-            </svg>
-
-            <h3>
-              Property & Real Estate
-            </h3>
-
-            <p>
-              Property opportunities, real estate
-              support, listings and solutions for
-              individuals and investors.
-            </p>
-
-            <button
-              class="service-action"
-              aria-label="View Property services"
-            >
-              →
-            </button>
-
-          </article>
-
-
-          <article
-            class="service-card reveal"
-            data-service="digital"
-          >
-
-            <div class="service-number">
-              02 / 06
-            </div>
-
-            <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-              <rect x="3" y="4" width="18" height="13" rx="2"/>
-              <path d="M8 21h8"/>
-              <path d="M12 17v4"/>
-            </svg>
-
-            <h3>
-              Digital Solutions
-            </h3>
-
-            <p>
-              Websites, digital platforms, business
-              systems and technology solutions designed
-              for modern businesses.
-            </p>
-
-            <button
-              class="service-action"
-              aria-label="View Digital services"
-            >
-              →
-            </button>
-
-          </article>
-
-
-          <article
-            class="service-card reveal"
-            data-service="finance"
-          >
-
-            <div class="service-number">
-              03 / 06
-            </div>
-
-            <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-              <ellipse cx="12" cy="6" rx="7" ry="3"/>
-              <path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/>
-              <path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>
-            </svg>
-
-            <h3>
-              Finance Solutions
-            </h3>
-
-            <p>
-              Financial service support and connected
-              solutions for people, entrepreneurs and
-              growing businesses.
-            </p>
-
-            <button
-              class="service-action"
-              aria-label="View Finance services"
-            >
-              →
-            </button>
-
-          </article>
-
-
-          <article
-            class="service-card reveal"
-            data-service="support"
-          >
-
-            <div class="service-number">
-              04 / 06
-            </div>
-
-            <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-              <circle cx="9" cy="8" r="3"/>
-              <circle cx="17" cy="9" r="2.5"/>
-              <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
-              <path d="M14 15c3.2-.5 6 1.8 6 5"/>
-            </svg>
-
-            <h3>
-              Business Support
-            </h3>
-
-            <p>
-              Practical business support to help
-              entrepreneurs solve problems, organize
-              operations and move forward.
-            </p>
-
-            <button
-              class="service-action"
-              aria-label="View Business Support services"
-            >
-              →
-            </button>
-
-          </article>
-
-
-          <article
-            class="service-card reveal"
-            data-service="construction"
-          >
-
-            <div class="service-number">
-              05 / 06
-            </div>
-
-            <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-              <path d="M3 21h18"/>
-              <path d="M5 21V9l7-6 7 6v12"/>
-              <path d="M9 21v-6h6v6"/>
-            </svg>
-
-            <h3>
-              Construction & Interiors
-            </h3>
-
-            <p>
-              Construction, interior design and project
-              solutions through specialist teams and
-              partner brands.
-            </p>
-
-            <button
-              class="service-action"
-              aria-label="View Construction services"
-            >
-              →
-            </button>
-
-          </article>
-
-
-          <article
-            class="service-card reveal"
-            data-service="growth"
-          >
-
-            <div class="service-number">
-              06 / 06
-            </div>
-
-            <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-              <path d="M4 19V5"/>
-              <path d="M4 19h16"/>
-              <path d="m7 15 4-5 3 3 5-7"/>
-            </svg>
-
-            <h3>
-              Business Growth
-            </h3>
-
-            <p>
-              Growth-focused digital, marketing,
-              technology and business support solutions
-              for ambitious businesses.
-            </p>
-
-            <button
-              class="service-action"
-              aria-label="View Business Growth services"
-            >
-              →
-            </button>
-
-          </article>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         WHY COREVA
-         ===================================================== -->
-
-    <section id="why-coreva">
-
-      <div class="section-inner">
-
-        <div class="section-heading reveal">
-
-          <div class="section-label">
-            Why COREVA
-          </div>
-
-          <h2>
-            Built for people
-            <br>
-            who want to move forward.
-          </h2>
-
-        </div>
-
-
-        <div class="why-grid">
-
-          <div class="why-card reveal">
-            <span>01</span>
-
-            <h3>
-              One Ecosystem
-            </h3>
-
-            <p>
-              Multiple solution categories connected
-              through one business ecosystem.
-            </p>
-          </div>
-
-
-          <div class="why-card reveal">
-            <span>02</span>
-
-            <h3>
-              Practical Direction
-            </h3>
-
-            <p>
-              We focus on understanding the requirement
-              before suggesting a solution.
-            </p>
-          </div>
-
-
-          <div class="why-card reveal">
-            <span>03</span>
-
-            <h3>
-              Technology Driven
-            </h3>
-
-            <p>
-              Modern digital systems and technology
-              are part of COREVA's long-term vision.
-            </p>
-          </div>
-
-
-          <div class="why-card reveal">
-            <span>04</span>
-
-            <h3>
-              Long-Term Vision
-            </h3>
-
-            <p>
-              Building a connected platform that can
-              grow with customers and businesses.
-            </p>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         PROJECTS
-         ===================================================== -->
-
-    <section id="projects">
-
-      <div class="section-inner">
-
-        <div class="section-heading reveal">
-
-          <div class="section-label">
-            Our Ecosystem
-          </div>
-
-          <h2>
-            Different capabilities.
-            <br>
-            One direction.
-          </h2>
-
-          <p>
-            COREVA is designed to work with specialist
-            companies, brands and professional teams.
-          </p>
-
-        </div>
-
-
-        <div class="projects-grid">
-
-          <article class="project-card large reveal">
-
-            <div class="project-shape"></div>
-
-            <div class="project-content">
-
-              <small>
-                Digital Solutions
-              </small>
-
-              <h3>
-                Velora Digital
-              </h3>
-
-              <p>
-                Websites, digital products, technology
-                and business systems.
-              </p>
-
-              <br>
-
-              <a
-                href="https://veloradigital.co.in"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="button button-secondary"
-              >
-                Explore Digital →
-              </a>
-
-            </div>
-
-          </article>
-
-
-          <div>
-
-            <article
-              class="project-card reveal"
-              style="min-height:270px;margin-bottom:16px;"
-            >
-
-              <div
-                class="project-shape"
-                style="width:180px;height:180px;right:-20px;top:-40px;"
-              ></div>
-
-              <div class="project-content">
-
-                <small>
-                  Construction
-                </small>
-
-                <h3>
-                  TBD Builders
-                </h3>
-
-                <p>
-                  Construction and development solutions.
-                </p>
-
-              </div>
-
-            </article>
-
-
-            <article
-              class="project-card reveal"
-              style="min-height:270px;"
-            >
-
-              <div
-                class="project-shape"
-                style="width:180px;height:180px;right:-20px;top:-40px;"
-              ></div>
-
-              <div class="project-content">
-
-                <small>
-                  Interiors
-                </small>
-
-                <h3>
-                  Aureliv
-                </h3>
-
-                <p>
-                  Interior design and space solutions.
-                </p>
-
-              </div>
-
-            </article>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         STATS
-         ===================================================== -->
-
-    <section class="stats">
-
-      <div class="section-inner">
-
-        <div class="stats-grid">
-
-          <div class="stat reveal">
-            <div
-              class="stat-number"
-              data-count="6"
-            >
-              0
-            </div>
-
-            <div class="stat-label">
-              Solution Areas
-            </div>
-          </div>
-
-
-          <div class="stat reveal">
-            <div
-              class="stat-number"
-              data-count="3"
-            >
-              0
-            </div>
-
-            <div class="stat-label">
-              Specialist Brands
-            </div>
-          </div>
-
-
-          <div class="stat reveal">
-            <div
-              class="stat-number"
-              data-count="1"
-            >
-              0
-            </div>
-
-            <div class="stat-label">
-              Connected Ecosystem
-            </div>
-          </div>
-
-
-          <div class="stat reveal">
-            <div
-              class="stat-number"
-              data-count="100"
-            >
-              0
-            </div>
-
-            <div class="stat-label">
-              Focus on Growth %
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         FOUNDER
-         ===================================================== -->
-
-    <section>
-
-      <div class="section-inner">
-
-        <div class="founder-grid">
-
-          <div class="founder-image reveal">
-          </div>
-
-
-          <div class="founder-info reveal">
-
-            <small>
-              Founder & CEO
-            </small>
-
-            <h2>
-              Aboobakker Fahiz
-            </h2>
-
-            <p>
-              COREVA was founded with the vision of
-              building a modern business ecosystem that
-              helps people and businesses find the right
-              direction, connect with solutions and grow.
-            </p>
-
-            <p>
-              The journey starts with COREVA Business
-              Solutions and will continue through
-              technology, business services and
-              connected platforms.
-            </p>
-
-            <br>
-
-            <a
-              href="#contact"
-              class="button button-primary"
-            >
-              Connect With COREVA →
-            </a>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         CONTACT
-         ===================================================== -->
-
-    <section
-      class="contact"
-      id="contact"
+      <div class="num">01</div>
+      <h3>Property &<br>Real Estate</h3>
+      <span class="arrow">→</span>
+    </button>
+
+    <button
+      class="service-mini"
+      data-service="digital"
     >
-
-      <div class="section-inner">
-
-        <div class="section-heading reveal">
-
-          <div class="section-label">
-            Start a Conversation
-          </div>
-
-          <h2>
-            Tell us what
-            <br>
-            you need.
-          </h2>
-
-          <p>
-            Have a business requirement, property
-            requirement, digital project or service
-            request? Send it to COREVA.
-          </p>
-
-        </div>
-
-
-        <div class="contact-grid">
-
-
-          <div class="contact-details reveal">
-
-            <a
-              href="mailto:corevabusinessolutions@gmail.com"
-              class="contact-item"
-            >
-              <small>Email</small>
-
-              <strong>
-                corevabusinessolutions@gmail.com
-              </strong>
-            </a>
-
-
-            <a
-              href="tel:+918088590273"
-              class="contact-item"
-            >
-              <small>Phone</small>
-
-              <strong>
-                +91 80885 90273
-              </strong>
-            </a>
-
-
-            <a
-              href="https://wa.me/918088590273?text=Hello%20COREVA%2C%20I%20would%20like%20to%20know%20more%20about%20your%20business%20solutions."
-              target="_blank"
-              rel="noopener noreferrer"
-              class="contact-item"
-            >
-              <small>WhatsApp</small>
-
-              <strong>
-                Chat with COREVA
-              </strong>
-            </a>
-
-
-            <a
-              href="https://www.instagram.com/corevasolutions"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="contact-item"
-            >
-              <small>Instagram</small>
-
-              <strong>
-                @corevasolutions
-              </strong>
-            </a>
-
-
-            <div class="contact-item">
-
-              <small>
-                Location
-              </small>
-
-              <strong>
-                Mangaluru, Karnataka, India
-              </strong>
-
-            </div>
-
-          </div>
-
-
-          <form
-            class="contact-form reveal"
-            id="contactForm"
-          >
-
-            <div class="form-grid">
-
-              <div class="field">
-
-                <label for="name">
-                  Your Name
-                </label>
-
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  placeholder="Enter your name"
-                  required
-                />
-
-              </div>
-
-
-              <div class="field">
-
-                <label for="phone">
-                  Phone
-                </label>
-
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  placeholder="+91"
-                  required
-                />
-
-              </div>
-
-
-              <div class="field">
-
-                <label for="email">
-                  Email
-                </label>
-
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  required
-                />
-
-              </div>
-
-
-              <div class="field">
-
-                <label for="service">
-                  Requirement
-                </label>
-
-                <select
-                  id="service"
-                  name="service"
-                  required
-                >
-
-                  <option value="">
-                    Select service
-                  </option>
-
-                  <option>
-                    Property & Real Estate
-                  </option>
-
-                  <option>
-                    Digital Solutions
-                  </option>
-
-                  <option>
-                    Finance Solutions
-                  </option>
-
-                  <option>
-                    Business Support
-                  </option>
-
-                  <option>
-                    Construction & Interiors
-                  </option>
-
-                  <option>
-                    Business Growth
-                  </option>
-
-                  <option>
-                    Other
-                  </option>
-
-                </select>
-
-              </div>
-
-
-              <div class="field full">
-
-                <label for="message">
-                  Tell us about your requirement
-                </label>
-
-                <textarea
-                  id="message"
-                  name="message"
-                  placeholder="Tell us what you need..."
-                  required
-                ></textarea>
-
-              </div>
-
-            </div>
-
-
-            <button
-              type="submit"
-              class="button button-primary form-submit"
-            >
-              Send Enquiry
-              <span>→</span>
-            </button>
-
-          </form>
-
-        </div>
-
+      <div class="num">02</div>
+      <h3>Digital<br>Solutions</h3>
+      <span class="arrow">→</span>
+    </button>
+
+    <button
+      class="service-mini"
+      data-service="finance"
+    >
+      <div class="num">03</div>
+      <h3>Finance<br>Solutions</h3>
+      <span class="arrow">→</span>
+    </button>
+
+    <button
+      class="service-mini"
+      data-service="support"
+    >
+      <div class="num">04</div>
+      <h3>Business<br>Support</h3>
+      <span class="arrow">→</span>
+    </button>
+
+    <button
+      class="service-mini"
+      data-service="construction"
+    >
+      <div class="num">05</div>
+      <h3>Construction<br>& Interiors</h3>
+      <span class="arrow">→</span>
+    </button>
+
+    <button
+      class="service-mini"
+      data-service="growth"
+    >
+      <div class="num">06</div>
+      <h3>Business<br>Growth</h3>
+      <span class="arrow">→</span>
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     ABOUT
+     ======================================================= -->
+
+<section id="about">
+
+  <div class="container">
+
+    <div class="heading reveal">
+
+      <div class="label">
+        About COREVA
       </div>
 
-    </section>
+      <h2>
+        Multiple solutions.
+        <br>
+        One direction.
+      </h2>
 
-  </main>
+      <p>
+        COREVA is being built as a connected business
+        ecosystem designed to help people and businesses
+        find the right solution and move forward.
+      </p>
 
-
-  <!-- =======================================================
-       FOOTER
-       ======================================================= -->
-
-  <footer>
-
-    <div class="footer-inner">
-
-      <div class="footer-top">
-
-        <div class="footer-brand">
-
-          <img
-            src="coreva-logo.png"
-            alt="COREVA Business Solutions"
-          />
-
-          <p>
-            Building People. Businesses.
-            A Better Tomorrow.
-          </p>
-
-        </div>
+    </div>
 
 
-        <div class="footer-column">
+    <div class="about-grid">
 
-          <h4>
-            Navigate
-          </h4>
+      <div class="about-copy reveal">
 
-          <a href="#home">
-            Home
-          </a>
+        <p>
+          <strong>COREVA Business Solutions</strong>
+          brings different areas of business support
+          together under one professional identity.
+        </p>
 
-          <a href="#about">
-            About
-          </a>
+        <p>
+          Our solution areas cover property and real
+          estate, digital technology, finance, business
+          support, construction and interiors, and
+          business growth.
+        </p>
 
-          <a href="#services">
-            Services
-          </a>
+        <p>
+          The long-term vision is bigger than a normal
+          service company. COREVA is designed to become
+          a connected platform where customers,
+          professionals, projects and services can work
+          together.
+        </p>
 
-          <a href="#projects">
-            Projects
-          </a>
+        <br>
 
-        </div>
-
-
-        <div class="footer-column">
-
-          <h4>
-            Solutions
-          </h4>
-
-          <a href="#services">
-            Property
-          </a>
-
-          <a href="#services">
-            Digital
-          </a>
-
-          <a href="#services">
-            Finance
-          </a>
-
-          <a href="#services">
-            Business Support
-          </a>
-
-        </div>
-
-
-        <div class="footer-column">
-
-          <h4>
-            Connect
-          </h4>
-
-          <a
-            href="mailto:corevabusinessolutions@gmail.com"
-          >
-            Email
-          </a>
-
-          <a
-            href="https://wa.me/918088590273"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            WhatsApp
-          </a>
-
-          <a
-            href="https://www.instagram.com/corevasolutions"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Instagram
-          </a>
-
-          <a href="#contact">
-            Start a Project
-          </a>
-
-        </div>
+        <a
+          href="#contact"
+          class="btn btn-dark"
+        >
+          Talk to COREVA →
+        </a>
 
       </div>
 
 
-      <div class="footer-bottom">
+      <div class="about-3d reveal">
 
-        <div>
-          © <span id="year"></span>
-          COREVA Business Solutions.
-          All rights reserved.
-        </div>
+        <div class="about-box">
 
-        <div>
-          Mangaluru, Karnataka, India
+          <div class="about-face af1"></div>
+          <div class="about-face af2"></div>
+          <div class="about-face af3"></div>
+          <div class="about-face af4"></div>
+          <div class="about-face af5"></div>
+          <div class="about-face af6"></div>
+
         </div>
 
       </div>
 
     </div>
 
-  </footer>
+  </div>
+
+</section>
 
 
-  <!-- =======================================================
-       SERVICE MODAL
-       ======================================================= -->
+<!-- =======================================================
+     SOLUTIONS
+     ======================================================= -->
 
-  <div
-    class="modal"
-    id="serviceModal"
-    aria-hidden="true"
-  >
+<section id="services">
 
-    <div class="modal-box">
+  <div class="container">
 
-      <button
-        class="modal-close"
-        id="modalClose"
-        aria-label="Close"
-      >
-        ×
-      </button>
+    <div class="heading reveal">
 
-      <div class="section-label">
+      <div class="label">
         COREVA Solutions
       </div>
 
-      <h2 id="modalTitle">
-        Service
+      <h2>
+        Built around
+        <br>
+        your requirement.
       </h2>
 
-      <p id="modalText">
-        Service information.
+      <p>
+        Select a solution to learn more.
       </p>
+
+    </div>
+
+
+    <div class="service-grid">
+
+
+      <article
+        class="service-card reveal"
+        data-service="property"
+      >
+
+        <div class="service-number">
+          01 / 06
+        </div>
+
+        <svg
+          class="service-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.4"
+        >
+          <path d="M3 21h18"/>
+          <path d="M5 21V8l7-5 7 5v13"/>
+          <path d="M9 21v-6h6v6"/>
+        </svg>
+
+        <h3>
+          Property & Real Estate
+        </h3>
+
+        <p>
+          Property opportunities, real estate support,
+          listings and practical direction for buyers,
+          sellers and investors.
+        </p>
+
+        <button class="service-open">
+          →
+        </button>
+
+      </article>
+
+
+      <article
+        class="service-card reveal"
+        data-service="digital"
+      >
+
+        <div class="service-number">
+          02 / 06
+        </div>
+
+        <svg
+          class="service-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.4"
+        >
+          <rect x="3" y="4" width="18" height="13" rx="2"/>
+          <path d="M8 21h8"/>
+          <path d="M12 17v4"/>
+        </svg>
+
+        <h3>
+          Digital Solutions
+        </h3>
+
+        <p>
+          Websites, digital products, business systems,
+          automation and technology solutions.
+        </p>
+
+        <button class="service-open">
+          →
+        </button>
+
+      </article>
+
+
+      <article
+        class="service-card reveal"
+        data-service="finance"
+      >
+
+        <div class="service-number">
+          03 / 06
+        </div>
+
+        <svg
+          class="service-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.4"
+        >
+          <ellipse cx="12" cy="6" rx="7" ry="3"/>
+          <path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/>
+          <path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>
+        </svg>
+
+        <h3>
+          Finance Solutions
+        </h3>
+
+        <p>
+          Financial service support and solution
+          pathways for individuals, entrepreneurs and
+          growing businesses.
+        </p>
+
+        <button class="service-open">
+          →
+        </button>
+
+      </article>
+
+
+      <article
+        class="service-card reveal"
+        data-service="support"
+      >
+
+        <div class="service-number">
+          04 / 06
+        </div>
+
+        <svg
+          class="service-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.4"
+        >
+          <circle cx="9" cy="8" r="3"/>
+          <circle cx="17" cy="9" r="2.5"/>
+          <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
+          <path d="M14 15c3.2-.5 6 1.8 6 5"/>
+        </svg>
+
+        <h3>
+          Business Support
+        </h3>
+
+        <p>
+          Practical business support for entrepreneurs
+          and businesses that need direction,
+          coordination and professional assistance.
+        </p>
+
+        <button class="service-open">
+          →
+        </button>
+
+      </article>
+
+
+      <article
+        class="service-card reveal"
+        data-service="construction"
+      >
+
+        <div class="service-number">
+          05 / 06
+        </div>
+
+        <svg
+          class="service-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.4"
+        >
+          <path d="M3 21h18"/>
+          <path d="M5 21V9l7-6 7 6v12"/>
+          <path d="M9 21v-6h6v6"/>
+        </svg>
+
+        <h3>
+          Construction & Interiors
+        </h3>
+
+        <p>
+          Construction, development, architecture,
+          interiors and project solutions through
+          specialist capabilities.
+        </p>
+
+        <button class="service-open">
+          →
+        </button>
+
+      </article>
+
+
+      <article
+        class="service-card reveal"
+        data-service="growth"
+      >
+
+        <div class="service-number">
+          06 / 06
+        </div>
+
+        <svg
+          class="service-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.4"
+        >
+          <path d="M4 19V5"/>
+          <path d="M4 19h16"/>
+          <path d="m7 15 4-5 3 3 5-7"/>
+        </svg>
+
+        <h3>
+          Business Growth
+        </h3>
+
+        <p>
+          Digital presence, marketing, technology,
+          strategy and support designed to help
+          businesses grow.
+        </p>
+
+        <button class="service-open">
+          →
+        </button>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     ECOSYSTEM
+     ======================================================= -->
+
+<section
+  class="ecosystem"
+  id="ecosystem"
+>
+
+  <div class="container">
+
+    <div class="heading reveal">
+
+      <div class="label">
+        COREVA Ecosystem
+      </div>
+
+      <h2>
+        Specialist brands.
+        <br>
+        One ecosystem.
+      </h2>
+
+      <p>
+        COREVA brings together specialist capabilities
+        to create a broader business solutions ecosystem.
+      </p>
+
+    </div>
+
+
+    <div class="ecosystem-grid">
+
+
+      <!-- VELORA -->
+
+      <article class="eco-card reveal">
+
+        <div class="eco-visual">
+          <div class="eco-lines"></div>
+        </div>
+
+        <div class="eco-content">
+
+          <div class="eco-category">
+            Digital Solutions
+          </div>
+
+          <h3>
+            Velora Digital
+          </h3>
+
+          <p>
+            Websites, digital products, business systems,
+            automation, branding and modern technology
+            solutions.
+          </p>
+
+          <a
+            class="eco-link"
+            href="https://veloradigital.co.in"
+            target="_blank"
+            rel="noopener"
+          >
+            Explore Velora Digital →
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- TBD BUILDERS -->
+
+      <article class="eco-card reveal">
+
+        <div class="eco-visual">
+          <div class="eco-lines"></div>
+        </div>
+
+        <div class="eco-content">
+
+          <div class="eco-category">
+            Construction & Development
+          </div>
+
+          <h3>
+            TBD Builders & Developers
+          </h3>
+
+          <p>
+            Construction, development and project
+            solutions with a focus on quality,
+            planning and long-term value.
+          </p>
+
+          <a
+            href="#contact"
+            class="eco-link"
+          >
+            Discuss a Project →
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- AURELIV -->
+
+      <article class="eco-card reveal">
+
+        <div class="eco-visual">
+          <div class="eco-lines"></div>
+        </div>
+
+        <div class="eco-content">
+
+          <div class="eco-category">
+            Interior Design
+          </div>
+
+          <h3>
+            Aureliv Interiors
+          </h3>
+
+          <p>
+            Premium interior design and space solutions
+            for residential, commercial and business
+            environments.
+          </p>
+
+          <a
+            href="#contact"
+            class="eco-link"
+          >
+            Discuss Interiors →
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- SR PRIME -->
+
+      <article class="eco-card reveal">
+
+        <div class="eco-visual">
+          <div class="eco-lines"></div>
+        </div>
+
+        <div class="eco-content">
+
+          <div class="eco-category">
+            Property & Real Estate
+          </div>
+
+          <h3>
+            SR PRIME Properties
+          </h3>
+
+          <p>
+            Property and real estate development
+            solutions focused on opportunities,
+            investments and growth.
+          </p>
+
+          <a
+            href="#contact"
+            class="eco-link"
+          >
+            Property Enquiry →
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- TBD GROUP -->
+
+      <article class="eco-card wide reveal">
+
+        <div class="eco-visual">
+          <div class="eco-lines"></div>
+        </div>
+
+        <div class="eco-content">
+
+          <div class="eco-category">
+            Group Vision
+          </div>
+
+          <h3>
+            TBD GROUP.in
+          </h3>
+
+          <p>
+            A broader business ecosystem connecting
+            construction, development, interiors,
+            property and future business opportunities.
+          </p>
+
+          <a
+            href="#contact"
+            class="eco-link"
+          >
+            Connect With COREVA →
+          </a>
+
+        </div>
+
+      </article>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     INNOVATION
+     ======================================================= -->
+
+<section class="innovation">
+
+  <div class="innovation-orb"></div>
+
+  <div class="container">
+
+    <div class="innovation-content reveal">
+
+      <div class="label">
+        Our Vision
+      </div>
+
+      <h2>
+        Innovation.
+        <br>
+        <span>Multiple Solutions.</span>
+        <br>
+        One Direction.
+      </h2>
+
+      <p>
+        COREVA is building more than individual
+        services. The vision is to create a connected
+        business ecosystem where customers can discover,
+        apply, communicate, manage and grow through
+        one trusted direction.
+      </p>
+
+      <br>
 
       <a
         href="#contact"
-        class="button button-primary"
-        id="modalCTA"
+        class="btn btn-primary"
       >
-        Discuss Your Requirement →
+        Build With COREVA →
       </a>
 
     </div>
 
   </div>
 
-
-  <!-- =======================================================
-       BACK TO TOP
-       ======================================================= -->
-
-  <button
-    class="back-top"
-    id="backTop"
-    aria-label="Back to top"
-  >
-    ↑
-  </button>
+</section>
 
 
-  <!-- =======================================================
-       JAVASCRIPT
-       ======================================================= -->
+<!-- =======================================================
+     PROJECTS
+     ======================================================= -->
 
-  <script>
+<section id="projects">
 
-    /* =====================================================
-       PRELOADER
-       ===================================================== */
+  <div class="container">
 
-    window.addEventListener("load", () => {
+    <div class="heading reveal">
 
-      setTimeout(() => {
+      <div class="label">
+        Projects & Capabilities
+      </div>
 
-        document
-          .getElementById("preloader")
-          .classList.add("hide");
+      <h2>
+        From ideas
+        <br>
+        to execution.
+      </h2>
 
-      }, 700);
-
-    });
-
-
-    /* =====================================================
-       YEAR
-       ===================================================== */
-
-    document.getElementById("year").textContent =
-      new Date().getFullYear();
+    </div>
 
 
-    /* =====================================================
-       NAVBAR SCROLL
-       ===================================================== */
-
-    const navbar =
-      document.getElementById("navbar");
-
-    const backTop =
-      document.getElementById("backTop");
-
-    window.addEventListener("scroll", () => {
-
-      if (window.scrollY > 50) {
-
-        navbar.classList.add("scrolled");
-        backTop.classList.add("visible");
-
-      } else {
-
-        navbar.classList.remove("scrolled");
-        backTop.classList.remove("visible");
-
-      }
-
-    });
+    <div class="projects-grid">
 
 
-    /* =====================================================
-       BACK TO TOP
-       ===================================================== */
+      <article class="project reveal">
 
-    backTop.addEventListener("click", () => {
+        <div class="project-shape"></div>
 
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
+        <div class="project-content">
+
+          <small>
+            Digital
+          </small>
+
+          <h3>
+            Digital Business Systems
+          </h3>
+
+          <p>
+            Websites, platforms, automation and
+            business technology.
+          </p>
+
+        </div>
+
+      </article>
+
+
+      <div>
+
+        <article class="project small reveal">
+
+          <div
+            class="project-shape"
+            style="width:180px;height:180px"
+          ></div>
+
+          <div class="project-content">
+
+            <small>
+              Property
+            </small>
+
+            <h3>
+              Real Estate
+            </h3>
+
+            <p>
+              Property opportunities and solutions.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <article class="project small reveal">
+
+          <div
+            class="project-shape"
+            style="width:180px;height:180px"
+          ></div>
+
+          <div class="project-content">
+
+            <small>
+              Construction
+            </small>
+
+            <h3>
+              Built Environments
+            </h3>
+
+            <p>
+              Construction and interior solutions.
+            </p>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     STATS
+     ======================================================= -->
+
+<section class="stats">
+
+  <div class="container">
+
+    <div class="stats-grid">
+
+      <div class="stat reveal">
+
+        <div
+          class="stat-number"
+          data-count="6"
+        >
+          0
+        </div>
+
+        <div class="stat-label">
+          Solution Areas
+        </div>
+
+      </div>
+
+
+      <div class="stat reveal">
+
+        <div
+          class="stat-number"
+          data-count="5"
+        >
+          0
+        </div>
+
+        <div class="stat-label">
+          Ecosystem Brands
+        </div>
+
+      </div>
+
+
+      <div class="stat reveal">
+
+        <div
+          class="stat-number"
+          data-count="1"
+        >
+          0
+        </div>
+
+        <div class="stat-label">
+          Connected Direction
+        </div>
+
+      </div>
+
+
+      <div class="stat reveal">
+
+        <div
+          class="stat-number"
+          data-count="100"
+        >
+          0
+        </div>
+
+        <div class="stat-label">
+          Growth Focus %
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     FOUNDER
+     ======================================================= -->
+
+<section id="founder">
+
+  <div class="container">
+
+    <div class="founder-grid">
+
+
+      <div class="founder-photo reveal">
+
+        <img
+          src="coreva-founder.jpg"
+          alt="Aboobakker Fahiz - Founder and CEO of COREVA"
+        >
+
+        <div class="founder-overlay"></div>
+
+        <div class="founder-badge">
+
+          <small>
+            Founder & CEO
+          </small>
+
+          <strong>
+            Aboobakker Fahiz
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="founder-info reveal">
+
+        <div class="label">
+          Founder & CEO
+        </div>
+
+        <h2>
+          Aboobakker
+          <br>
+          Fahiz
+        </h2>
+
+        <p>
+          COREVA was founded with the vision of
+          creating a modern business ecosystem that
+          helps people and businesses find the right
+          direction.
+        </p>
+
+        <p>
+          The journey begins with business solutions
+          across property, digital, finance, support,
+          construction, interiors and growth — with a
+          long-term vision of building connected
+          technology-driven platforms.
+        </p>
+
+        <br>
+
+        <a
+          href="#contact"
+          class="btn btn-primary"
+        >
+          Connect With COREVA →
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     CONTACT
+     ======================================================= -->
+
+<section
+  class="contact"
+  id="contact"
+>
+
+  <div class="container">
+
+    <div class="heading reveal">
+
+      <div class="label">
+        Start a Conversation
+      </div>
+
+      <h2>
+        Tell us what
+        <br>
+        you need.
+      </h2>
+
+      <p>
+        Submit your requirement and choose whether
+        you want to continue through WhatsApp or
+        COREVA Support Email.
+      </p>
+
+    </div>
+
+
+    <div class="contact-grid">
+
+
+      <!-- CONTACT DETAILS -->
+
+      <div class="contact-list reveal">
+
+        <a
+          class="contact-item"
+          href="mailto:corevabusinessolutions@gmail.com"
+        >
+          <small>
+            Support Email
+          </small>
+
+          <strong>
+            corevabusinessolutions@gmail.com
+          </strong>
+        </a>
+
+
+        <a
+          class="contact-item"
+          href="tel:+918088590273"
+        >
+          <small>
+            Phone
+          </small>
+
+          <strong>
+            +91 80885 90273
+          </strong>
+        </a>
+
+
+        <a
+          class="contact-item"
+          href="https://wa.me/918088590273"
+          target="_blank"
+          rel="noopener"
+        >
+          <small>
+            WhatsApp
+          </small>
+
+          <strong>
+            Chat with COREVA
+          </strong>
+        </a>
+
+
+        <a
+          class="contact-item"
+          href="https://www.instagram.com/corevasolutions"
+          target="_blank"
+          rel="noopener"
+        >
+          <small>
+            Instagram
+          </small>
+
+          <strong>
+            @corevasolutions
+          </strong>
+        </a>
+
+
+        <div class="contact-item">
+
+          <small>
+            Location
+          </small>
+
+          <strong>
+            Mangaluru, Karnataka, India
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- FORM -->
+
+      <form
+        class="form reveal"
+        id="inquiryForm"
+      >
+
+        <div class="form-grid">
+
+
+          <div class="field">
+
+            <label>
+              Name
+            </label>
+
+            <input
+              id="name"
+              type="text"
+              placeholder="Your full name"
+              required
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Phone
+            </label>
+
+            <input
+              id="phone"
+              type="tel"
+              placeholder="+91"
+              required
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Email
+            </label>
+
+            <input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              required
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Requirement
+            </label>
+
+            <select
+              id="requirement"
+              required
+            >
+
+              <option value="">
+                Select requirement
+              </option>
+
+              <option>
+                Property & Real Estate
+              </option>
+
+              <option>
+                Digital Solutions
+              </option>
+
+              <option>
+                Finance Solutions
+              </option>
+
+              <option>
+                Business Support
+              </option>
+
+              <option>
+                Construction & Interiors
+              </option>
+
+              <option>
+                Business Growth
+              </option>
+
+              <option>
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="field full">
+
+            <label>
+              Requirement Details
+            </label>
+
+            <textarea
+              id="message"
+              placeholder="Tell COREVA what you need..."
+              required
+            ></textarea>
+
+          </div>
+
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="btn btn-primary submit"
+        >
+          Submit Enquiry →
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<!-- =======================================================
+     FOOTER
+     ======================================================= -->
+
+<footer>
+
+  <div class="footer-grid">
+
+
+    <div class="footer-brand">
+
+      <img
+        class="footer-logo"
+        src="coreva-logo.png"
+        alt="COREVA"
+      >
+
+      <p>
+        Building People. Businesses.
+        A Better Tomorrow.
+      </p>
+
+    </div>
+
+
+    <div class="footer-col">
+
+      <h4>
+        Navigate
+      </h4>
+
+      <a href="#home">
+        Home
+      </a>
+
+      <a href="#about">
+        About
+      </a>
+
+      <a href="#services">
+        Solutions
+      </a>
+
+      <a href="#ecosystem">
+        Ecosystem
+      </a>
+
+    </div>
+
+
+    <div class="footer-col">
+
+      <h4>
+        Solutions
+      </h4>
+
+      <a href="#services">
+        Property
+      </a>
+
+      <a href="#services">
+        Digital
+      </a>
+
+      <a href="#services">
+        Finance
+      </a>
+
+      <a href="#services">
+        Business Support
+      </a>
+
+      <a href="#services">
+        Construction
+      </a>
+
+    </div>
+
+
+    <div class="footer-col">
+
+      <h4>
+        Connect
+      </h4>
+
+      <a href="#contact">
+        Contact COREVA
+      </a>
+
+      <a
+        href="mailto:corevabusinessolutions@gmail.com"
+      >
+        Support Email
+      </a>
+
+      <a
+        href="https://wa.me/918088590273"
+        target="_blank"
+        rel="noopener"
+      >
+        WhatsApp
+      </a>
+
+      <a
+        href="https://www.instagram.com/corevasolutions"
+        target="_blank"
+        rel="noopener"
+      >
+        Instagram
+      </a>
+
+    </div>
+
+
+  </div>
+
+
+  <div class="footer-bottom">
+
+    <span>
+      © <span id="year"></span>
+      COREVA Business Solutions.
+      All rights reserved.
+    </span>
+
+    <span>
+      Mangaluru, Karnataka, India
+    </span>
+
+  </div>
+
+</footer>
+
+
+<!-- =======================================================
+     SERVICE MODAL
+     ======================================================= -->
+
+<div
+  class="modal"
+  id="serviceModal"
+>
+
+  <div class="modal-box">
+
+    <button
+      class="modal-close"
+      id="modalClose"
+    >
+      ×
+    </button>
+
+    <div class="label">
+      COREVA Solution
+    </div>
+
+    <h2 id="modalTitle">
+      Service
+    </h2>
+
+    <p id="modalText">
+      Service information.
+    </p>
+
+    <a
+      href="#contact"
+      class="btn btn-primary"
+      id="modalRequirement"
+    >
+      Discuss Your Requirement →
+    </a>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     INQUIRY CHOICE MODAL
+     ======================================================= -->
+
+<div
+  class="modal"
+  id="choiceModal"
+>
+
+  <div class="modal-box">
+
+    <button
+      class="modal-close"
+      id="choiceClose"
+    >
+      ×
+    </button>
+
+    <div class="label">
+      Enquiry Ready
+    </div>
+
+    <h2>
+      How would you like to continue?
+    </h2>
+
+    <p>
+      Your enquiry is ready. Choose WhatsApp for
+      a direct conversation or Email for COREVA
+      Support.
+    </p>
+
+
+    <div class="choice-buttons">
+
+      <button
+        class="choice"
+        id="whatsappInquiry"
+      >
+
+        <strong>
+          WhatsApp COREVA
+        </strong>
+
+        <span>
+          Open WhatsApp with your enquiry
+        </span>
+
+      </button>
+
+
+      <button
+        class="choice"
+        id="emailInquiry"
+      >
+
+        <strong>
+          Email COREVA Support
+        </strong>
+
+        <span>
+          Send your enquiry to our support email
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     BACK TO TOP
+     ======================================================= -->
+
+<button
+  class="top"
+  id="top"
+  aria-label="Back to top"
+>
+  ↑
+</button>
+
+
+<script>
+
+/* =========================================================
+   COREVA WEBSITE JAVASCRIPT
+   ========================================================= */
+
+const $ = selector =>
+  document.querySelector(selector);
+
+const $$ = selector =>
+  document.querySelectorAll(selector);
+
+
+/* =========================================================
+   PRELOADER
+   ========================================================= */
+
+window.addEventListener("load",()=>{
+
+  setTimeout(()=>{
+
+    $("#preloader").classList.add("hide");
+
+  },700);
+
+});
+
+
+/* =========================================================
+   YEAR
+   ========================================================= */
+
+$("#year").textContent =
+  new Date().getFullYear();
+
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+window.addEventListener("scroll",()=>{
+
+  const navbar=$("#navbar");
+  const top=$("#top");
+
+  if(window.scrollY>60){
+
+    navbar.classList.add("scrolled");
+    top.classList.add("show");
+
+  }else{
+
+    navbar.classList.remove("scrolled");
+    top.classList.remove("show");
+
+  }
+
+});
+
+
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
+
+$("#mobileMenu").addEventListener("click",()=>{
+
+  $("#navLinks").classList.toggle("mobile");
+
+  document.body.classList.toggle("lock");
+
+});
+
+
+$$(".nav-links a").forEach(link=>{
+
+  link.addEventListener("click",()=>{
+
+    $("#navLinks").classList.remove("mobile");
+
+    document.body.classList.remove("lock");
+
+  });
+
+});
+
+
+/* =========================================================
+   BACK TO TOP
+   ========================================================= */
+
+$("#top").addEventListener("click",()=>{
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+});
+
+
+/* =========================================================
+   CURSOR
+   ========================================================= */
+
+const cursor=$("#cursor");
+
+if(
+  window.matchMedia("(pointer:fine)").matches
+){
+
+  document.addEventListener("mousemove",e=>{
+
+    cursor.style.left=e.clientX+"px";
+    cursor.style.top=e.clientY+"px";
+
+  });
+
+}else{
+
+  cursor.style.display="none";
+
+}
+
+
+/* =========================================================
+   REVEAL ANIMATIONS
+   ========================================================= */
+
+const revealObserver =
+  new IntersectionObserver(
+    entries=>{
+
+      entries.forEach(entry=>{
+
+        if(entry.isIntersecting){
+
+          entry.target.classList.add("show");
+
+          revealObserver.unobserve(
+            entry.target
+          );
+
+        }
+
       });
 
-    });
+    },
+    {
+      threshold:.12
+    }
+  );
 
 
-    /* =====================================================
-       MOBILE MENU
-       ===================================================== */
+$$(".reveal").forEach(el=>{
 
-    const mobileToggle =
-      document.getElementById("mobileToggle");
+  revealObserver.observe(el);
 
-    const navLinks =
-      document.getElementById("navLinks");
-
-    mobileToggle.addEventListener("click", () => {
-
-      navLinks.classList.toggle("mobile-open");
-
-      document.body.classList.toggle("menu-open");
-
-    });
+});
 
 
-    document
-      .querySelectorAll(".nav-links a")
-      .forEach(link => {
+/* =========================================================
+   ACTIVE NAVIGATION
+   ========================================================= */
 
-        link.addEventListener("click", () => {
+const pageSections =
+  $$("main section[id]");
 
-          navLinks.classList.remove("mobile-open");
+const navigationLinks =
+  $$(".nav-links a");
 
-          document.body.classList.remove("menu-open");
+const navObserver =
+  new IntersectionObserver(
+    entries=>{
+
+      entries.forEach(entry=>{
+
+        if(!entry.isIntersecting)
+          return;
+
+        navigationLinks.forEach(link=>{
+
+          link.classList.remove("active");
+
+          if(
+            link.getAttribute("href") ===
+            "#"+entry.target.id
+          ){
+
+            link.classList.add("active");
+
+          }
 
         });
 
       });
 
+    },
+    {
+      rootMargin:"-40% 0px -50% 0px"
+    }
+  );
 
-    /* =====================================================
-       CURSOR GLOW
-       ===================================================== */
 
-    const cursorGlow =
-      document.getElementById("cursorGlow");
+pageSections.forEach(section=>{
 
-    if (window.matchMedia("(pointer:fine)").matches) {
+  navObserver.observe(section);
 
-      document.addEventListener("mousemove", e => {
+});
 
-        cursorGlow.style.left =
-          e.clientX + "px";
 
-        cursorGlow.style.top =
-          e.clientY + "px";
+/* =========================================================
+   SERVICE DATA
+   ========================================================= */
 
-      });
+const serviceData={
 
-    } else {
+  property:{
+    title:"Property & Real Estate",
+    text:
+      "COREVA Property focuses on property opportunities, real estate requirements, listings, investment-related requirements and practical direction for individuals and businesses."
+  },
 
-      cursorGlow.style.display = "none";
+  digital:{
+    title:"Digital Solutions",
+    text:
+      "COREVA Digital focuses on websites, digital products, business systems, automation, technology and digital solutions designed for modern businesses."
+  },
+
+  finance:{
+    title:"Finance Solutions",
+    text:
+      "COREVA Finance focuses on financial service support and connecting customers and businesses with suitable solution pathways."
+  },
+
+  support:{
+    title:"Business Support",
+    text:
+      "COREVA Business Support helps entrepreneurs and businesses with practical requirements, coordination, professional assistance and business direction."
+  },
+
+  construction:{
+    title:"Construction & Interiors",
+    text:
+      "COREVA connects construction, development and interior requirements through specialist capabilities including TBD Builders & Developers and Aureliv Interiors."
+  },
+
+  growth:{
+    title:"Business Growth",
+    text:
+      "COREVA Business Growth focuses on digital presence, marketing, technology, strategy and practical support for businesses that want to grow."
+  }
+
+};
+
+
+/* =========================================================
+   SERVICE MODAL
+   ========================================================= */
+
+const serviceModal=$("#serviceModal");
+
+function openService(key){
+
+  const service=serviceData[key];
+
+  if(!service)
+    return;
+
+  $("#modalTitle").textContent=
+    service.title;
+
+  $("#modalText").textContent=
+    service.text;
+
+  serviceModal.classList.add("open");
+
+  document.body.classList.add("lock");
+
+}
+
+
+$$("[data-service]").forEach(card=>{
+
+  card.addEventListener("click",()=>{
+
+    openService(
+      card.dataset.service
+    );
+
+  });
+
+});
+
+
+function closeService(){
+
+  serviceModal.classList.remove("open");
+
+  document.body.classList.remove("lock");
+
+}
+
+
+$("#modalClose").addEventListener(
+  "click",
+  closeService
+);
+
+
+/* =========================================================
+   DISCUSS YOUR REQUIREMENT
+   IMPORTANT:
+   CLOSE MODAL + SCROLL TO CONTACT
+   ========================================================= */
+
+$("#modalRequirement")
+.addEventListener("click",event=>{
+
+  event.preventDefault();
+
+  closeService();
+
+  setTimeout(()=>{
+
+    $("#contact").scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+
+  },250);
+
+});
+
+
+/* =========================================================
+   MODAL OUTSIDE CLICK
+   ========================================================= */
+
+serviceModal.addEventListener(
+  "click",
+  event=>{
+
+    if(event.target===serviceModal){
+
+      closeService();
 
     }
 
-
-    /* =====================================================
-       SCROLL REVEAL
-       ===================================================== */
-
-    const revealObserver =
-      new IntersectionObserver(
-        entries => {
-
-          entries.forEach(entry => {
-
-            if (entry.isIntersecting) {
-
-              entry.target.classList.add("show");
-
-              revealObserver.unobserve(
-                entry.target
-              );
-
-            }
-
-          });
-
-        },
-        {
-          threshold: .12
-        }
-      );
+  }
+);
 
 
-    document
-      .querySelectorAll(".reveal")
-      .forEach(element => {
+/* =========================================================
+   INQUIRY FORM
+   ========================================================= */
 
-        revealObserver.observe(element);
+const inquiryForm =
+  $("#inquiryForm");
 
-      });
+const choiceModal =
+  $("#choiceModal");
 
-
-    /* =====================================================
-       ACTIVE NAVIGATION
-       ===================================================== */
-
-    const sections =
-      document.querySelectorAll(
-        "main section[id]"
-      );
-
-    const navItems =
-      document.querySelectorAll(
-        ".nav-links a"
-      );
-
-    const sectionObserver =
-      new IntersectionObserver(
-        entries => {
-
-          entries.forEach(entry => {
-
-            if (entry.isIntersecting) {
-
-              navItems.forEach(item => {
-
-                item.classList.remove("active");
-
-                if (
-                  item.getAttribute("href") ===
-                  "#" + entry.target.id
-                ) {
-
-                  item.classList.add("active");
-
-                }
-
-              });
-
-            }
-
-          });
-
-        },
-        {
-          rootMargin:
-            "-35% 0px -55% 0px"
-        }
-      );
+let inquiryData=null;
 
 
-    sections.forEach(section => {
+inquiryForm.addEventListener(
+  "submit",
+  event=>{
 
-      sectionObserver.observe(section);
-
-    });
+    event.preventDefault();
 
 
-    /* =====================================================
-       SERVICE DATA
-       ===================================================== */
+    const name =
+      $("#name").value.trim();
 
-    const services = {
+    const phone =
+      $("#phone").value.trim();
 
-      property: {
+    const email =
+      $("#email").value.trim();
 
-        title:
-          "Property & Real Estate",
+    const requirement =
+      $("#requirement").value.trim();
 
-        text:
-          "COREVA Property focuses on property opportunities, real estate support, listings, investment-related requirements and practical direction for individuals and businesses."
+    const message =
+      $("#message").value.trim();
 
-      },
 
-      digital: {
-
-        title:
-          "Digital Solutions",
-
-        text:
-          "COREVA Digital focuses on websites, digital platforms, business systems, automation and technology solutions that help businesses operate and grow."
-
-      },
-
-      finance: {
-
-        title:
-          "Finance Solutions",
-
-        text:
-          "COREVA Finance is designed to connect customers and businesses with financial service support and suitable solution pathways."
-
-      },
-
-      support: {
-
-        title:
-          "Business Support",
-
-        text:
-          "COREVA Business Support helps entrepreneurs and businesses with practical requirements, coordination, systems and professional business assistance."
-
-      },
-
-      construction: {
-
-        title:
-          "Construction & Interiors",
-
-        text:
-          "COREVA connects construction, development and interior requirements through specialist capabilities including TBD Builders & Developers and Aureliv Interiors."
-
-      },
-
-      growth: {
-
-        title:
-          "Business Growth",
-
-        text:
-          "COREVA Business Growth focuses on digital presence, marketing, technology, strategy and practical support for businesses that want to move forward."
-
-      }
-
+    inquiryData={
+      name,
+      phone,
+      email,
+      requirement,
+      message
     };
 
 
-    /* =====================================================
-       SERVICE MODAL
-       ===================================================== */
+    choiceModal.classList.add("open");
 
-    const modal =
-      document.getElementById("serviceModal");
+    document.body.classList.add("lock");
 
-    const modalTitle =
-      document.getElementById("modalTitle");
-
-    const modalText =
-      document.getElementById("modalText");
-
-    const modalClose =
-      document.getElementById("modalClose");
+  }
+);
 
 
-    function openService(serviceKey) {
+/* =========================================================
+   BUILD MESSAGE
+   ========================================================= */
 
-      const service =
-        services[serviceKey];
+function buildInquiryMessage(){
 
-      if (!service) return;
-
-      modalTitle.textContent =
-        service.title;
-
-      modalText.textContent =
-        service.text;
-
-      modal.classList.add("open");
-
-      modal.setAttribute(
-        "aria-hidden",
-        "false"
-      );
-
-      document.body.classList.add(
-        "menu-open"
-      );
-
-    }
-
-
-    function closeService() {
-
-      modal.classList.remove("open");
-
-      modal.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
-      document.body.classList.remove(
-        "menu-open"
-      );
-
-    }
-
-
-    document
-      .querySelectorAll("[data-service]")
-      .forEach(element => {
-
-        element.addEventListener(
-          "click",
-          () => {
-
-            openService(
-              element.dataset.service
-            );
-
-          }
-        );
-
-      });
-
-
-    modalClose.addEventListener(
-      "click",
-      closeService
-    );
-
-
-    modal.addEventListener(
-      "click",
-      event => {
-
-        if (
-          event.target === modal
-        ) {
-
-          closeService();
-
-        }
-
-      }
-    );
-
-
-    document.addEventListener(
-      "keydown",
-      event => {
-
-        if (
-          event.key === "Escape"
-        ) {
-
-          closeService();
-
-        }
-
-      }
-    );
-
-
-    /* =====================================================
-       CONTACT FORM
-       ===================================================== */
-
-    const contactForm =
-      document.getElementById("contactForm");
-
-
-    contactForm.addEventListener(
-      "submit",
-      event => {
-
-        event.preventDefault();
-
-        const name =
-          document.getElementById("name")
-            .value.trim();
-
-        const phone =
-          document.getElementById("phone")
-            .value.trim();
-
-        const email =
-          document.getElementById("email")
-            .value.trim();
-
-        const service =
-          document.getElementById("service")
-            .value.trim();
-
-        const message =
-          document.getElementById("message")
-            .value.trim();
-
-
-        const subject =
-          encodeURIComponent(
-            "COREVA Website Enquiry - " +
-            service
-          );
-
-
-        const body =
-          encodeURIComponent(
-`Hello COREVA,
+  return `Hello COREVA,
 
 I would like to enquire about your services.
 
-Name: ${name}
-Phone: ${phone}
-Email: ${email}
-Requirement: ${service}
+Name: ${inquiryData.name}
+Phone: ${inquiryData.phone}
+Email: ${inquiryData.email}
+Requirement: ${inquiryData.requirement}
 
-Message:
-${message}
+Requirement Details:
+${inquiryData.message}
 
-Sent from the COREVA website.`
-          );
+Sent through the COREVA website.`;
+
+}
 
 
-        window.location.href =
-          "mailto:corevabusinessolutions@gmail.com" +
-          "?subject=" +
-          subject +
-          "&body=" +
-          body;
+/* =========================================================
+   WHATSAPP INQUIRY
+   ========================================================= */
+
+$("#whatsappInquiry")
+.addEventListener("click",()=>{
+
+  const message =
+    encodeURIComponent(
+      buildInquiryMessage()
+    );
+
+  const url =
+    "https://wa.me/918088590273?text="+
+    message;
+
+  window.open(
+    url,
+    "_blank",
+    "noopener"
+  );
+
+  closeChoice();
+
+});
+
+
+/* =========================================================
+   EMAIL INQUIRY
+   ========================================================= */
+
+$("#emailInquiry")
+.addEventListener("click",()=>{
+
+  const subject =
+    encodeURIComponent(
+      "COREVA Website Enquiry — "+
+      inquiryData.requirement
+    );
+
+  const body =
+    encodeURIComponent(
+      buildInquiryMessage()
+    );
+
+  const mailto =
+    "mailto:corevabusinessolutions@gmail.com"+
+    "?subject="+subject+
+    "&body="+body;
+
+  window.location.href=mailto;
+
+  closeChoice();
+
+});
+
+
+/* =========================================================
+   CLOSE CHOICE MODAL
+   ========================================================= */
+
+function closeChoice(){
+
+  choiceModal.classList.remove("open");
+
+  document.body.classList.remove("lock");
+
+}
+
+
+$("#choiceClose").addEventListener(
+  "click",
+  closeChoice
+);
+
+
+choiceModal.addEventListener(
+  "click",
+  event=>{
+
+    if(event.target===choiceModal){
+
+      closeChoice();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   ESCAPE KEY
+   ========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event=>{
+
+    if(event.key==="Escape"){
+
+      closeService();
+      closeChoice();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   3D SERVICE CARD TILT
+   ========================================================= */
+
+if(
+  window.matchMedia("(pointer:fine)").matches
+){
+
+  $$(".service-card").forEach(card=>{
+
+    card.addEventListener(
+      "mousemove",
+      event=>{
+
+        const rect=
+          card.getBoundingClientRect();
+
+        const x=
+          event.clientX-rect.left;
+
+        const y=
+          event.clientY-rect.top;
+
+        const cx=
+          rect.width/2;
+
+        const cy=
+          rect.height/2;
+
+        const ry=
+          ((x-cx)/cx)*4;
+
+        const rx=
+          -((y-cy)/cy)*4;
+
+        card.style.transform=
+          `perspective(1000px)
+           rotateX(${rx}deg)
+           rotateY(${ry}deg)
+           translateY(-8px)`;
 
       }
     );
 
 
-    /* =====================================================
-       COUNTER ANIMATION
-       ===================================================== */
+    card.addEventListener(
+      "mouseleave",
+      ()=>{
+        card.style.transform="";
+      }
+    );
 
-    const counters =
-      document.querySelectorAll(
-        ".stat-number"
-      );
-
-
-    const counterObserver =
-      new IntersectionObserver(
-        entries => {
-
-          entries.forEach(entry => {
-
-            if (!entry.isIntersecting) {
-              return;
-            }
-
-            const counter =
-              entry.target;
-
-            const target =
-              Number(
-                counter.dataset.count
-              );
-
-            let current = 0;
-
-            const duration = 1000;
-
-            const start =
-              performance.now();
+  });
 
 
-            function animate(time) {
+  /* Ecosystem tilt */
 
-              const progress =
-                Math.min(
-                  (time - start) /
-                  duration,
-                  1
-                );
+  $$(".eco-card").forEach(card=>{
 
-              current =
-                Math.floor(
-                  progress * target
-                );
+    card.addEventListener(
+      "mousemove",
+      event=>{
 
-              counter.textContent =
-                current;
+        const rect=
+          card.getBoundingClientRect();
 
-              if (progress < 1) {
+        const x=
+          event.clientX-rect.left;
 
-                requestAnimationFrame(
-                  animate
-                );
+        const y=
+          event.clientY-rect.top;
 
-              } else {
+        const cx=
+          rect.width/2;
 
-                counter.textContent =
-                  target;
+        const cy=
+          rect.height/2;
 
-              }
+        const ry=
+          ((x-cx)/cx)*3;
 
-            }
+        const rx=
+          -((y-cy)/cy)*3;
 
+        card.style.transform=
+          `perspective(1200px)
+           rotateX(${rx}deg)
+           rotateY(${ry}deg)
+           translateY(-8px)`;
+
+      }
+    );
+
+
+    card.addEventListener(
+      "mouseleave",
+      ()=>{
+        card.style.transform="";
+      }
+    );
+
+  });
+
+}
+
+
+/* =========================================================
+   HERO PARALLAX
+   ========================================================= */
+
+const heroBg=
+  document.querySelector(".hero-bg");
+
+if(
+  window.matchMedia("(pointer:fine)").matches
+){
+
+  window.addEventListener(
+    "scroll",
+    ()=>{
+
+      const y=window.scrollY;
+
+      if(y<window.innerHeight){
+
+        heroBg.style.transform=
+          `scale(1.08)
+           translateY(${y*.07}px)`;
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   MOUSE PARALLAX FOR ORBIT
+   ========================================================= */
+
+const orbit=
+  document.querySelector(".orbit");
+
+if(
+  orbit &&
+  window.matchMedia("(pointer:fine)").matches
+){
+
+  document.addEventListener(
+    "mousemove",
+    event=>{
+
+      const x=
+        (event.clientX/
+        window.innerWidth-.5)*10;
+
+      const y=
+        (event.clientY/
+        window.innerHeight-.5)*10;
+
+      orbit.style.transform=
+        `translateY(-50%)
+         translate(${x}px,${y}px)`;
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   SMOOTH INTERNAL LINKS
+   ========================================================= */
+
+$$('a[href^="#"]').forEach(link=>{
+
+  link.addEventListener(
+    "click",
+    event=>{
+
+      const targetId=
+        link.getAttribute("href");
+
+      if(
+        !targetId ||
+        targetId==="#"
+      )
+        return;
+
+      const target=
+        document.querySelector(targetId);
+
+      if(!target)
+        return;
+
+      event.preventDefault();
+
+      target.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+
+    }
+  );
+
+});
+
+
+/* =========================================================
+   COUNTERS
+   ========================================================= */
+
+const counterObserver=
+  new IntersectionObserver(
+    entries=>{
+
+      entries.forEach(entry=>{
+
+        if(!entry.isIntersecting)
+          return;
+
+        const counter=
+          entry.target;
+
+        const target=
+          Number(counter.dataset.count);
+
+        const duration=1000;
+
+        const start=
+          performance.now();
+
+        function animate(time){
+
+          const progress=
+            Math.min(
+              (time-start)/duration,
+              1
+            );
+
+          counter.textContent=
+            Math.floor(
+              progress*target
+            );
+
+          if(progress<1){
 
             requestAnimationFrame(
               animate
             );
 
-            counterObserver.unobserve(
-              counter
-            );
+          }else{
 
-          });
-
-        },
-        {
-          threshold: .6
-        }
-      );
-
-
-    counters.forEach(counter => {
-
-      counterObserver.observe(
-        counter
-      );
-
-    });
-
-
-    /* =====================================================
-       3D CARD TILT
-       ===================================================== */
-
-    const tiltCards =
-      document.querySelectorAll(
-        ".service-card"
-      );
-
-
-    if (
-      window.matchMedia(
-        "(pointer:fine)"
-      ).matches
-    ) {
-
-      tiltCards.forEach(card => {
-
-        card.addEventListener(
-          "mousemove",
-          event => {
-
-            const rect =
-              card.getBoundingClientRect();
-
-            const x =
-              event.clientX -
-              rect.left;
-
-            const y =
-              event.clientY -
-              rect.top;
-
-            const centerX =
-              rect.width / 2;
-
-            const centerY =
-              rect.height / 2;
-
-            const rotateY =
-              ((x - centerX) /
-                centerX) * 5;
-
-            const rotateX =
-              -((y - centerY) /
-                centerY) * 5;
-
-
-            card.style.transform =
-              `perspective(1000px)
-               rotateX(${rotateX}deg)
-               rotateY(${rotateY}deg)
-               translateY(-8px)`;
-
-          }
-        );
-
-
-        card.addEventListener(
-          "mouseleave",
-          () => {
-
-            card.style.transform =
-              "";
-
-          }
-        );
-
-      });
-
-    }
-
-
-    /* =====================================================
-       PARALLAX HERO
-       ===================================================== */
-
-    const heroBackground =
-      document.querySelector(
-        ".hero-background"
-      );
-
-
-    if (
-      window.matchMedia(
-        "(pointer:fine)"
-      ).matches
-    ) {
-
-      window.addEventListener(
-        "scroll",
-        () => {
-
-          const y =
-            window.scrollY;
-
-          if (y < window.innerHeight) {
-
-            heroBackground.style.transform =
-              `scale(1.08)
-               translateY(${y * .08}px)`;
+            counter.textContent=target;
 
           }
 
         }
-      );
 
-    }
+        requestAnimationFrame(
+          animate
+        );
 
-
-    /* =====================================================
-       SMOOTH INTERNAL LINKS
-       ===================================================== */
-
-    document
-      .querySelectorAll(
-        'a[href^="#"]'
-      )
-      .forEach(link => {
-
-        link.addEventListener(
-          "click",
-          event => {
-
-            const targetId =
-              link.getAttribute(
-                "href"
-              );
-
-            if (
-              targetId === "#" ||
-              !targetId
-            ) {
-              return;
-            }
-
-            const target =
-              document.querySelector(
-                targetId
-              );
-
-            if (!target) {
-              return;
-            }
-
-            event.preventDefault();
-
-            target.scrollIntoView({
-              behavior: "smooth",
-              block: "start"
-            });
-
-          }
+        counterObserver.unobserve(
+          counter
         );
 
       });
 
+    },
+    {
+      threshold:.6
+    }
+  );
 
-  </script>
+
+$$(".stat-number").forEach(counter=>{
+
+  counterObserver.observe(counter);
+
+});
+
+</script>
 
 </body>
 </html>
