@@ -1,1 +1,263 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>COREVA AI Receptionist</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#0b1020;--panel:#121a2d;--line:#263249;--text:#f4f6fc;--muted:#97a5bd;--gold:#d9b66f;--green:#39c996}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+#login{max-width:410px;margin:9vh auto;padding:30px;background:var(--panel);border:1px solid var(--line);border-radius:20px}
+.brand{color:var(--gold);font-weight:800;letter-spacing:2px;font-size:20px}.muted{color:var(--muted)}h1{font-size:25px;margin:8px 0}h2{font-size:18px}label{display:block;margin:14px 0 6px;color:var(--muted)}
+input,select,textarea{width:100%;padding:12px;background:#0b1222;border:1px solid var(--line);border-radius:9px;color:var(--text)}button.primary{background:var(--gold);color:#151515;border:0;padding:12px 16px;border-radius:9px;font-weight:700}button.secondary,.navbtn{background:transparent;color:var(--muted);border:1px solid var(--line);padding:10px;border-radius:9px}
+#login button{width:100%;margin-top:15px}.error{color:#ff9797;margin-top:12px;white-space:pre-wrap}
+.layout{display:grid;grid-template-columns:235px 1fr;min-height:100vh}.sidebar{background:#0e1526;border-right:1px solid var(--line);padding:23px 15px}.sidebar .brand{padding:6px 10px 25px;display:block}.navbtn{display:block;width:100%;text-align:left;margin:5px 0;border-color:transparent}.navbtn.active,.navbtn:hover{background:#1b263b;color:var(--text);border-color:var(--line)}
+main{padding:27px;min-width:0}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:25px}.badge{display:inline-block;padding:6px 9px;border-radius:20px;background:#263249;color:var(--gold);font-size:12px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.panel,.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}.stat span{display:block;color:var(--muted);margin-bottom:12px}.stat strong{font-size:28px}.section{display:none}.section.active{display:block}
+table{width:100%;border-collapse:collapse;min-width:600px}th,td{text-align:left;padding:13px 10px;border-bottom:1px solid var(--line);overflow-wrap:anywhere}th{color:var(--muted);font-weight:500} .tablewrap{overflow:auto}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.notice{padding:12px;background:#1a263a;border-radius:9px;color:var(--muted);line-height:1.6}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid var(--line);padding:12px}.sidebar .brand{padding:8px}.navs{display:flex;overflow:auto;gap:5px}.navbtn{white-space:nowrap;width:auto}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}main{padding:16px}}
+@media(max-width:430px){.cards,.row{grid-template-columns:1fr}.stat strong{font-size:24px}}
+</style>
+</head>
+<body>
+<div id="login">
+  <div class="brand">COREVA</div>
+  <p class="muted">BUSINESS SOLUTIONS · AI RECEPTIONIST</p>
+  <h1>Welcome back</h1>
+  <p class="muted">Sign in to manage your receptionist.</p>
+  <form id="loginForm">
+    <label for="email">Email</label>
+    <input id="email" type="email" autocomplete="username" required placeholder="Your account email">
+    <label for="password">Password</label>
+    <input id="password" type="password" autocomplete="current-password" required placeholder="Your password">
+    <button class="primary" type="submit">Sign in securely</button>
+  </form>
+  <div id="loginError" class="error"></div>
+  <p class="muted">Use the account you already created in Supabase Authentication.</p>
+</div>
 
+<div id="app" class="layout hidden">
+  <aside class="sidebar">
+    <span class="brand">COREVA <span style="font-size:10px">AI</span></span>
+    <p class="muted" style="padding:0 10px">RECEPTIONIST PLATFORM</p>
+    <div class="navs">
+      <button class="navbtn active" data-page="overview">◈ Overview</button>
+      <button class="navbtn" data-page="leads">♙ Leads</button>
+      <button class="navbtn" data-page="calls">◉ AI call history</button>
+      <button class="navbtn" data-page="appointments">▦ Appointments</button>
+      <button class="navbtn" data-page="agent">✳ AI agent settings</button>
+    </div>
+    <div class="notice" style="margin-top:25px">SECURE WORKSPACE<br><span id="orgLabel">Loading organization…</span></div>
+    <button id="logout" class="navbtn" style="margin-top:15px">↪ Sign out</button>
+  </aside>
+
+  <main>
+    <div class="top">
+      <div><div class="muted">COREVA / WORKSPACE</div><h1 id="pageTitle">Overview</h1></div>
+      <div><span class="badge" id="connection">Connecting…</span> <button id="refresh" class="secondary">Refresh</button></div>
+    </div>
+    <div id="appError" class="error"></div>
+
+    <section id="overview" class="section active">
+      <div class="panel"><div class="muted">WELCOME TO YOUR WORKSPACE</div><h2 id="welcome">COREVA AI Receptionist</h2><p class="muted">Manage customer enquiries, calls and appointments from one place.</p></div>
+      <div class="cards">
+        <div class="stat"><span>Total leads</span><strong id="leadCount">—</strong></div>
+        <div class="stat"><span>Total calls</span><strong id="callCount">—</strong></div>
+        <div class="stat"><span>Appointments</span><strong id="appointmentCount">—</strong></div>
+        <div class="stat"><span>Follow-up tasks</span><strong id="taskCount">—</strong></div>
+      </div>
+      <div class="panel"><h2>Recent leads</h2><div id="recentLeads" class="muted">Loading…</div></div>
+      <div class="panel"><h2>Workspace status</h2><p id="overviewAgent" class="muted">Loading AI agent…</p><p class="notice">Your dashboard is connected to Supabase. Live AI calls require a configured voice provider and secure server-side integration.</p></div>
+    </section>
+
+    <section id="leads" class="section">
+      <div class="panel"><h2>Add a lead</h2>
+        <form id="leadForm">
+          <div class="row"><div><label>Full name *</label><input id="leadName" required maxlength="120"></div><div><label>Phone</label><input id="leadPhone" type="tel" maxlength="30"></div></div>
+          <div class="row"><div><label>Email</label><input id="leadEmail" type="email" maxlength="254"></div><div><label>Service required</label><input id="leadService" maxlength="120" placeholder="e.g. Business enquiry"></div></div>
+          <label>Requirements</label><textarea id="leadRequirements" rows="3" maxlength="3000"></textarea>
+          <label>Preferred language</label><select id="leadLanguage"><option value="en">English</option><option value="kn">Kannada</option><option value="ml">Malayalam</option><option value="hi">Hindi</option><option value="tulu">Tulu</option></select>
+          <button class="primary" type="submit">Save lead</button>
+        </form>
+      </div>
+      <div class="panel"><h2>All leads</h2><div id="leadsTable" class="tablewrap muted">Loading…</div></div>
+    </section>
+
+    <section id="calls" class="section"><div class="panel"><h2>AI call history</h2><div id="callsTable" class="tablewrap muted">Loading…</div></div></section>
+    <section id="appointments" class="section"><div class="panel"><h2>Appointments</h2><div id="appointmentsTable" class="tablewrap muted">Loading…</div></div></section>
+    <section id="agent" class="section">
+      <div class="panel"><h2>AI receptionist</h2><div id="agentDetails" class="muted">Loading…</div></div>
+      <div class="panel"><h2>Agent configuration</h2>
+        <form id="agentForm">
+          <label>Agent name</label><input id="agentName" required maxlength="120">
+          <label>Greeting</label><textarea id="agentGreeting" rows="4" maxlength="2000"></textarea>
+          <label>Default language</label><select id="agentLanguage"><option value="en">English</option><option value="kn">Kannada</option><option value="ml">Malayalam</option><option value="hi">Hindi</option><option value="tulu">Tulu</option></select>
+          <button class="primary" type="submit">Save agent settings</button>
+        </form>
+        <p class="notice">Saving settings does not activate calling. Voice provider credentials and call webhooks must be configured on a trusted backend.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(() => {
+  // Replace both placeholders with your Supabase Project URL and publishable/anon key.
+  // Never put a service_role key or voice-provider secret in this file.
+  const SUPABASE_URL = "https://geynqnelhobxbsxudhji.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_cPi1xM_FoaDExI7Lc02iIw_TMNUu5SS";
+
+  const $ = id => document.getElementById(id);
+  const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  let db, user, organization, agent, leads = [], calls = [], appointments = [], tasks = [];
+
+  function message(id, text) { $(id).textContent = text || ""; }
+  function showError(text) { message("appError", text || ""); }
+  function table(headers, rows) {
+    if (!rows.length) return '<p class="muted">No records yet.</p>';
+    return '<table><thead><tr>'+headers.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+
+      rows.map(row=>'<tr>'+row.map(v=>'<td>'+esc(v || "—")+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+  }
+  function date(value) { return value ? new Date(value).toLocaleString() : "—"; }
+
+  async function loadWorkspace() {
+    showError("");
+    message("connection","Loading…");
+    const {data: memberships,error: me} = await db.from("org_memberships")
+      .select("organization_id,role").eq("user_id",user.id).limit(1);
+    if (me) throw me;
+    if (!memberships?.length) throw new Error("Your account has no organization membership. Check the org_memberships table and RLS policies.");
+    const membership = memberships[0];
+
+    const {data: org,error: oe} = await db.from("organizations")
+      .select("id,name,slug").eq("id",membership.organization_id).single();
+    if (oe) throw oe;
+    organization = org;
+    $("orgLabel").textContent = org.name + " · " + membership.role;
+    $("welcome").textContent = "Welcome to " + org.name;
+
+    const results = await Promise.all([
+      db.from("ai_agents").select("*").eq("organization_id",org.id).order("created_at",{ascending:false}).limit(1),
+      db.from("leads").select("*").eq("organization_id",org.id).order("created_at",{ascending:false}).limit(100),
+      db.from("ai_calls").select("*").eq("organization_id",org.id).order("created_at",{ascending:false}).limit(100),
+      db.from("appointments").select("*").eq("organization_id",org.id).order("starts_at",{ascending:true}).limit(100),
+      db.from("follow_up_tasks").select("*").eq("organization_id",org.id).order("created_at",{ascending:false}).limit(100)
+    ]);
+    const labels = ["AI agents","leads","calls","appointments","follow-up tasks"];
+    const failure = results.findIndex(r=>r.error);
+    if (failure >= 0) throw new Error("Could not load " + labels[failure] + ": " + results[failure].error.message + ". Check your table columns and RLS policies.");
+    agent = results[0].data?.[0] || null;
+    leads = results[1].data || [];
+    calls = results[2].data || [];
+    appointments = results[3].data || [];
+    tasks = results[4].data || [];
+
+    $("leadCount").textContent = leads.length;
+    $("callCount").textContent = calls.length;
+    $("appointmentCount").textContent = appointments.length;
+    $("taskCount").textContent = tasks.length;
+
+    $("recentLeads").innerHTML = table(["Name","Phone","Service","Status","Created"],leads.slice(0,5).map(x=>[x.full_name,x.phone,x.service_category,x.status,date(x.created_at)]));
+    $("leadsTable").innerHTML = table(["Name","Phone","Email","Service","Language","Status","Created"],leads.map(x=>[x.full_name,x.phone,x.email,x.service_category,x.preferred_language,x.status,date(x.created_at)]));
+    $("callsTable").innerHTML = table(["Date","Direction","Phone","Language","Duration (sec)","Status","Outcome","Summary"],calls.map(x=>[date(x.started_at || x.created_at),x.direction,x.caller_phone,x.language_detected,x.duration_seconds,x.status,x.outcome,x.summary]));
+    $("appointmentsTable").innerHTML = table(["Title","Starts","Ends","Status","Notes"],appointments.map(x=>[x.title,date(x.starts_at),date(x.ends_at),x.status,x.notes]));
+
+    if (agent) {
+      $("overviewAgent").textContent = agent.name + " · " + (agent.status || "draft").toUpperCase();
+      $("agentDetails").innerHTML = "<p><b>Name:</b> "+esc(agent.name)+"</p><p><b>Status:</b> "+esc(agent.status)+"</p><p><b>Provider:</b> "+esc(agent.provider)+"</p><p><b>Default language:</b> "+esc(agent.default_language)+"</p><p><b>Agent ID:</b> "+esc(agent.id)+"</p>";
+      $("agentName").value = agent.name || "";
+      $("agentGreeting").value = agent.greeting || "";
+      $("agentLanguage").value = agent.default_language || "en";
+    } else {
+      $("overviewAgent").textContent = "No AI agent is configured for this organization.";
+      $("agentDetails").textContent = "No agent found.";
+    }
+    message("connection","Supabase connected");
+  }
+
+  async function start() {
+    if (SUPABASE_URL.startsWith("YOUR_") || SUPABASE_ANON_KEY.startsWith("YOUR_")) {
+      $("login").classList.remove("hidden");
+      message("loginError","Setup required: add your Supabase Project URL and publishable/anon key in this file before signing in.");
+      return;
+    }
+    db = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+    const {data:{session}} = await db.auth.getSession();
+    if (session) await enter(session.user);
+  }
+
+  async function enter(currentUser) {
+    user = currentUser;
+    $("login").classList.add("hidden");
+    $("app").classList.remove("hidden");
+    try { await loadWorkspace(); }
+    catch(e) { message("connection","Load error"); showError(e.message || String(e)); }
+  }
+
+  $("loginForm").addEventListener("submit",async e=>{
+    e.preventDefault();
+    message("loginError","");
+    try {
+      const {data,error} = await db.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});
+      if (error) throw error;
+      await enter(data.user);
+    } catch(err) { message("loginError",err.message || String(err)); }
+  });
+
+  $("logout").addEventListener("click",async()=>{
+    await db.auth.signOut();
+    user=null;organization=null;agent=null;
+    $("app").classList.add("hidden");$("login").classList.remove("hidden");
+    message("loginError","You have signed out.");
+  });
+  $("refresh").addEventListener("click",async()=>{try{await loadWorkspace();}catch(e){showError(e.message);}});
+
+  document.querySelectorAll(".navbtn[data-page]").forEach(btn=>btn.addEventListener("click",()=>{
+    document.querySelectorAll(".navbtn[data-page]").forEach(b=>b.classList.toggle("active",b===btn));
+    document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===btn.dataset.page));
+    $("pageTitle").textContent=btn.textContent.replace(/^[◈♙◉▦✳]\s*/,"");
+  }));
+
+  $("leadForm").addEventListener("submit",async e=>{
+    e.preventDefault();showError("");
+    if(!organization)return;
+    const payload={
+      organization_id:organization.id,
+      full_name:$("leadName").value.trim(),
+      phone:$("leadPhone").value.trim()||null,
+      email:$("leadEmail").value.trim()||null,
+      service_category:$("leadService").value.trim()||null,
+      requirements:$("leadRequirements").value.trim()||null,
+      preferred_language:$("leadLanguage").value,
+      source:"dashboard",
+      status:"new"
+    };
+    try{
+      const {error}=await db.from("leads").insert(payload);
+      if(error)throw error;
+      $("leadForm").reset();
+      await loadWorkspace();
+      message("appError","Lead saved successfully.");
+    }catch(err){showError("Could not save lead: "+(err.message||String(err)));}
+  });
+
+  $("agentForm").addEventListener("submit",async e=>{
+    e.preventDefault();showError("");
+    if(!organization || !agent){showError("No agent record is available to update.");return;}
+    const payload={name:$("agentName").value.trim(),greeting:$("agentGreeting").value.trim(),default_language:$("agentLanguage").value,updated_at:new Date().toISOString()};
+    try{
+      const {error}=await db.from("ai_agents").update(payload).eq("id",agent.id).eq("organization_id",organization.id);
+      if(error)throw error;
+      await loadWorkspace();
+      showError("Agent settings saved. Calling is not activated by this action.");
+    }catch(err){showError("Could not save settings: "+(err.message||String(err)));}
+  });
+
+  start().catch(e=>message("loginError",e.message||String(e)));
+})();
+</script>
+</body>
+</html>
