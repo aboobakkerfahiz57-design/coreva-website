@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>COREVA | Website Voice Receptionist</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--card:#151f35;--line:#2b3954;--gold:#e1bf76;--muted:#a6b2c8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#203557,var(--bg) 65%);color:#f6f7fb;font:16px Arial,sans-serif;min-height:100vh}
+main{max-width:850px;margin:auto;padding:25px 16px 50px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{color:var(--gold);font-weight:800;letter-spacing:2px;font-size:22px}
+a{color:var(--gold)}
+.card{margin-top:22px;padding:22px;background:#151f35eF;border:1px solid var(--line);border-radius:18px}
+h1{font-size:clamp(27px,5vw,42px);margin:10px 0}
+p{line-height:1.6}.muted{color:var(--muted);font-size:14px}
+label{display:block;margin:14px 0 7px;color:var(--muted)}
+select,input{width:100%;padding:13px;background:#0b1426;color:white;border:1px solid var(--line);border-radius:10px;font:inherit}
+button{border:1px solid var(--line);border-radius:10px;padding:12px 16px;background:#22314b;color:white;font:inherit;cursor:pointer}
+button.primary{background:var(--gold);color:#171717;font-weight:700;border-color:var(--gold)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}
+.status{padding:11px 13px;background:#0b1426;border:1px solid var(--line);border-radius:10px;color:var(--gold)}
+.chat{display:flex;flex-direction:column;gap:12px;max-height:380px;overflow:auto;margin:18px 0}
+.bubble{padding:13px 15px;border-radius:13px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.bot{background:#22314b;align-self:flex-start;max-width:92%}
+.visitor{background:#3b3b33;border:1px solid #6b6046;align-self:flex-end;max-width:92%}
+form{display:flex;gap:8px}form input{flex:1;min-width:0}
+.notice{font-size:12px;color:var(--muted);line-height:1.6}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="brand">COREVA <span style="font-size:12px">AI</span></div>
+  <a href="./index.html">← Dashboard</a>
+</header>
+
+<section class="card">
+  <p class="muted">COREVA BUSINESS SOLUTIONS · WEBSITE ASSISTANT</p>
+  <h1>How can we help you today?</h1>
+  <p class="muted">Choose your language, press the microphone, and tell our receptionist what you need.</p>
+
+  <label for="language">Conversation language</label>
+  <select id="language">
+    <option value="en-IN">English</option>
+    <option value="kn-IN">Kannada</option>
+    <option value="ml-IN">Malayalam</option>
+    <option value="hi-IN">Hindi</option>
+    <option value="tulu">Tulu (experimental)</option>
+  </select>
+
+  <div class="actions">
+    <button id="start" class="primary">🎙 Start speaking</button>
+    <button id="stop" disabled>Stop microphone</button>
+    <button id="clear">Clear conversation</button>
+  </div>
+  <div id="status" class="status" role="status">Ready. Select a language to begin.</div>
+
+  <div id="chat" class="chat" aria-live="polite">
+    <div class="bubble bot">Hello! Welcome to COREVA Business Solutions. How may we help you?</div>
+  </div>
+
+  <form id="textForm">
+    <input id="message" maxlength="1000" placeholder="Or type your enquiry here…" aria-label="Type your enquiry">
+    <button class="primary" type="submit">Send</button>
+  </form>
+</section>
+
+<section class="card">
+  <h2>What this prototype can do</h2>
+  <p class="muted">It can listen through a compatible browser, display recognized speech, and speak a basic response. It does not yet understand arbitrary questions using an AI model, book appointments, or save leads to your database.</p>
+  <p class="notice">Microphone access requires permission and a secure HTTPS website. Browser speech recognition may send audio to a browser-provider service. Tulu recognition and speech may not be available on your device. Do not enter sensitive personal information into this prototype.</p>
+</section>
+</main>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const chat = $("chat");
+  const language = $("language");
+  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let recognition = null;
+  let listening = false;
+
+  const greetings = {
+    "en-IN":"Hello! Welcome to COREVA Business Solutions. How may we help you?",
+    "kn-IN":"ನಮಸ್ಕಾರ! COREVA Business Solutions ಗೆ ಸ್ವಾಗತ. ನಾವು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?",
+    "ml-IN":"നമസ്കാരം! COREVA Business Solutions-ലേക്ക് സ്വാഗതം. എങ്ങനെ സഹായിക്കാം?",
+    "hi-IN":"नमस्ते! COREVA Business Solutions में आपका स्वागत है। हम आपकी कैसे मदद कर सकते हैं?",
+    "tulu":"Welcome to COREVA Business Solutions. Tulu voice support is experimental."
+  };
+
+  function addBubble(text, who) {
+    const bubble = document.createElement("div");
+    bubble.className = "bubble " + who;
+    bubble.textContent = text;
+    chat.appendChild(bubble);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function say(text) {
+    if (!("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    const lang = language.value;
+    utterance.lang = lang === "tulu" ? "kn-IN" : lang;
+    window.speechSynthesis.speak(utterance);
+  }
+
+  function respond(text) {
+    const q = text.toLowerCase();
+    let reply;
+    const lang = language.value;
+
+    if (/\b(hello|hi|hey|ನಮಸ್ಕಾರ|നമസ്കാരം|नमस्ते)\b/i.test(q)) {
+      reply = greetings[lang];
+    } else if (/property|real estate|ಮನೆ|വീട്|प्रॉपर्टी|ಸೈಟ್|ഭൂമി/i.test(q)) {
+      reply = lang === "kn-IN" ? "ನಿಮಗೆ ಆಸ್ತಿ ಖರೀದಿ, ಮಾರಾಟ ಅಥವಾ ಬಾಡಿಗೆ ಕುರಿತು ಸಹಾಯ ಬೇಕೇ? ನಿಮ್ಮ ಸಂಪರ್ಕ ವಿವರಗಳನ್ನು ನಮ್ಮ ತಂಡದೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಲು ಅಧಿಕೃತ enquiry form ಬಳಸಿ."
+        : lang === "ml-IN" ? "വസ്തു വാങ്ങൽ, വിൽപ്പന, വാടക എന്നിവയിൽ ഏത് സഹായമാണ് വേണ്ടത്? ഔദ്യോഗിക enquiry form ഉപയോഗിക്കുക."
+        : lang === "hi-IN" ? "क्या आपको संपत्ति खरीदने, बेचने या किराए पर लेने में सहायता चाहिए? कृपया आधिकारिक enquiry form का उपयोग करें."
+        : "Are you enquiring about buying, selling, or renting a property? Please use our official enquiry form to contact the team.";
+    } else if (/interior|design|ಇಂಟೀರಿಯರ್|ഡിസൈൻ|इंटीरियर/i.test(q)) {
+      reply = lang === "kn-IN" ? "ನಿಮಗೆ interior design ಸಹಾಯ ಬೇಕೇ? ನಿಮ್ಮ ಅಗತ್ಯಗಳನ್ನು ತಿಳಿಸಿ ಅಥವಾ ಅಧಿಕೃತ enquiry form ಬಳಸಿ."
+        : lang === "ml-IN" ? "ഇന്റീരിയർ ഡിസൈൻ സഹായം വേണോ? നിങ്ങളുടെ ആവശ്യങ്ങൾ അറിയിക്കൂ അല്ലെങ്കിൽ ഔദ്യോഗിക enquiry form ഉപയോഗിക്കൂ."
+        : lang === "hi-IN" ? "क्या आपको इंटीरियर डिज़ाइन की सहायता चाहिए? कृपया अपनी ज़रूरत बताएं या आधिकारिक enquiry form का उपयोग करें."
+        : "We can help direct your interior design enquiry. Please describe your requirements or use the official enquiry form.";
+    } else if (/human|person|team|contact|agent|ಮನುಷ್ಯ|സഹായം|व्यक्ति/i.test(q)) {
+      reply = lang === "kn-IN" ? "ನಮ್ಮ ತಂಡದ ಸಂಪರ್ಕಕ್ಕಾಗಿ ದಯವಿಟ್ಟು ಅಧಿಕೃತ enquiry form ಬಳಸಿ."
+        : lang === "ml-IN" ? "ഞങ്ങളുടെ ടീമിനെ ബന്ധപ്പെടാൻ ഔദ്യോഗിക enquiry form ഉപയോഗിക്കുക."
+        : lang === "hi-IN" ? "हमारी टीम से संपर्क करने के लिए कृपया आधिकारिक enquiry form का उपयोग करें."
+        : "For help from our team, please use the official COREVA enquiry form.";
+    } else {
+      reply = lang === "kn-IN" ? "ನಿಮ್ಮ ವಿಚಾರ ತಿಳಿಸಿದ್ದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು. ಇದು ಪ್ರಾರಂಭಿಕ voice demo. ನಿಖರವಾದ ಸಹಾಯಕ್ಕಾಗಿ ದಯವಿಟ್ಟು ಅಧಿಕೃತ enquiry form ಬಳಸಿ."
+        : lang === "ml-IN" ? "നിങ്ങളുടെ സന്ദേശത്തിന് നന്ദി. ഇത് ഒരു പ്രാരംഭ voice demo ആണ്. കൂടുതൽ സഹായത്തിന് ഔദ്യോഗിക enquiry form ഉപയോഗിക്കുക."
+        : lang === "hi-IN" ? "आपके संदेश के लिए धन्यवाद। यह शुरुआती वॉइस डेमो है। आगे सहायता के लिए कृपया आधिकारिक enquiry form का उपयोग करें।"
+        : "Thank you for your message. This is an initial voice demo, not a full AI assistant yet. Please use the official enquiry form for help with your request.";
+    }
+
+    addBubble(reply, "bot");
+    say(reply);
+  }
+
+  function stop() {
+    if (recognition && listening) recognition.stop();
+    listening = false;
+    $("start").disabled = false;
+    $("stop").disabled = true;
+  }
+
+  $("start").addEventListener("click", () => {
+    if (!Recognition) {
+      $("status").textContent = "Speech recognition is not supported by this browser. Please use the text box below.";
+      return;
+    }
+    if (language.value === "tulu") {
+      $("status").textContent = "Tulu recognition is experimental. Your browser may not recognize Tulu; try Kannada or type your enquiry.";
+    }
+    try {
+      recognition = new Recognition();
+      recognition.lang = language.value === "tulu" ? "kn-IN" : language.value;
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.onstart = () => {
+        listening = true;
+        $("start").disabled = true;
+        $("stop").disabled = false;
+        $("status").textContent = "Listening… speak now.";
+      };
+      recognition.onresult = event => {
+        const text = event.results[0][0].transcript;
+        addBubble(text, "visitor");
+        $("status").textContent = "Message received.";
+        respond(text);
+      };
+      recognition.onerror = event => {
+        $("status").textContent = "Microphone/speech error: " + event.error + ". You can type instead.";
+      };
+      recognition.onend = () => {
+        listening = false;
+        $("start").disabled = false;
+        $("stop").disabled = true;
+        if ($("status").textContent === "Listening… speak now.") $("status").textContent = "Listening ended. Press Start speaking to try again.";
+      };
+      recognition.start();
+    } catch (err) {
+      $("status").textContent = "Could not start speech recognition. Please use the text box.";
+    }
+  });
+
+  $("stop").addEventListener("click", stop);
+  $("clear").addEventListener("click", () => {
+    stop();
+    window.speechSynthesis?.cancel();
+    chat.replaceChildren();
+    addBubble(greetings[language.value] || greetings["en-IN"], "bot");
+    $("status").textContent = "Conversation cleared.";
+  });
+  language.addEventListener("change", () => {
+    $("status").textContent = language.value === "tulu"
+      ? "Tulu is experimental; this browser demo uses Kannada recognition as a fallback."
+      : "Language selected. Press Start speaking when ready.";
+  });
+  $("textForm").addEventListener("submit", event => {
+    event.preventDefault();
+    const input = $("message");
+    const text = input.value.trim();
+    if (!text) return;
+    addBubble(text, "visitor");
+    input.value = "";
+    respond(text);
+  });
+})();
+</script>
+</body>
+</html>
