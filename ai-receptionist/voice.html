@@ -1,47 +1,47 @@
-
+ 
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>COREVA | Website Voice Receptionist</title>
+<title>COREVA AI Website Receptionist</title>
 <style>
-:root{color-scheme:dark;--bg:#0b1020;--card:#151f35;--line:#2b3954;--gold:#e1bf76;--muted:#a6b2c8}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at top,#203557,var(--bg) 65%);color:#f6f7fb;font:16px Arial,sans-serif;min-height:100vh}
-main{max-width:850px;margin:auto;padding:25px 16px 50px}
-header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.brand{color:var(--gold);font-weight:800;letter-spacing:2px;font-size:22px}
-a{color:var(--gold)}
-.card{margin-top:22px;padding:22px;background:#151f35eF;border:1px solid var(--line);border-radius:18px}
-h1{font-size:clamp(27px,5vw,42px);margin:10px 0}
-p{line-height:1.6}.muted{color:var(--muted);font-size:14px}
-label{display:block;margin:14px 0 7px;color:var(--muted)}
-select,input{width:100%;padding:13px;background:#0b1426;color:white;border:1px solid var(--line);border-radius:10px;font:inherit}
-button{border:1px solid var(--line);border-radius:10px;padding:12px 16px;background:#22314b;color:white;font:inherit;cursor:pointer}
-button.primary{background:var(--gold);color:#171717;font-weight:700;border-color:var(--gold)}
-button:disabled{opacity:.5;cursor:not-allowed}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}
-.status{padding:11px 13px;background:#0b1426;border:1px solid var(--line);border-radius:10px;color:var(--gold)}
-.chat{display:flex;flex-direction:column;gap:12px;max-height:380px;overflow:auto;margin:18px 0}
-.bubble{padding:13px 15px;border-radius:13px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
-.bot{background:#22314b;align-self:flex-start;max-width:92%}
-.visitor{background:#3b3b33;border:1px solid #6b6046;align-self:flex-end;max-width:92%}
-form{display:flex;gap:8px}form input{flex:1;min-width:0}
-.notice{font-size:12px;color:var(--muted);line-height:1.6}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#07152f,#075c9b);color:#fff;min-height:100vh;padding:20px}
+main{max-width:850px;margin:auto}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.logo{font-weight:900;font-size:25px;color:#ffda75}
+a{color:#ffda75}
+.panel{background:#ffffff12;border:1px solid #ffffff30;border-radius:18px;padding:22px;margin-bottom:18px}
+h1{font-size:clamp(27px,5vw,42px);margin:12px 0}
+label{display:block;margin:14px 0 7px}
+select,input,button{font:inherit;border-radius:9px;padding:12px;border:1px solid #ffffff40}
+select,input{width:100%;background:#082950;color:white}
+button{cursor:pointer;background:#ffda75;color:#15233b;border:0;font-weight:bold}
+button.secondary{background:#315b86;color:white}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.controls button{flex:1;min-width:130px}
+#status{background:#09294c;padding:12px;border-radius:9px;margin:12px 0}
+#chat{display:flex;flex-direction:column;gap:10px;max-height:380px;overflow-y:auto;margin:16px 0}
+.msg{padding:13px 15px;border-radius:13px;max-width:90%;line-height:1.5;white-space:pre-wrap}
+.bot{background:#b7dcff;color:#102748;align-self:flex-start}
+.user{background:#ffda75;color:#17223b;align-self:flex-end}
+.sendrow{display:flex;gap:8px}
+.sendrow input{flex:1;min-width:0}
+small{color:#d9e8ff;line-height:1.6}
 </style>
 </head>
 <body>
 <main>
 <header>
-  <div class="brand">COREVA <span style="font-size:12px">AI</span></div>
+  <div class="logo">COREVA <span style="font-size:14px">AI</span></div>
   <a href="./index.html">← Dashboard</a>
 </header>
 
-<section class="card">
-  <p class="muted">COREVA BUSINESS SOLUTIONS · WEBSITE ASSISTANT</p>
+<section class="panel">
+  <small>COREVA BUSINESS SOLUTIONS · WEBSITE ASSISTANT</small>
   <h1>How can we help you today?</h1>
-  <p class="muted">Choose your language, press the microphone, and tell our receptionist what you need.</p>
+  <p>Ask about our services, associated brands, contact number or location.</p>
 
   <label for="language">Conversation language</label>
   <select id="language">
@@ -52,167 +52,203 @@ form{display:flex;gap:8px}form input{flex:1;min-width:0}
     <option value="tulu">Tulu (experimental)</option>
   </select>
 
-  <div class="actions">
-    <button id="start" class="primary">🎙 Start speaking</button>
-    <button id="stop" disabled>Stop microphone</button>
-    <button id="clear">Clear conversation</button>
-  </div>
-  <div id="status" class="status" role="status">Ready. Select a language to begin.</div>
-
-  <div id="chat" class="chat" aria-live="polite">
-    <div class="bubble bot">Hello! Welcome to COREVA Business Solutions. How may we help you?</div>
+  <div class="controls">
+    <button id="start">🎙 Start speaking</button>
+    <button id="stop" class="secondary">Stop microphone</button>
+    <button id="clear" class="secondary">Clear conversation</button>
   </div>
 
-  <form id="textForm">
-    <input id="message" maxlength="1000" placeholder="Or type your enquiry here…" aria-label="Type your enquiry">
-    <button class="primary" type="submit">Send</button>
+  <div id="status" role="status">Ready. Select a language and begin.</div>
+  <div id="chat" aria-live="polite"></div>
+
+  <form id="form" class="sendrow">
+    <input id="question" placeholder="Or type your enquiry here..." autocomplete="off">
+    <button type="submit">Send</button>
   </form>
 </section>
 
-<section class="card">
-  <h2>What this prototype can do</h2>
-  <p class="muted">It can listen through a compatible browser, display recognized speech, and speak a basic response. It does not yet understand arbitrary questions using an AI model, book appointments, or save leads to your database.</p>
-  <p class="notice">Microphone access requires permission and a secure HTTPS website. Browser speech recognition may send audio to a browser-provider service. Tulu recognition and speech may not be available on your device. Do not enter sensitive personal information into this prototype.</p>
+<section class="panel">
+  <h2>Our services</h2>
+  <p>Business solutions · Digital services · Construction · Real estate · Interior design</p>
+  <h2>Associated brands</h2>
+  <p><strong>TBD GROUP.in</strong> — includes TBD Builders &amp; Developers, AURELIV Interiors.Design, and SR PRIME Properties &amp; Real Estate Developers.</p>
+  <p><strong>VELORA DIGITAL</strong> — digital services and website development.</p>
+  <h2>Contact COREVA</h2>
+  <p>Phone: <a href="tel:+918088590273">+91 80885 90273</a></p>
+  <p>Location: Mangalore, Karnataka, India.</p>
+  <small>This is a guided receptionist prototype, not yet a full AI assistant. It does not book appointments or save enquiries to your dashboard. Tulu speech recognition depends on browser support.</small>
 </section>
 </main>
 
 <script>
-(() => {
-  const $ = id => document.getElementById(id);
-  const chat = $("chat");
-  const language = $("language");
-  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  let recognition = null;
-  let listening = false;
+const $ = id => document.getElementById(id);
+const chat = $("chat");
+let recognition = null;
+let listening = false;
 
-  const greetings = {
-    "en-IN":"Hello! Welcome to COREVA Business Solutions. How may we help you?",
-    "kn-IN":"ನಮಸ್ಕಾರ! COREVA Business Solutions ಗೆ ಸ್ವಾಗತ. ನಾವು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?",
-    "ml-IN":"നമസ്കാരം! COREVA Business Solutions-ലേക്ക് സ്വാഗതം. എങ്ങനെ സഹായിക്കാം?",
-    "hi-IN":"नमस्ते! COREVA Business Solutions में आपका स्वागत है। हम आपकी कैसे मदद कर सकते हैं?",
-    "tulu":"Welcome to COREVA Business Solutions. Tulu voice support is experimental."
+const answers = {
+  en: {
+    welcome: "Hello! Welcome to COREVA Business Solutions. Are you enquiring about business solutions, digital services, construction, real estate, or interior design?",
+    services: "COREVA Business Solutions provides business solutions and supports enquiries about digital services, construction, real estate, and interior design. Which service would you like to know more about?",
+    digital: "For digital services and website development, you can also enquire about VELORA DIGITAL, an associated brand. Call COREVA at +91 80885 90273 for further information.",
+    construction: "For construction-related enquiries, you can ask about TBD Builders & Developers, an associated brand within the TBD GROUP.in brand family. Call +91 80885 90273 for further information.",
+    property: "For property and real estate enquiries, SR PRIME Properties & Real Estate Developers is an associated brand within the TBD GROUP.in brand family. Please call +91 80885 90273 for further information.",
+    interior: "For interior design enquiries, AURELIV Interiors.Design is an associated brand within the TBD GROUP.in brand family. Call +91 80885 90273 to discuss your requirements.",
+    brands: "The associated brands include TBD GROUP.in and VELORA DIGITAL. The TBD GROUP.in brand family includes TBD Builders & Developers, AURELIV Interiors.Design, and SR PRIME Properties & Real Estate Developers.",
+    phone: "You can contact COREVA Business Solutions at +91 80885 90273. Would you like information about our services as well?",
+    location: "COREVA Business Solutions is located in Mangalore, Karnataka, India. For the exact office address or directions, please call +91 80885 90273.",
+    human: "You can speak with the team by calling +91 80885 90273. Please explain which service you need help with.",
+    price: "Pricing depends on the service and project requirements. Please call +91 80885 90273 to discuss your needs. I don't have a verified price list in this demo.",
+    appointment: "I can't book an appointment in this demo yet. Please call +91 80885 90273 to arrange a discussion with the team.",
+    fallback: "I can help with COREVA's services, associated brands, contact number, and location. You can call +91 80885 90273 if you need help from the team."
+  },
+  hi: {
+    welcome: "नमस्ते! COREVA Business Solutions में आपका स्वागत है। आपको किस सेवा के बारे में जानकारी चाहिए?",
+    services: "हम व्यापार समाधान, डिजिटल सेवाओं, निर्माण, रियल एस्टेट और इंटीरियर डिज़ाइन से जुड़ी पूछताछ में मदद करते हैं।",
+    phone: "COREVA Business Solutions से संपर्क करने के लिए +91 80885 90273 पर कॉल करें।",
+    location: "COREVA Business Solutions मैंगलोर, कर्नाटक, भारत में स्थित है। सही कार्यालय पते के लिए +91 80885 90273 पर कॉल करें।",
+    brands: "हमारे संबंधित ब्रांडों में TBD GROUP.in और VELORA DIGITAL शामिल हैं। TBD GROUP.in ब्रांड परिवार में TBD Builders & Developers, AURELIV Interiors.Design और SR PRIME Properties & Real Estate Developers शामिल हैं।",
+    fallback: "सेवाओं, संबंधित ब्रांडों, संपर्क नंबर या स्थान के बारे में पूछें। सहायता के लिए +91 80885 90273 पर कॉल करें।"
+  },
+  kn: {
+    welcome: "ನಮಸ್ಕಾರ! COREVA Business Solutions ಗೆ ಸ್ವಾಗತ. ನಿಮಗೆ ಯಾವ ಸೇವೆಯ ಬಗ್ಗೆ ಮಾಹಿತಿ ಬೇಕು?",
+    services: "ನಾವು ವ್ಯವಹಾರ ಪರಿಹಾರಗಳು, ಡಿಜಿಟಲ್ ಸೇವೆಗಳು, ನಿರ್ಮಾಣ, ರಿಯಲ್ ಎಸ್ಟೇಟ್ ಮತ್ತು ಇಂಟೀರಿಯರ್ ಡಿಸೈನ್ ಕುರಿತು ವಿಚಾರಣೆಗಳಿಗೆ ಸಹಾಯ ಮಾಡುತ್ತೇವೆ.",
+    phone: "COREVA Business Solutions ಸಂಪರ್ಕಿಸಲು +91 80885 90273 ಗೆ ಕರೆ ಮಾಡಿ.",
+    location: "COREVA Business Solutions ಮಂಗಳೂರು, ಕರ್ನಾಟಕ, ಭಾರತದಲ್ಲಿದೆ. ನಿಖರವಾದ ಕಚೇರಿ ವಿಳಾಸಕ್ಕಾಗಿ +91 80885 90273 ಗೆ ಕರೆ ಮಾಡಿ.",
+    brands: "ಸಂಬಂಧಿತ ಬ್ರ್ಯಾಂಡ್‌ಗಳಲ್ಲಿ TBD GROUP.in ಮತ್ತು VELORA DIGITAL ಸೇರಿವೆ. TBD GROUP.in ಬ್ರ್ಯಾಂಡ್ ಕುಟುಂಬದಲ್ಲಿ TBD Builders & Developers, AURELIV Interiors.Design ಮತ್ತು SR PRIME Properties & Real Estate Developers ಸೇರಿವೆ.",
+    fallback: "ಸೇವೆಗಳು, ಸಂಬಂಧಿತ ಬ್ರ್ಯಾಂಡ್‌ಗಳು, ಸಂಪರ್ಕ ಸಂಖ್ಯೆ ಅಥವಾ ಸ್ಥಳದ ಬಗ್ಗೆ ಕೇಳಿ. ಸಹಾಯಕ್ಕಾಗಿ +91 80885 90273 ಗೆ ಕರೆ ಮಾಡಿ."
+  },
+  ml: {
+    welcome: "നമസ്കാരം! COREVA Business Solutions-ലേക്ക് സ്വാഗതം. ഏത് സേവനത്തെക്കുറിച്ചാണ് അറിയേണ്ടത്?",
+    services: "ബിസിനസ് സൊല്യൂഷൻസ്, ഡിജിറ്റൽ സേവനങ്ങൾ, നിർമ്മാണം, റിയൽ എസ്റ്റേറ്റ്, ഇന്റീരിയർ ഡിസൈൻ എന്നിവയെക്കുറിച്ചുള്ള അന്വേഷണങ്ങൾക്ക് ഞങ്ങൾ സഹായിക്കുന്നു.",
+    phone: "COREVA Business Solutions-നെ ബന്ധപ്പെടാൻ +91 80885 90273 എന്ന നമ്പറിൽ വിളിക്കുക.",
+    location: "COREVA Business Solutions മംഗളൂരു, കർണാടക, ഇന്ത്യയിലാണ്. കൃത്യമായ ഓഫീസ് വിലാസത്തിനായി +91 80885 90273 എന്ന നമ്പറിൽ വിളിക്കുക.",
+    brands: "ബന്ധപ്പെട്ട ബ്രാൻഡുകളിൽ TBD GROUP.in, VELORA DIGITAL എന്നിവ ഉൾപ്പെടുന്നു. TBD GROUP.in ബ്രാൻഡ് കുടുംബത്തിൽ TBD Builders & Developers, AURELIV Interiors.Design, SR PRIME Properties & Real Estate Developers എന്നിവ ഉൾപ്പെടുന്നു.",
+    fallback: "സേവനങ്ങൾ, ബന്ധപ്പെട്ട ബ്രാൻഡുകൾ, ഫോൺ നമ്പർ, സ്ഥലം എന്നിവയെക്കുറിച്ച് ചോദിക്കാം. സഹായത്തിന് +91 80885 90273 എന്ന നമ്പറിൽ വിളിക്കുക."
+  }
+};
+
+function addMessage(text, who) {
+  const el = document.createElement("div");
+  el.className = "msg " + who;
+  el.textContent = text;
+  chat.appendChild(el);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function langKey() {
+  const value = $("language").value;
+  return value.startsWith("kn") ? "kn" :
+         value.startsWith("ml") ? "ml" :
+         value.startsWith("hi") ? "hi" : "en";
+}
+
+function answerFor(question) {
+  const q = question.toLowerCase();
+  const lang = langKey();
+  const a = answers[lang] || answers.en;
+  const en = answers.en;
+
+  // English and common transliterated terms are matched by keywords.
+  if (/phone|contact|number|call|mobile|telephone|നമ്പർ|ಫೋನ್|ಸಂಪರ್ಕ|फोन/.test(q))
+    return a.phone || en.phone;
+  if (/where|location|address|located|direction|office|ಎಲ್ಲಿ|ವಿಳಾಸ|സ്ഥലം|വിലാസം|पता|कहाँ/.test(q))
+    return a.location || en.location;
+  if (/brand|company|companies|group|under coreva|tbd|velora|aurel(i|iv)|sr prime/.test(q))
+    return a.brands || en.brands;
+  if (/interior|interiors|design|aurel/.test(q))
+    return en.interior;
+  if (/construction|builder|building|tbd group/.test(q))
+    return en.construction;
+  if (/real estate|property|properties|plot|land|flat|house|sr prime/.test(q))
+    return en.property;
+  if (/digital|website|web development|software/.test(q))
+    return en.digital;
+  if (/price|cost|rate|charge|budget|quotation/.test(q))
+    return en.price;
+  if (/appointment|meeting|book|schedule/.test(q))
+    return en.appointment;
+  if (/human|person|staff|team|representative|agent/.test(q))
+    return a.human || en.human;
+  if (/service|what do you do|help|business solution|ನಮಸ್ಕಾರ|ನಮಸ್ತೆ|hello|hi\b/.test(q))
+    return a.services || en.services;
+  return a.fallback || en.fallback;
+}
+
+function speak(text) {
+  if (!("speechSynthesis" in window)) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  const selected = $("language").value;
+  utterance.lang = selected === "tulu" ? "kn-IN" : selected;
+  window.speechSynthesis.speak(utterance);
+}
+
+function respond(question) {
+  question = question.trim();
+  if (!question) return;
+  addMessage(question, "user");
+  const reply = answerFor(question);
+  addMessage(reply, "bot");
+  speak(reply);
+  $("status").textContent = "Response ready.";
+  $("question").value = "";
+}
+
+$("form").addEventListener("submit", e => {
+  e.preventDefault();
+  respond($("question").value);
+});
+
+$("start").addEventListener("click", () => {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    $("status").textContent = "Speech recognition is not supported by this browser. Please type your question instead.";
+    return;
+  }
+  if (recognition) recognition.stop();
+  recognition = new SpeechRecognition();
+  recognition.lang = $("language").value === "tulu" ? "kn-IN" : $("language").value;
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  recognition.onstart = () => {
+    listening = true;
+    $("status").textContent = "Listening. Please speak now.";
   };
-
-  function addBubble(text, who) {
-    const bubble = document.createElement("div");
-    bubble.className = "bubble " + who;
-    bubble.textContent = text;
-    chat.appendChild(bubble);
-    chat.scrollTop = chat.scrollHeight;
-  }
-
-  function say(text) {
-    if (!("speechSynthesis" in window)) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    const lang = language.value;
-    utterance.lang = lang === "tulu" ? "kn-IN" : lang;
-    window.speechSynthesis.speak(utterance);
-  }
-
-  function respond(text) {
-    const q = text.toLowerCase();
-    let reply;
-    const lang = language.value;
-
-    if (/\b(hello|hi|hey|ನಮಸ್ಕಾರ|നമസ്കാരം|नमस्ते)\b/i.test(q)) {
-      reply = greetings[lang];
-    } else if (/property|real estate|ಮನೆ|വീട്|प्रॉपर्टी|ಸೈಟ್|ഭൂമി/i.test(q)) {
-      reply = lang === "kn-IN" ? "ನಿಮಗೆ ಆಸ್ತಿ ಖರೀದಿ, ಮಾರಾಟ ಅಥವಾ ಬಾಡಿಗೆ ಕುರಿತು ಸಹಾಯ ಬೇಕೇ? ನಿಮ್ಮ ಸಂಪರ್ಕ ವಿವರಗಳನ್ನು ನಮ್ಮ ತಂಡದೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಲು ಅಧಿಕೃತ enquiry form ಬಳಸಿ."
-        : lang === "ml-IN" ? "വസ്തു വാങ്ങൽ, വിൽപ്പന, വാടക എന്നിവയിൽ ഏത് സഹായമാണ് വേണ്ടത്? ഔദ്യോഗിക enquiry form ഉപയോഗിക്കുക."
-        : lang === "hi-IN" ? "क्या आपको संपत्ति खरीदने, बेचने या किराए पर लेने में सहायता चाहिए? कृपया आधिकारिक enquiry form का उपयोग करें."
-        : "Are you enquiring about buying, selling, or renting a property? Please use our official enquiry form to contact the team.";
-    } else if (/interior|design|ಇಂಟೀರಿಯರ್|ഡിസൈൻ|इंटीरियर/i.test(q)) {
-      reply = lang === "kn-IN" ? "ನಿಮಗೆ interior design ಸಹಾಯ ಬೇಕೇ? ನಿಮ್ಮ ಅಗತ್ಯಗಳನ್ನು ತಿಳಿಸಿ ಅಥವಾ ಅಧಿಕೃತ enquiry form ಬಳಸಿ."
-        : lang === "ml-IN" ? "ഇന്റീരിയർ ഡിസൈൻ സഹായം വേണോ? നിങ്ങളുടെ ആവശ്യങ്ങൾ അറിയിക്കൂ അല്ലെങ്കിൽ ഔദ്യോഗിക enquiry form ഉപയോഗിക്കൂ."
-        : lang === "hi-IN" ? "क्या आपको इंटीरियर डिज़ाइन की सहायता चाहिए? कृपया अपनी ज़रूरत बताएं या आधिकारिक enquiry form का उपयोग करें."
-        : "We can help direct your interior design enquiry. Please describe your requirements or use the official enquiry form.";
-    } else if (/human|person|team|contact|agent|ಮನುಷ್ಯ|സഹായം|व्यक्ति/i.test(q)) {
-      reply = lang === "kn-IN" ? "ನಮ್ಮ ತಂಡದ ಸಂಪರ್ಕಕ್ಕಾಗಿ ದಯವಿಟ್ಟು ಅಧಿಕೃತ enquiry form ಬಳಸಿ."
-        : lang === "ml-IN" ? "ഞങ്ങളുടെ ടീമിനെ ബന്ധപ്പെടാൻ ഔദ്യോഗിക enquiry form ഉപയോഗിക്കുക."
-        : lang === "hi-IN" ? "हमारी टीम से संपर्क करने के लिए कृपया आधिकारिक enquiry form का उपयोग करें."
-        : "For help from our team, please use the official COREVA enquiry form.";
-    } else {
-      reply = lang === "kn-IN" ? "ನಿಮ್ಮ ವಿಚಾರ ತಿಳಿಸಿದ್ದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು. ಇದು ಪ್ರಾರಂಭಿಕ voice demo. ನಿಖರವಾದ ಸಹಾಯಕ್ಕಾಗಿ ದಯವಿಟ್ಟು ಅಧಿಕೃತ enquiry form ಬಳಸಿ."
-        : lang === "ml-IN" ? "നിങ്ങളുടെ സന്ദേശത്തിന് നന്ദി. ഇത് ഒരു പ്രാരംഭ voice demo ആണ്. കൂടുതൽ സഹായത്തിന് ഔദ്യോഗിക enquiry form ഉപയോഗിക്കുക."
-        : lang === "hi-IN" ? "आपके संदेश के लिए धन्यवाद। यह शुरुआती वॉइस डेमो है। आगे सहायता के लिए कृपया आधिकारिक enquiry form का उपयोग करें।"
-        : "Thank you for your message. This is an initial voice demo, not a full AI assistant yet. Please use the official enquiry form for help with your request.";
-    }
-
-    addBubble(reply, "bot");
-    say(reply);
-  }
-
-  function stop() {
-    if (recognition && listening) recognition.stop();
+  recognition.onresult = e => {
+    const spoken = e.results[0][0].transcript;
+    $("status").textContent = "You said: " + spoken;
+    respond(spoken);
+  };
+  recognition.onerror = e => {
+    $("status").textContent = "Microphone issue: " + e.error + ". Check browser microphone permission or type your question.";
+  };
+  recognition.onend = () => {
     listening = false;
-    $("start").disabled = false;
-    $("stop").disabled = true;
-  }
+    if ($("status").textContent === "Listening. Please speak now.")
+      $("status").textContent = "Microphone stopped. You can try again or type your question.";
+  };
+  recognition.start();
+});
 
-  $("start").addEventListener("click", () => {
-    if (!Recognition) {
-      $("status").textContent = "Speech recognition is not supported by this browser. Please use the text box below.";
-      return;
-    }
-    if (language.value === "tulu") {
-      $("status").textContent = "Tulu recognition is experimental. Your browser may not recognize Tulu; try Kannada or type your enquiry.";
-    }
-    try {
-      recognition = new Recognition();
-      recognition.lang = language.value === "tulu" ? "kn-IN" : language.value;
-      recognition.continuous = false;
-      recognition.interimResults = false;
-      recognition.onstart = () => {
-        listening = true;
-        $("start").disabled = true;
-        $("stop").disabled = false;
-        $("status").textContent = "Listening… speak now.";
-      };
-      recognition.onresult = event => {
-        const text = event.results[0][0].transcript;
-        addBubble(text, "visitor");
-        $("status").textContent = "Message received.";
-        respond(text);
-      };
-      recognition.onerror = event => {
-        $("status").textContent = "Microphone/speech error: " + event.error + ". You can type instead.";
-      };
-      recognition.onend = () => {
-        listening = false;
-        $("start").disabled = false;
-        $("stop").disabled = true;
-        if ($("status").textContent === "Listening… speak now.") $("status").textContent = "Listening ended. Press Start speaking to try again.";
-      };
-      recognition.start();
-    } catch (err) {
-      $("status").textContent = "Could not start speech recognition. Please use the text box.";
-    }
-  });
+$("stop").addEventListener("click", () => {
+  if (recognition) recognition.stop();
+  window.speechSynthesis.cancel();
+  $("status").textContent = "Microphone and speech stopped.";
+});
 
-  $("stop").addEventListener("click", stop);
-  $("clear").addEventListener("click", () => {
-    stop();
-    window.speechSynthesis?.cancel();
-    chat.replaceChildren();
-    addBubble(greetings[language.value] || greetings["en-IN"], "bot");
-    $("status").textContent = "Conversation cleared.";
-  });
-  language.addEventListener("change", () => {
-    $("status").textContent = language.value === "tulu"
-      ? "Tulu is experimental; this browser demo uses Kannada recognition as a fallback."
-      : "Language selected. Press Start speaking when ready.";
-  });
-  $("textForm").addEventListener("submit", event => {
-    event.preventDefault();
-    const input = $("message");
-    const text = input.value.trim();
-    if (!text) return;
-    addBubble(text, "visitor");
-    input.value = "";
-    respond(text);
-  });
-})();
+$("clear").addEventListener("click", () => {
+  chat.replaceChildren();
+  window.speechSynthesis.cancel();
+  $("status").textContent = "Conversation cleared.";
+});
+
+$("language").addEventListener("change", () => {
+  $("status").textContent = "Language selected. Speech support and pronunciation depend on your browser.";
+});
+
+addMessage(answers.en.welcome, "bot");
 </script>
 </body>
 </html>
