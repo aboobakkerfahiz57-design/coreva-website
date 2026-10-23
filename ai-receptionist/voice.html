@@ -55,10 +55,8 @@ footer{text-align:center;color:#a9aab0;font-size:12px;line-height:1.6;padding:12
   <label for="language">Conversation language</label>
   <select id="language">
     <option value="en-IN">English</option>
-    <option value="kn-IN">Kannada</option>
-    <option value="ml-IN">Malayalam</option>
-    <option value="hi-IN">Hindi</option>
-    <option value="tulu">Tulu (experimental)</option>
+    <option value="kn-IN">ಕನ್ನಡ (Kannada)</option>
+    <option value="ml-IN">മലയാളം (Malayalam)</option>
   </select>
 
   <div class="controls">
@@ -112,31 +110,137 @@ footer{text-align:center;color:#a9aab0;font-size:12px;line-height:1.6;padding:12
 </section>
 
 <footer>
-  This version uses predefined business answers and browser speech features. It is not yet connected to a live AI model, property database or online appointment system. Do not enter passwords or payment details.
+  This version uses predefined answers and browser speech features in English, Kannada and Malayalam. It is not yet connected to a live AI model, property database or online appointment system. Browser speech recognition and voice availability vary by device. Do not enter passwords or payment details.
 </footer>
 </div>
 
 <script>
 (function () {
   "use strict";
-
   const get = id => document.getElementById(id);
-  const chat = get("chat");
-  const status = get("status");
-  const input = get("question");
-  const language = get("language");
+  const chat = get("chat"), status = get("status"), input = get("question"), language = get("language");
   const contact = "+91 80885 90273";
+  let recognition = null, voiceReplies = true;
 
-  let recognition = null;
-  let voiceReplies = true;
+  const copy = {
+    "en-IN": {
+      welcome: "Hello! Welcome to COREVA Business Solutions. Our four main divisions are Digital Services, Property Services, Finance, and Business Support. What would you like to know?",
+      placeholder: "Type your question here...",
+      ready: "Ready. Type a question or press Start speaking.",
+      start: "🎙 Start speaking", stop: "Stop microphone", clear: "Clear conversation",
+      voiceOn: "🔊 Voice replies: ON", voiceOff: "🔇 Voice replies: OFF", send: "Send",
+      listening: "Listening now. Speak clearly into your microphone.",
+      stopped: "Microphone stopped. Press Start speaking to try again.",
+      empty: "Please type a question first, or press Start speaking.",
+      unsupported: "This browser does not support speech recognition. Type your question and press Send.",
+      micError: "Microphone error: ", micHelp: ". Allow microphone access in your browser or type your question.",
+      noHear: "I couldn't hear your question. Please try again or type it.",
+      answer: "Answer displayed. Check your computer's volume if you cannot hear it.",
+      clearDone: "Conversation cleared.", voiceEnabled: "Voice replies enabled.",
+      voiceDisabled: "Voice replies disabled. Text answers will still appear.",
+      languagePrefix: "Language selected: ", languageSuffix: ". Browser speech support varies.",
+      playbackUnsupported: "Answer displayed. Speech playback is not supported by this browser.",
+      playbackError: "Answer displayed. Voice playback could not start.",
+      greeting: "Hello! Welcome to COREVA Business Solutions. How can I help you today?",
+      thanks: "You're welcome! Thank you for contacting COREVA Business Solutions.",
+      bye: "Thank you for contacting COREVA Business Solutions. Have a great day!",
+      contact: "You can contact COREVA Business Solutions at " + contact + ". Our location is Mangalore, Karnataka, India. Please call for the exact office address and directions.",
+      location: "COREVA Business Solutions is based in Mangalore, Karnataka, India. The exact street address has not been confirmed. Please call " + contact + " for directions.",
+      brands: "COREVA Business Solutions is the parent business. VELORA DIGITAL is associated with digital and technology work. The TBD GROUP.in brand family includes TBD Builders & Developers, AURELIV Interiors.Design, and SR PRIME Properties & Real Estate Developers. COREVA also has Finance and Business Support divisions.",
+      about: "COREVA Business Solutions connects people, businesses and opportunities through four divisions: Digital Services, Property Services, Finance, and Business Support.",
+      digital: "VELORA DIGITAL is the associated technology and digital brand for website development, software, digital platforms and related technology work. Contact " + contact + " to discuss a project. The team must confirm pricing and availability.",
+      interior: "Interior design enquiries are associated with AURELIV Interiors.Design within the TBD GROUP.in brand family. Project scope, materials, pricing and availability must be confirmed directly. Call " + contact + ".",
+      construction: "Construction enquiries are associated with TBD Builders & Developers within the TBD GROUP.in brand family. The team can confirm service availability and project details at " + contact + ".",
+      property: "Property enquiries are associated with SR PRIME Properties & Real Estate Developers within the TBD GROUP.in brand family. I don't have verified live listings, prices or availability. Please call " + contact + " to confirm current options.",
+      finance: "COREVA has a Finance division. I don't have confirmed details about specific products, rates, eligibility or regulated services. Please call " + contact + " so the team can confirm.",
+      support: "COREVA has a Business Support division. Tell the team what kind of assistance you need so they can confirm the service and availability. Contact " + contact + ".",
+      appointment: "You can request an appointment by calling COREVA Business Solutions at " + contact + ". Online booking is not connected to this page, so an appointment is not confirmed until the team confirms it.",
+      price: "Pricing depends on your requirements. I don't have an approved price list, so I won't invent a figure. Please call " + contact + " for a confirmed quotation.",
+      jobs: "For job, internship or recruitment enquiries, please contact COREVA at " + contact + ". The team must confirm current vacancies.",
+      email: "I don't have a verified public email address to share. Please contact COREVA Business Solutions at " + contact + ".",
+      human: "Of course. Please call COREVA Business Solutions at " + contact + " to speak with the team.",
+      fallback: "Thank you for your question. I don't have a verified answer to that specific question yet, and I don't want to guess. Is your enquiry about Digital Services, Property Services, Finance, or Business Support? You can also call " + contact + "."
+    },
+    "kn-IN": {
+      welcome: "ನಮಸ್ಕಾರ! COREVA Business Solutions ಗೆ ಸ್ವಾಗತ. ನಮ್ಮ ನಾಲ್ಕು ಮುಖ್ಯ ವಿಭಾಗಗಳು ಡಿಜಿಟಲ್ ಸೇವೆಗಳು, ಆಸ್ತಿ ಸೇವೆಗಳು, ಹಣಕಾಸು ಮತ್ತು ವ್ಯವಹಾರ ಬೆಂಬಲ. ನಿಮಗೆ ಏನು ತಿಳಿದುಕೊಳ್ಳಬೇಕು?",
+      placeholder: "ನಿಮ್ಮ ಪ್ರಶ್ನೆಯನ್ನು ಇಲ್ಲಿ ಟೈಪ್ ಮಾಡಿ...",
+      ready: "ಸಿದ್ಧವಾಗಿದೆ. ಪ್ರಶ್ನೆ ಟೈಪ್ ಮಾಡಿ ಅಥವಾ ಮಾತನಾಡಲು ಪ್ರಾರಂಭಿಸಿ.",
+      start: "🎙 ಮಾತನಾಡಲು ಪ್ರಾರಂಭಿಸಿ", stop: "ಮೈಕ್ರೋಫೋನ್ ನಿಲ್ಲಿಸಿ", clear: "ಸಂಭಾಷಣೆ ತೆರವುಗೊಳಿಸಿ",
+      voiceOn: "🔊 ಧ್ವನಿ ಉತ್ತರಗಳು: ON", voiceOff: "🔇 ಧ್ವನಿ ಉತ್ತರಗಳು: OFF", send: "ಕಳುಹಿಸಿ",
+      listening: "ಕೇಳುತ್ತಿದ್ದೇನೆ. ಮೈಕ್ರೋಫೋನ್‌ಗೆ ಸ್ಪಷ್ಟವಾಗಿ ಮಾತನಾಡಿ.",
+      stopped: "ಮೈಕ್ರೋಫೋನ್ ನಿಂತಿದೆ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಲು ಮಾತನಾಡಲು ಪ್ರಾರಂಭಿಸಿ.",
+      empty: "ದಯವಿಟ್ಟು ಮೊದಲು ಪ್ರಶ್ನೆ ಟೈಪ್ ಮಾಡಿ ಅಥವಾ ಮಾತನಾಡಲು ಪ್ರಾರಂಭಿಸಿ.",
+      unsupported: "ಈ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಧ್ವನಿ ಗುರುತಿಸುವಿಕೆ ಲಭ್ಯವಿಲ್ಲ. ಪ್ರಶ್ನೆ ಟೈಪ್ ಮಾಡಿ ಕಳುಹಿಸಿ.",
+      micError: "ಮೈಕ್ರೋಫೋನ್ ದೋಷ: ", micHelp: ". ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಮೈಕ್ರೋಫೋನ್ ಅನುಮತಿ ನೀಡಿ ಅಥವಾ ಪ್ರಶ್ನೆ ಟೈಪ್ ಮಾಡಿ.",
+      noHear: "ನಿಮ್ಮ ಪ್ರಶ್ನೆ ಕೇಳಿಸಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ ಟೈಪ್ ಮಾಡಿ.",
+      answer: "ಉತ್ತರ ತೋರಿಸಲಾಗಿದೆ. ಧ್ವನಿ ಕೇಳಿಸದಿದ್ದರೆ ನಿಮ್ಮ ಸಾಧನದ ವಾಲ್ಯೂಮ್ ಪರಿಶೀಲಿಸಿ.",
+      clearDone: "ಸಂಭಾಷಣೆ ತೆರವುಗೊಳಿಸಲಾಗಿದೆ.", voiceEnabled: "ಧ್ವನಿ ಉತ್ತರಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ.",
+      voiceDisabled: "ಧ್ವನಿ ಉತ್ತರಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ. ಪಠ್ಯ ಉತ್ತರಗಳು ಕಾಣಿಸುತ್ತವೆ.",
+      languagePrefix: "ಆಯ್ಕೆ ಮಾಡಿದ ಭಾಷೆ: ", languageSuffix: ". ಧ್ವನಿ ಬೆಂಬಲವು ಬ್ರೌಸರ್‌ಗೆ ಅನುಗುಣವಾಗಿ ಬದಲಾಗುತ್ತದೆ.",
+      playbackUnsupported: "ಉತ್ತರ ತೋರಿಸಲಾಗಿದೆ. ಈ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಧ್ವನಿ ಪ್ಲೇಬ್ಯಾಕ್ ಬೆಂಬಲವಿಲ್ಲ.",
+      playbackError: "ಉತ್ತರ ತೋರಿಸಲಾಗಿದೆ. ಧ್ವನಿ ಪ್ಲೇಬ್ಯಾಕ್ ಪ್ರಾರಂಭಿಸಲಾಗಲಿಲ್ಲ.",
+      greeting: "ನಮಸ್ಕಾರ! COREVA Business Solutions ಗೆ ಸ್ವಾಗತ. ಇಂದು ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಲಿ?",
+      thanks: "ಸ್ವಾಗತ! COREVA Business Solutions ಅನ್ನು ಸಂಪರ್ಕಿಸಿದ್ದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು.",
+      bye: "COREVA Business Solutions ಅನ್ನು ಸಂಪರ್ಕಿಸಿದ್ದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು. ನಿಮ್ಮ ದಿನ ಶುಭವಾಗಿರಲಿ!",
+      contact: "COREVA Business Solutions ಅನ್ನು " + contact + " ಸಂಖ್ಯೆಯಲ್ಲಿ ಸಂಪರ್ಕಿಸಬಹುದು. ನಮ್ಮ ಸ್ಥಳ ಮಂಗಳೂರು, ಕರ್ನಾಟಕ, ಭಾರತ. ನಿಖರವಾದ ಕಚೇರಿ ವಿಳಾಸ ಮತ್ತು ದಾರಿಗಾಗಿ ಕರೆ ಮಾಡಿ.",
+      location: "COREVA Business Solutions ಮಂಗಳೂರು, ಕರ್ನಾಟಕ, ಭಾರತದಲ್ಲಿದೆ. ನಿಖರವಾದ ರಸ್ತೆ ವಿಳಾಸವನ್ನು ಇನ್ನೂ ದೃಢಪಡಿಸಿಲ್ಲ. ದಾರಿಗಾಗಿ " + contact + " ಗೆ ಕರೆ ಮಾಡಿ.",
+      brands: "COREVA Business Solutions ಮುಖ್ಯ ಸಂಸ್ಥೆಯಾಗಿದೆ. VELORA DIGITAL ಡಿಜಿಟಲ್ ಮತ್ತು ತಂತ್ರಜ್ಞಾನ ಸೇವೆಗಳಿಗೆ ಸಂಬಂಧಿಸಿದೆ. TBD GROUP.in ಕುಟುಂಬದಲ್ಲಿ TBD Builders & Developers, AURELIV Interiors.Design ಮತ್ತು SR PRIME Properties & Real Estate Developers ಸೇರಿವೆ. COREVA ಯಲ್ಲಿ ಹಣಕಾಸು ಮತ್ತು ವ್ಯವಹಾರ ಬೆಂಬಲ ವಿಭಾಗಗಳೂ ಇವೆ.",
+      about: "COREVA Business Solutions ನಾಲ್ಕು ವಿಭಾಗಗಳ ಮೂಲಕ ಜನರು, ವ್ಯವಹಾರಗಳು ಮತ್ತು ಅವಕಾಶಗಳನ್ನು ಸಂಪರ್ಕಿಸುತ್ತದೆ: ಡಿಜಿಟಲ್ ಸೇವೆಗಳು, ಆಸ್ತಿ ಸೇವೆಗಳು, ಹಣಕಾಸು ಮತ್ತು ವ್ಯವಹಾರ ಬೆಂಬಲ.",
+      digital: "VELORA DIGITAL ವೆಬ್‌ಸೈಟ್ ಅಭಿವೃದ್ಧಿ, ಸಾಫ್ಟ್‌ವೇರ್, ಡಿಜಿಟಲ್ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ಗಳು ಮತ್ತು ಸಂಬಂಧಿತ ತಂತ್ರಜ್ಞಾನ ಸೇವೆಗಳಿಗೆ ಸಂಬಂಧಿಸಿದ ಬ್ರ್ಯಾಂಡ್. ಯೋಜನೆ ಕುರಿತು ಮಾತನಾಡಲು " + contact + " ಗೆ ಕರೆ ಮಾಡಿ. ಬೆಲೆ ಮತ್ತು ಲಭ್ಯತೆಯನ್ನು ತಂಡ ದೃಢಪಡಿಸಬೇಕು.",
+      interior: "ಇಂಟೀರಿಯರ್ ಡಿಸೈನ್ ವಿಚಾರಣೆಗಳು TBD GROUP.in ಕುಟುಂಬದ AURELIV Interiors.Design ಗೆ ಸಂಬಂಧಿಸಿವೆ. ಯೋಜನೆಯ ವಿವರಗಳು, ವಸ್ತುಗಳು, ಬೆಲೆ ಮತ್ತು ಲಭ್ಯತೆಯನ್ನು ತಂಡ ದೃಢಪಡಿಸಬೇಕು. ಕರೆ: " + contact + ".",
+      construction: "ನಿರ್ಮಾಣ ವಿಚಾರಣೆಗಳು TBD GROUP.in ಕುಟುಂಬದ TBD Builders & Developers ಗೆ ಸಂಬಂಧಿಸಿವೆ. ಸೇವೆಗಳ ಲಭ್ಯತೆ ಮತ್ತು ಯೋಜನೆಯ ವಿವರಗಳಿಗಾಗಿ " + contact + " ಗೆ ಕರೆ ಮಾಡಿ.",
+      property: "ಆಸ್ತಿ ವಿಚಾರಣೆಗಳು TBD GROUP.in ಕುಟುಂಬದ SR PRIME Properties & Real Estate Developers ಗೆ ಸಂಬಂಧಿಸಿವೆ. ಪರಿಶೀಲಿಸಿದ ಪ್ರಸ್ತುತ ಆಸ್ತಿ ಪಟ್ಟಿಗಳು, ಬೆಲೆಗಳು ಅಥವಾ ಲಭ್ಯತೆ ನನ್ನ ಬಳಿ ಇಲ್ಲ. ಪ್ರಸ್ತುತ ಆಯ್ಕೆಗಳನ್ನು ದೃಢಪಡಿಸಲು " + contact + " ಗೆ ಕರೆ ಮಾಡಿ.",
+      finance: "COREVA ಯಲ್ಲಿ ಹಣಕಾಸು ವಿಭಾಗವಿದೆ. ನಿರ್ದಿಷ್ಟ ಉತ್ಪನ್ನಗಳು, ಬಡ್ಡಿದರಗಳು, ಅರ್ಹತೆ ಅಥವಾ ನಿಯಂತ್ರಿತ ಸೇವೆಗಳ ವಿವರಗಳು ದೃಢಪಟ್ಟಿಲ್ಲ. ದೃಢೀಕರಣಕ್ಕಾಗಿ " + contact + " ಗೆ ಕರೆ ಮಾಡಿ.",
+      support: "COREVA ಯಲ್ಲಿ ವ್ಯವಹಾರ ಬೆಂಬಲ ವಿಭಾಗವಿದೆ. ನಿಮಗೆ ಯಾವ ರೀತಿಯ ಸಹಾಯ ಬೇಕೆಂದು ತಂಡಕ್ಕೆ ತಿಳಿಸಿ; ಅವರು ಸೇವೆ ಮತ್ತು ಲಭ್ಯತೆಯನ್ನು ದೃಢಪಡಿಸುತ್ತಾರೆ. ಸಂಪರ್ಕ: " + contact + ".",
+      appointment: "COREVA Business Solutions ಗೆ ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಕೇಳಲು " + contact + " ಗೆ ಕರೆ ಮಾಡಿ. ಆನ್‌ಲೈನ್ ಬುಕಿಂಗ್ ಈ ಪುಟಕ್ಕೆ ಸಂಪರ್ಕಗೊಂಡಿಲ್ಲ; ತಂಡ ದೃಢಪಡಿಸುವವರೆಗೆ ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಖಚಿತವಲ್ಲ.",
+      price: "ಬೆಲೆ ನಿಮ್ಮ ಅಗತ್ಯಗಳ ಮೇಲೆ ಅವಲಂಬಿತವಾಗಿರುತ್ತದೆ. ದೃಢೀಕೃತ ಬೆಲೆಪಟ್ಟಿ ನನ್ನ ಬಳಿ ಇಲ್ಲ, ಆದ್ದರಿಂದ ಊಹಿಸಿ ಬೆಲೆ ಹೇಳುವುದಿಲ್ಲ. ಅಧಿಕೃತ ದರಕ್ಕಾಗಿ " + contact + " ಗೆ ಕರೆ ಮಾಡಿ.",
+      jobs: "ಉದ್ಯೋಗ, ಇಂಟರ್ನ್‌ಶಿಪ್ ಅಥವಾ ನೇಮಕಾತಿ ವಿಚಾರಣೆಗಳಿಗಾಗಿ " + contact + " ಗೆ ಕರೆ ಮಾಡಿ. ಪ್ರಸ್ತುತ ಖಾಲಿ ಹುದ್ದೆಗಳನ್ನು ತಂಡ ದೃಢಪಡಿಸಬೇಕು.",
+      email: "ಹಂಚಿಕೊಳ್ಳಲು ದೃಢೀಕೃತ ಸಾರ್ವಜನಿಕ ಇಮೇಲ್ ವಿಳಾಸ ನನ್ನ ಬಳಿ ಇಲ್ಲ. ದಯವಿಟ್ಟು " + contact + " ಮೂಲಕ COREVA Business Solutions ಅನ್ನು ಸಂಪರ್ಕಿಸಿ.",
+      human: "ಖಂಡಿತ. ತಂಡದೊಂದಿಗೆ ಮಾತನಾಡಲು COREVA Business Solutions ಗೆ " + contact + " ಸಂಖ್ಯೆಯಲ್ಲಿ ಕರೆ ಮಾಡಿ.",
+      fallback: "ನಿಮ್ಮ ಪ್ರಶ್ನೆಗೆ ಧನ್ಯವಾದಗಳು. ಈ ನಿರ್ದಿಷ್ಟ ಪ್ರಶ್ನೆಗೆ ದೃಢೀಕೃತ ಉತ್ತರ ನನ್ನ ಬಳಿ ಇಲ್ಲ, ಆದ್ದರಿಂದ ಊಹಿಸಲು ಇಷ್ಟಪಡುವುದಿಲ್ಲ. ನಿಮ್ಮ ವಿಚಾರಣೆ ಡಿಜಿಟಲ್ ಸೇವೆಗಳು, ಆಸ್ತಿ ಸೇವೆಗಳು, ಹಣಕಾಸು ಅಥವಾ ವ್ಯವಹಾರ ಬೆಂಬಲಕ್ಕೆ ಸಂಬಂಧಿಸಿದೆಯೇ? " + contact + " ಗೆ ಕರೆ ಮಾಡಬಹುದು."
+    },
+    "ml-IN": {
+      welcome: "നമസ്കാരം! COREVA Business Solutions-ലേക്ക് സ്വാഗതം. ഞങ്ങളുടെ നാല് പ്രധാന വിഭാഗങ്ങൾ ഡിജിറ്റൽ സേവനങ്ങൾ, പ്രോപ്പർട്ടി സേവനങ്ങൾ, ഫിനാൻസ്, ബിസിനസ് സപ്പോർട്ട് എന്നിവയാണ്. എന്താണ് അറിയേണ്ടത്?",
+      placeholder: "നിങ്ങളുടെ ചോദ്യം ഇവിടെ ടൈപ്പ് ചെയ്യുക...",
+      ready: "തയ്യാറാണ്. ചോദ്യം ടൈപ്പ് ചെയ്യുക അല്ലെങ്കിൽ സംസാരിക്കാൻ തുടങ്ങുക.",
+      start: "🎙 സംസാരിക്കാൻ തുടങ്ങുക", stop: "മൈക്രോഫോൺ നിർത്തുക", clear: "സംഭാഷണം മായ്ക്കുക",
+      voiceOn: "🔊 ശബ്ദ മറുപടികൾ: ON", voiceOff: "🔇 ശബ്ദ മറുപടികൾ: OFF", send: "അയയ്ക്കുക",
+      listening: "കേൾക്കുന്നു. മൈക്രോഫോണിലേക്ക് വ്യക്തമായി സംസാരിക്കുക.",
+      stopped: "മൈക്രോഫോൺ നിർത്തി. വീണ്ടും ശ്രമിക്കാൻ സംസാരിക്കാൻ തുടങ്ങുക.",
+      empty: "ദയവായി ആദ്യം ചോദ്യം ടൈപ്പ് ചെയ്യുക അല്ലെങ്കിൽ സംസാരിക്കാൻ തുടങ്ങുക.",
+      unsupported: "ഈ ബ്രൗസറിൽ ശബ്ദ തിരിച്ചറിയൽ ലഭ്യമല്ല. ചോദ്യം ടൈപ്പ് ചെയ്ത് അയയ്ക്കുക.",
+      micError: "മൈക്രോഫോൺ പിശക്: ", micHelp: ". ബ്രൗസറിൽ മൈക്രോഫോൺ അനുമതി നൽകുക അല്ലെങ്കിൽ ചോദ്യം ടൈപ്പ് ചെയ്യുക.",
+      noHear: "നിങ്ങളുടെ ചോദ്യം കേൾക്കാനായില്ല. വീണ്ടും ശ്രമിക്കുക അല്ലെങ്കിൽ ടൈപ്പ് ചെയ്യുക.",
+      answer: "മറുപടി കാണിച്ചിരിക്കുന്നു. ശബ്ദം കേൾക്കുന്നില്ലെങ്കിൽ ഉപകരണത്തിന്റെ വോള്യം പരിശോധിക്കുക.",
+      clearDone: "സംഭാഷണം മായ്ച്ചു.", voiceEnabled: "ശബ്ദ മറുപടികൾ പ്രവർത്തനക്ഷമമാക്കി.",
+      voiceDisabled: "ശബ്ദ മറുപടികൾ ഓഫാക്കി. ടെക്സ്റ്റ് മറുപടികൾ തുടർന്നും കാണിക്കും.",
+      languagePrefix: "തിരഞ്ഞെടുത്ത ഭാഷ: ", languageSuffix: ". ബ്രൗസറിന്റെ ശബ്ദ പിന്തുണ വ്യത്യാസപ്പെടാം.",
+      playbackUnsupported: "മറുപടി കാണിച്ചിരിക്കുന്നു. ഈ ബ്രൗസറിൽ ശബ്ദ പ്ലേബാക്ക് പിന്തുണയില്ല.",
+      playbackError: "മറുപടി കാണിച്ചിരിക്കുന്നു. ശബ്ദം ആരംഭിക്കാനായില്ല.",
+      greeting: "നമസ്കാരം! COREVA Business Solutions-ലേക്ക് സ്വാഗതം. ഇന്ന് ഞാൻ നിങ്ങളെ എങ്ങനെ സഹായിക്കണം?",
+      thanks: "സ്വാഗതം! COREVA Business Solutions-നെ ബന്ധപ്പെടുന്നതിന് നന്ദി.",
+      bye: "COREVA Business Solutions-നെ ബന്ധപ്പെടുന്നതിന് നന്ദി. നിങ്ങളുടെ ദിവസം സന്തോഷകരമാകട്ടെ!",
+      contact: "COREVA Business Solutions-നെ " + contact + " എന്ന നമ്പറിൽ ബന്ധപ്പെടാം. ഞങ്ങളുടെ സ്ഥലം മംഗളൂരു, കർണാടക, ഇന്ത്യയാണ്. കൃത്യമായ ഓഫീസ് വിലാസത്തിനും വഴിക്കും വിളിക്കുക.",
+      location: "COREVA Business Solutions മംഗളൂരു, കർണാടക, ഇന്ത്യയിലാണ്. കൃത്യമായ തെരുവ് വിലാസം സ്ഥിരീകരിച്ചിട്ടില്ല. വഴിയറിയാൻ " + contact + " എന്ന നമ്പറിൽ വിളിക്കുക.",
+      brands: "COREVA Business Solutions ആണ് പ്രധാന സ്ഥാപനം. VELORA DIGITAL ഡിജിറ്റൽ, സാങ്കേതിക പ്രവർത്തനങ്ങളുമായി ബന്ധപ്പെട്ടതാണ്. TBD GROUP.in കുടുംബത്തിൽ TBD Builders & Developers, AURELIV Interiors.Design, SR PRIME Properties & Real Estate Developers എന്നിവ ഉൾപ്പെടുന്നു. COREVA-യ്ക്ക് ഫിനാൻസ്, ബിസിനസ് സപ്പോർട്ട് വിഭാഗങ്ങളും ഉണ്ട്.",
+      about: "ഡിജിറ്റൽ സേവനങ്ങൾ, പ്രോപ്പർട്ടി സേവനങ്ങൾ, ഫിനാൻസ്, ബിസിനസ് സപ്പോർട്ട് എന്നീ നാല് വിഭാഗങ്ങളിലൂടെ COREVA Business Solutions ആളുകളെയും ബിസിനസുകളെയും അവസരങ്ങളെയും ബന്ധിപ്പിക്കുന്നു.",
+      digital: "വെബ്സൈറ്റ് വികസനം, സോഫ്റ്റ്‌വെയർ, ഡിജിറ്റൽ പ്ലാറ്റ്‌ഫോമുകൾ, ബന്ധപ്പെട്ട സാങ്കേതിക പ്രവർത്തനങ്ങൾ എന്നിവയ്ക്കുള്ള ബ്രാൻഡാണ് VELORA DIGITAL. പ്രോജക്റ്റിനെക്കുറിച്ച് സംസാരിക്കാൻ " + contact + " എന്ന നമ്പറിൽ വിളിക്കുക. വിലയും ലഭ്യതയും ടീം സ്ഥിരീകരിക്കണം.",
+      interior: "ഇന്റീരിയർ ഡിസൈൻ അന്വേഷണങ്ങൾ TBD GROUP.in കുടുംബത്തിലെ AURELIV Interiors.Design-നുമായി ബന്ധപ്പെട്ടതാണ്. പ്രോജക്റ്റ് വിശദാംശങ്ങൾ, മെറ്റീരിയലുകൾ, വില, ലഭ്യത എന്നിവ ടീം സ്ഥിരീകരിക്കണം. വിളിക്കുക: " + contact + ".",
+      construction: "നിർമാണ അന്വേഷണങ്ങൾ TBD GROUP.in കുടുംബത്തിലെ TBD Builders & Developers-നുമായി ബന്ധപ്പെട്ടതാണ്. സേവന ലഭ്യതയും പ്രോജക്റ്റ് വിശദാംശങ്ങളും സ്ഥിരീകരിക്കാൻ " + contact + " എന്ന നമ്പറിൽ വിളിക്കുക.",
+      property: "പ്രോപ്പർട്ടി അന്വേഷണങ്ങൾ TBD GROUP.in കുടുംബത്തിലെ SR PRIME Properties & Real Estate Developers-നുമായി ബന്ധപ്പെട്ടതാണ്. സ്ഥിരീകരിച്ച നിലവിലെ ലിസ്റ്റിംഗുകൾ, വിലകൾ, ലഭ്യത എന്നിവ എനിക്ക് ലഭ്യമല്ല. നിലവിലെ ഓപ്ഷനുകൾ സ്ഥിരീകരിക്കാൻ " + contact + " എന്ന നമ്പറിൽ വിളിക്കുക.",
+      finance: "COREVA-യ്ക്ക് ഫിനാൻസ് വിഭാഗമുണ്ട്. പ്രത്യേക ഉൽപ്പന്നങ്ങൾ, നിരക്കുകൾ, യോഗ്യത, നിയന്ത്രിത സേവനങ്ങൾ എന്നിവയുടെ വിശദാംശങ്ങൾ സ്ഥിരീകരിച്ചിട്ടില്ല. സ്ഥിരീകരിക്കാൻ " + contact + " എന്ന നമ്പറിൽ വിളിക്കുക.",
+      support: "COREVA-യ്ക്ക് ബിസിനസ് സപ്പോർട്ട് വിഭാഗമുണ്ട്. നിങ്ങൾക്ക് എന്ത് സഹായമാണ് വേണ്ടതെന്ന് ടീമിനെ അറിയിക്കുക; സേവനവും ലഭ്യതയും അവർ സ്ഥിരീകരിക്കും. ബന്ധപ്പെടുക: " + contact + ".",
+      appointment: "COREVA Business Solutions-ൽ അപ്പോയിന്റ്മെന്റ് അഭ്യർത്ഥിക്കാൻ " + contact + " എന്ന നമ്പറിൽ വിളിക്കുക. ഓൺലൈൻ ബുക്കിംഗ് ഈ പേജുമായി ബന്ധിപ്പിച്ചിട്ടില്ല; ടീം സ്ഥിരീകരിക്കുന്നതുവരെ അപ്പോയിന്റ്മെന്റ് ഉറപ്പായിട്ടില്ല.",
+      price: "വില നിങ്ങളുടെ ആവശ്യങ്ങളെ ആശ്രയിച്ചിരിക്കും. അംഗീകരിച്ച വിലപ്പട്ടിക എനിക്ക് ലഭ്യമല്ല, അതിനാൽ ഊഹിച്ച് വില പറയില്ല. സ്ഥിരീകരിച്ച ക്വട്ടേഷനായി " + contact + " എന്ന നമ്പറിൽ വിളിക്കുക.",
+      jobs: "ജോലി, ഇന്റേൺഷിപ്പ്, റിക്രൂട്ട്മെന്റ് അന്വേഷണങ്ങൾക്ക് " + contact + " എന്ന നമ്പറിൽ COREVA-യെ ബന്ധപ്പെടുക. നിലവിലെ ഒഴിവുകൾ ടീം സ്ഥിരീകരിക്കണം.",
+      email: "സ്ഥിരീകരിച്ച പൊതുവായ ഇമെയിൽ വിലാസം എനിക്ക് ലഭ്യമല്ല. ദയവായി " + contact + " വഴി COREVA Business Solutions-നെ ബന്ധപ്പെടുക.",
+      human: "തീർച്ചയായും. ടീമുമായി സംസാരിക്കാൻ COREVA Business Solutions-നെ " + contact + " എന്ന നമ്പറിൽ വിളിക്കുക.",
+      fallback: "നിങ്ങളുടെ ചോദ്യത്തിന് നന്ദി. ഈ പ്രത്യേക ചോദ്യത്തിന് സ്ഥിരീകരിച്ച മറുപടി എനിക്ക് ഇപ്പോൾ ലഭ്യമല്ല, അതിനാൽ ഊഹിച്ച് പറയാൻ ഞാൻ ആഗ്രഹിക്കുന്നില്ല. നിങ്ങളുടെ ചോദ്യം ഡിജിറ്റൽ സേവനങ്ങൾ, പ്രോപ്പർട്ടി സേവനങ്ങൾ, ഫിനാൻസ്, അല്ലെങ്കിൽ ബിസിനസ് സപ്പോർട്ട് എന്നിവയിൽ ഏതിനെയാണ് കുറിക്കുന്നത്? " + contact + " എന്ന നമ്പറിൽ വിളിക്കാം."
+    }
+  };
 
-  const welcome =
-    "Hello! Welcome to COREVA Business Solutions. Our four main divisions are Digital Services, Property Services, Finance, and Business Support. What would you like to know?";
-
-  function setStatus(message) {
-    status.textContent = message;
-  }
-
+  function t(key) { return (copy[language.value] || copy["en-IN"])[key] || copy["en-IN"][key] || ""; }
+  function setStatus(message) { status.textContent = message; }
   function addBubble(message, type) {
     const bubble = document.createElement("div");
     bubble.className = "bubble " + type;
@@ -144,232 +248,132 @@ footer{text-align:center;color:#a9aab0;font-size:12px;line-height:1.6;padding:12
     chat.appendChild(bubble);
     chat.scrollTop = chat.scrollHeight;
   }
-
+  function updateInterface() {
+    get("start").textContent = t("start");
+    get("stop").textContent = t("stop");
+    get("clear").textContent = t("clear");
+    get("speakToggle").textContent = voiceReplies ? t("voiceOn") : t("voiceOff");
+    get("form").querySelector("button[type='submit']").textContent = t("send");
+    input.placeholder = t("placeholder");
+  }
   function speak(message) {
     if (!voiceReplies) return;
-
     if (!("speechSynthesis" in window)) {
-      setStatus("Answer displayed. Speech playback is not supported by this browser.");
+      setStatus(t("playbackUnsupported"));
       return;
     }
-
     try {
       window.speechSynthesis.cancel();
-
       const speech = new SpeechSynthesisUtterance(message);
-      speech.lang = language.value === "tulu" ? "kn-IN" : language.value;
-
+      speech.lang = language.value;
       const prefix = speech.lang.split("-")[0].toLowerCase();
       const voices = window.speechSynthesis.getVoices();
-      const voice =
-        voices.find(v => v.lang.toLowerCase() === speech.lang.toLowerCase()) ||
+      const voice = voices.find(v => v.lang.toLowerCase() === speech.lang.toLowerCase()) ||
         voices.find(v => v.lang.toLowerCase().startsWith(prefix));
-
       if (voice) speech.voice = voice;
       window.speechSynthesis.speak(speech);
-    } catch (error) {
-      setStatus("Answer displayed. Voice playback could not start.");
-    }
+    } catch (error) { setStatus(t("playbackError")); }
   }
-
   function answerFor(question) {
     const q = question.toLowerCase().trim();
     const has = (...words) => words.some(word => q.includes(word));
-
-    if (/^(hi|hello|hey|good morning|good afternoon|good evening|namaste|ನಮಸ್ಕಾರ|നമസ്കാരം|नमस्ते)[!. ]*$/.test(q)) {
-      return "Hello! Welcome to COREVA Business Solutions. How can I help you today?";
-    }
-
-    if (has("thank you", "thanks", "ಧನ್ಯವಾದ", "നന്ദി", "धन्यवाद")) {
-      return "You're welcome! Thank you for contacting COREVA Business Solutions.";
-    }
-
-    if (has("bye", "goodbye")) {
-      return "Thank you for contacting COREVA Business Solutions. Have a great day!";
-    }
-
-    if (has("contact", "phone", "telephone", "mobile number", "contact number", "call you", "whatsapp", "reach your team")) {
-      return "You can contact COREVA Business Solutions at " + contact + ". Our location is Mangalore, Karnataka, India. Please call for the exact office address and directions.";
-    }
-
-    if (has("address", "directions", "where", "location", "located", "office", "which city")) {
-      return "COREVA Business Solutions is based in Mangalore, Karnataka, India. The exact street address has not been confirmed. Please call " + contact + " for directions.";
-    }
-
-    if (has("which companies", "under coreva", "associated brands", "subsidiaries", "brand family", "companies under", "company names", "your brands")) {
-      return "COREVA Business Solutions is the parent business. VELORA DIGITAL is associated with digital and technology work. The TBD GROUP.in brand family includes TBD Builders & Developers, AURELIV Interiors.Design, and SR PRIME Properties & Real Estate Developers. COREVA also has Finance and Business Support divisions.";
-    }
-
-    if (has("what does coreva", "what is coreva", "about coreva", "your company", "your business", "what do you do")) {
-      return "COREVA Business Solutions connects people, businesses and opportunities through four divisions: Digital Services, Property Services, Finance, and Business Support.";
-    }
-
-    if (has("velora", "website development", "web development", "make a website", "build a website", "software", "app development", "technology", "digital marketing", "digital services", "platform", "automation", "ai development")) {
-      return "VELORA DIGITAL is the associated technology and digital brand for website development, software, digital platforms and related technology work. Contact " + contact + " to discuss a project. The team must confirm pricing and availability.";
-    }
-
-    if (has("interior", "home design", "modular kitchen", "wardrobe", "furniture design", "false ceiling", "room design")) {
-      return "Interior design enquiries are associated with AURELIV Interiors.Design within the TBD GROUP.in brand family. Project scope, materials, pricing and availability must be confirmed directly. Call " + contact + ".";
-    }
-
-    if (has("construction", "builder", "building", "house construction", "civil work", "contractor", "renovation")) {
-      return "Construction enquiries are associated with TBD Builders & Developers within the TBD GROUP.in brand family. The team can confirm service availability and project details at " + contact + ".";
-    }
-
-    if (has("property", "real estate", "plot", "plots", "land", "flat", "apartment", "villa", "house for sale", "property price", "rental", "rent", "buy property", "sell property", "sr prime")) {
-      return "Property enquiries are associated with SR PRIME Properties & Real Estate Developers within the TBD GROUP.in brand family. I don't have verified live listings, prices or availability. Please call " + contact + " to confirm current options.";
-    }
-
-    if (has("finance", "loan", "investment", "insurance", "interest rate", "financial service", "emi", "credit")) {
-      return "COREVA has a Finance division. I don't have confirmed details about specific products, rates, eligibility or regulated services. Please call " + contact + " so the team can confirm.";
-    }
-
-    if (has("business support", "business assistance", "business advice", "business registration", "startup help", "company registration", "business plan", "consulting", "consultancy")) {
-      return "COREVA has a Business Support division. Tell the team what kind of assistance you need so they can confirm the service and availability. Contact " + contact + ".";
-    }
-
-    if (has("appointment", "book a meeting", "schedule a meeting", "meet your team", "meeting", "visit your office", "consultation", "book a call")) {
-      return "You can request an appointment by calling COREVA Business Solutions at " + contact + ". Online booking is not connected to this page, so an appointment is not confirmed until the team confirms it.";
-    }
-
-    if (has("price", "pricing", "cost", "how much", "quotation", "quote", "budget", "charges", "rate")) {
-      return "Pricing depends on your requirements. I don't have an approved price list, so I won't invent a figure. Please call " + contact + " for a confirmed quotation.";
-    }
-
-    if (has("job", "career", "vacancy", "hiring", "internship", "recruitment")) {
-      return "For job, internship or recruitment enquiries, please contact COREVA at " + contact + ". The team must confirm current vacancies.";
-    }
-
-    if (has("email", "email address", "mail id")) {
-      return "I don't have a verified public email address to share. Please contact COREVA Business Solutions at " + contact + ".";
-    }
-
-    if (has("human", "real person", "representative", "talk to someone", "staff member", "manager")) {
-      return "Of course. Please call COREVA Business Solutions at " + contact + " to speak with the team.";
-    }
-
-    return "Thank you for your question. I don't have a verified answer to that specific question yet, and I don't want to guess. Is your enquiry about Digital Services, Property Services, Finance, or Business Support? You can also call " + contact + ".";
+    const lang = language.value;
+    const greetings = lang === "kn-IN"
+      ? ["ನಮಸ್ಕಾರ", "ಹಲೋ", "ಹಾಯ್", "ಶುಭೋದಯ", "ಶುಭ ಸಂಜೆ"]
+      : lang === "ml-IN"
+      ? ["നമസ്കാരം", "ഹലോ", "ഹായ്", "സുപ്രഭാതം", "ശുഭ സായാഹ്നം"]
+      : ["hi", "hello", "hey", "good morning", "good afternoon", "good evening", "namaste"];
+    if (greetings.some(g => q === g || q === g + "!" || q === g + ".")) return t("greeting");
+    if (has("thank you", "thanks", "ಧನ್ಯವಾದ", "ನ ಧನ್ಯವಾದ", "ಧನ್ಯವಾದಗಳು", "നന്ദി", "നന്ദി", "നന്ദി പറയു")) return t("thanks");
+    if (has("bye", "goodbye", "ವಿದಾಯ", "ಹೋಗುತ್ತೇನೆ", "വിട", "പിന്നെ കാണാം")) return t("bye");
+    if (has("contact", "phone", "telephone", "mobile number", "contact number", "call you", "whatsapp", "reach your team", "ಸಂಪರ್ಕ", "ಫೋನ್", "ಮೊಬೈಲ್", "ನಂಬರ್", "ಸಂಖ್ಯೆ", "ബന്ധപ്പെട", "ഫോൺ", "നമ്പർ", "മൊബൈൽ")) return t("contact");
+    if (has("address", "directions", "where", "location", "located", "office", "which city", "ವಿಳಾಸ", "ಎಲ್ಲಿ", "ಸ್ಥಳ", "ಕಚೇರಿ", "വിലാസം", "എവിടെ", "സ്ഥലം", "ഓഫീസ്")) return t("location");
+    if (has("which companies", "under coreva", "associated brands", "subsidiaries", "brand family", "companies under", "company names", "your brands", "ಬ್ರ್ಯಾಂಡ್", "ಕಂಪನಿಗಳು", "ಯಾವ ಕಂಪನಿ", "ബ്രാൻഡ്", "കമ്പനികൾ", "ഏത് കമ്പനി")) return t("brands");
+    if (has("what does coreva", "what is coreva", "about coreva", "your company", "your business", "what do you do", "ಕೋರ್‌ವಾ", "ಕೋರ್ವಾ", "ನಿಮ್ಮ ಕಂಪನಿ", "ಏನು ಮಾಡುತ್ತೀರಿ", "കോർവ", "നിങ്ങളുടെ കമ്പനി", "എന്താണ് ചെയ്യുന്നത്")) return t("about");
+    if (has("velora", "website development", "web development", "make a website", "build a website", "software", "app development", "technology", "digital marketing", "digital services", "platform", "automation", "ai development", "ವೆಬ್‌ಸೈಟ್", "ವೆಬ್ ಸೈಟ್", "ಸಾಫ್ಟ್‌ವೇರ್", "ಡಿಜಿಟಲ್", "ತಂತ್ರಜ್ಞಾನ", "വെബ്സൈറ്റ്", "സോഫ്റ്റ്‌വെയർ", "ഡിജിറ്റൽ", "ടെക്നോളജി")) return t("digital");
+    if (has("interior", "home design", "modular kitchen", "wardrobe", "furniture design", "false ceiling", "room design", "ಇಂಟೀರಿಯರ್", "ಒಳಾಂಗಣ", "ಮನೆ ವಿನ್ಯಾಸ", "അലങ്കാരം", "ഇന്റീരിയർ", "വീടിന്റെ ഡിസൈൻ")) return t("interior");
+    if (has("construction", "builder", "building", "house construction", "civil work", "contractor", "renovation", "ನಿರ್ಮಾಣ", "ಮನೆ ಕಟ್ಟುವುದು", "ಕಟ್ಟಡ", "നിർമാണം", "വീട് പണിയൽ", "കെട്ടിടം")) return t("construction");
+    if (has("property", "real estate", "plot", "plots", "land", "flat", "apartment", "villa", "house for sale", "property price", "rental", "rent", "buy property", "sell property", "sr prime", "ಆಸ್ತಿ", "ಜಮೀನು", "ಪ್ಲಾಟ್", "ಮನೆ ಖರೀದಿ", "ಬಾಡಿಗೆ", "ರಿಯಲ್ ಎಸ್ಟೇಟ್", "പ്രോപ്പർട്ടി", "ഭൂമി", "പ്ലോട്ട്", "വാടക", "റിയൽ എസ്റ്റേറ്റ്")) return t("property");
+    if (has("finance", "loan", "investment", "insurance", "interest rate", "financial service", "emi", "credit", "ಹಣಕಾಸು", "ಸಾಲ", "ಹೂಡಿಕೆ", "ವಿಮೆ", "ഫിനാൻസ്", "വായ്പ", "നിക്ഷേപം", "ഇൻഷുറൻസ്")) return t("finance");
+    if (has("business support", "business assistance", "business advice", "business registration", "startup help", "company registration", "business plan", "consulting", "consultancy", "ವ್ಯವಹಾರ ಬೆಂಬಲ", "ವ್ಯಾಪಾರ ಸಲಹೆ", "ಕಂಪನಿ ನೋಂದಣಿ", "ബിസിനസ് സഹായം", "ബിസിനസ് ഉപദേശം", "കമ്പനി രജിസ്ട്രേഷൻ")) return t("support");
+    if (has("appointment", "book a meeting", "schedule a meeting", "meet your team", "meeting", "visit your office", "consultation", "book a call", "ಅಪಾಯಿಂಟ್ಮೆಂಟ್", "ಸಭೆ", "ಭೇಟಿ", "കൂടിക്കാഴ്ച", "അപ്പോയിന്റ്മെന്റ്", "മീറ്റിംഗ്")) return t("appointment");
+    if (has("price", "pricing", "cost", "how much", "quotation", "quote", "budget", "charges", "rate", "ಬೆಲೆ", "ದರ", "ಎಷ್ಟು", "ವೆಚ್ಚ", "വില", "എത്ര", "ചെലവ്", "നിരക്ക്")) return t("price");
+    if (has("job", "career", "vacancy", "hiring", "internship", "recruitment", "ಕೆಲಸ", "ಉದ್ಯೋಗ", "ನೇಮಕಾತಿ", "ജോലി", "തൊഴിൽ", "ഒഴിവ്")) return t("jobs");
+    if (has("email", "email address", "mail id", "ಇಮೇಲ್", "ಇಮೇಲ್ ವಿಳಾಸ", "ഇമെയിൽ", "മെയിൽ")) return t("email");
+    if (has("human", "real person", "representative", "talk to someone", "staff member", "manager", "ವ್ಯಕ್ತಿಯೊಂದಿಗೆ", "ಸಿಬ್ಬಂದಿ", "ಮ್ಯಾನೇಜರ್", "ആളോട് സംസാരിക്കുക", "സ്റ്റാഫ്", "മാനേജർ")) return t("human");
+    return t("fallback");
   }
-
   function processQuestion(value) {
     const question = String(value || "").trim();
-
-    if (!question) {
-      setStatus("Please type a question first, or press Start speaking.");
-      input.focus();
-      return;
-    }
-
+    if (!question) { setStatus(t("empty")); input.focus(); return; }
     addBubble(question, "user");
     input.value = "";
-
     const answer = answerFor(question);
     addBubble(answer, "bot");
-    setStatus("Answer displayed. Check your computer's volume if you cannot hear it.");
+    setStatus(t("answer"));
     speak(answer);
   }
-
   function stopMicrophone() {
-    if (recognition) {
-      try {
-        recognition.stop();
-      } catch (error) {}
-    }
+    if (recognition) { try { recognition.stop(); } catch (error) {} }
     get("start").disabled = false;
   }
-
-  get("form").addEventListener("submit", function (event) {
-    event.preventDefault();
-    processQuestion(input.value);
-  });
-
-  document.querySelectorAll("[data-q]").forEach(function (button) {
-    button.addEventListener("click", function () {
-      processQuestion(button.getAttribute("data-q"));
-    });
-  });
-
-  get("start").addEventListener("click", function () {
+  get("form").addEventListener("submit", event => { event.preventDefault(); processQuestion(input.value); });
+  document.querySelectorAll("[data-q]").forEach(button => button.addEventListener("click", () => processQuestion(button.getAttribute("data-q"))));
+  get("start").addEventListener("click", () => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
-      setStatus("This browser does not support speech recognition. Type your question and press Send.");
-      return;
-    }
-
+    if (!SpeechRecognition) { setStatus(t("unsupported")); return; }
     stopMicrophone();
-
     try {
       recognition = new SpeechRecognition();
-      recognition.lang = language.value === "tulu" ? "kn-IN" : language.value;
+      recognition.lang = language.value;
       recognition.continuous = false;
       recognition.interimResults = false;
       recognition.maxAlternatives = 1;
-
-      recognition.onstart = function () {
-        get("start").disabled = true;
-        setStatus("Listening now. Speak clearly into your microphone.");
-      };
-
-      recognition.onresult = function (event) {
+      recognition.onstart = () => { get("start").disabled = true; setStatus(t("listening")); };
+      recognition.onresult = event => {
         const result = event.results && event.results[0] && event.results[0][0];
-        if (result && result.transcript) {
-          processQuestion(result.transcript);
-        } else {
-          setStatus("I couldn't hear your question. Please try again or type it.");
-        }
+        if (result && result.transcript) processQuestion(result.transcript);
+        else setStatus(t("noHear"));
       };
-
-      recognition.onerror = function (event) {
-        setStatus("Microphone error: " + event.error + ". Allow microphone access in your browser or type your question.");
-      };
-
-      recognition.onend = function () {
+      recognition.onerror = event => setStatus(t("micError") + event.error + t("micHelp"));
+      recognition.onend = () => {
         get("start").disabled = false;
-        if (status.textContent.startsWith("Listening now")) {
-          setStatus("Microphone stopped. Press Start speaking to try again.");
-        }
+        if (status.textContent === t("listening")) setStatus(t("stopped"));
       };
-
       recognition.start();
     } catch (error) {
       get("start").disabled = false;
-      setStatus("Could not start the microphone. Check browser permissions, or type your question.");
+      setStatus(t("unsupported"));
     }
   });
-
-  get("stop").addEventListener("click", function () {
+  get("stop").addEventListener("click", () => {
     stopMicrophone();
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-    setStatus("Microphone stopped and speech playback cancelled.");
+    setStatus(t("stopped"));
   });
-
-  get("clear").addEventListener("click", function () {
+  get("clear").addEventListener("click", () => {
     stopMicrophone();
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
     chat.replaceChildren();
-    addBubble(welcome, "bot");
-    setStatus("Conversation cleared.");
+    addBubble(t("welcome"), "bot");
+    setStatus(t("clearDone"));
   });
-
-  get("speakToggle").addEventListener("click", function () {
+  get("speakToggle").addEventListener("click", () => {
     voiceReplies = !voiceReplies;
-    get("speakToggle").textContent = voiceReplies ? "🔊 Voice replies: ON" : "🔇 Voice replies: OFF";
-
-    if (!voiceReplies && "speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-    }
-
-    setStatus(voiceReplies ? "Voice replies enabled." : "Voice replies disabled. Text answers will still appear.");
+    updateInterface();
+    if (!voiceReplies && "speechSynthesis" in window) window.speechSynthesis.cancel();
+    setStatus(voiceReplies ? t("voiceEnabled") : t("voiceDisabled"));
   });
-
-  language.addEventListener("change", function () {
+  language.addEventListener("change", () => {
     stopMicrophone();
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-    setStatus("Language selected: " + language.options[language.selectedIndex].text + ". Browser speech support varies.");
+    updateInterface();
+    chat.replaceChildren();
+    addBubble(t("welcome"), "bot");
+    setStatus(t("languagePrefix") + language.options[language.selectedIndex].text + t("languageSuffix"));
   });
-
-  addBubble(welcome, "bot");
+  updateInterface();
+  addBubble(t("welcome"), "bot");
 })();
 </script>
 </body>
