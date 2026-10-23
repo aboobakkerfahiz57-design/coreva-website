@@ -1,164 +1,360 @@
-<!doctype html>
+ 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>COREVA AI — Website Voice Receptionist</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COREVA AI | Website Receptionist</title>
 <style>
-:root{color-scheme:dark;--bg:#071426;--panel:#102644;--panel2:#15345b;--line:#31557e;--gold:#ffd36b;--text:#f4f7fc;--muted:#bfd0e6;--user:#5b5b50;--bot:#1d4d7b}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at top right,#15518a 0,#0a1c34 42%,#061020 100%);color:var(--text);min-height:100vh}
-.wrap{max-width:920px;margin:auto;padding:22px 16px 48px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.logo{font-weight:900;font-size:24px;letter-spacing:1px;color:var(--gold)}.logo small{font-size:12px;color:#fff}.link{color:var(--gold);font-weight:700}
-.card{background:rgba(16,38,68,.94);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:16px;box-shadow:0 12px 36px #0003}
-.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);font-weight:800}h1{font-size:clamp(28px,5vw,42px);margin:10px 0}h2{font-size:20px;margin:0 0 12px}p{line-height:1.55;color:var(--muted)}label{display:block;margin:14px 0 7px;font-size:14px;font-weight:700;color:var(--muted)}
-select,input,textarea{width:100%;border:1px solid #476b91;border-radius:10px;background:#071a31;color:#fff;padding:13px;font:inherit}button{border:0;border-radius:10px;padding:12px 16px;font-weight:800;cursor:pointer;background:var(--gold);color:#15233a}button.secondary{background:#24496e;color:#fff;border:1px solid #4b7199}button:disabled{opacity:.55;cursor:not-allowed}
-.controls{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}.status{background:#06182d;border:1px solid #2c527a;padding:11px;border-radius:10px;color:var(--gold);font-size:14px}
-.chat{display:flex;flex-direction:column;gap:10px;max-height:430px;overflow:auto;padding:12px 2px}.bubble{padding:12px 14px;border-radius:14px;max-width:88%;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}.bot{align-self:flex-start;background:var(--bot)}.user{align-self:flex-end;background:#5c625f;color:#fff}.row{display:flex;gap:8px}.row input{flex:1;min-width:0}.examples{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.examples button{font-size:13px;padding:9px 11px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tile{padding:13px;border:1px solid var(--line);border-radius:12px;background:#0a1c32}.tile b{display:block;margin-bottom:5px}.small{font-size:12px;color:var(--muted)}footer{font-size:12px;color:#9fb3cc;line-height:1.5;padding:6px 2px}
-@media(max-width:600px){.card{padding:16px}.grid{grid-template-columns:1fr}.row{flex-direction:column}.bubble{max-width:96%}}
+:root{--bg:#06152f;--panel:#0b2b59;--panel2:#103b75;--blue:#168bd4;--gold:#ffd45e;--text:#f5f8ff;--muted:#c6d9f4}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:radial-gradient(circle at top right,#155a9b,var(--bg) 65%);min-height:100vh}
+.wrap{max-width:1050px;margin:auto;padding:24px 16px 40px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
+.logo{font-weight:900;font-size:25px;letter-spacing:1px;color:var(--gold)}
+.logo small{font-size:13px;color:white}
+a{color:var(--gold)}
+.panel{border:1px solid #4c8cc5;background:rgba(7,34,72,.88);border-radius:20px;padding:22px;margin-bottom:18px;box-shadow:0 12px 35px #0002}
+.eyebrow{color:var(--gold);font-size:12px;font-weight:bold;letter-spacing:.8px}
+h1{font-size:clamp(28px,5vw,44px);margin:12px 0}
+h2{font-size:22px;margin-top:0}
+p{line-height:1.55}
+.muted{color:var(--muted)}
+label{display:block;font-weight:bold;margin:18px 0 8px}
+select,input,textarea{width:100%;padding:13px;border-radius:10px;border:1px solid #5489bd;background:#09234a;color:white;font:inherit}
+button{border:0;border-radius:10px;padding:12px 15px;background:#176bb1;color:white;font-weight:bold;cursor:pointer}
+button:hover{filter:brightness(1.12)}
+button.primary{background:var(--gold);color:#152342}
+button:disabled{opacity:.5;cursor:not-allowed}
+.controls,.quick{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.status{padding:12px;border-radius:10px;background:#061b3b;border:1px solid #315f92;color:var(--gold);margin:14px 0;font-size:14px}
+.chat{height:350px;overflow-y:auto;padding:10px;border:1px solid #315f92;border-radius:12px;background:#061a38;margin:12px 0}
+.bubble{max-width:90%;padding:13px 15px;margin:10px 0;border-radius:14px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.bot{background:#126eb2;margin-right:auto}
+.user{background:#4b566a;margin-left:auto}
+.composer{display:flex;gap:8px}
+.composer input{min-width:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.tile{border:1px solid #386b9f;background:#09244a;padding:16px;border-radius:13px}
+.tile h3{margin:0 0 8px;color:var(--gold)}
+.small{font-size:13px;color:var(--muted)}
+.quick button{font-size:13px;background:#164e83;border:1px solid #528bc0}
+footer{text-align:center;color:var(--muted);font-size:12px;line-height:1.6;padding:10px}
+@media(max-width:560px){.panel{padding:15px}.chat{height:310px}.composer{flex-direction:column}.composer button{width:100%}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="top"><div class="logo">COREVA <small>AI</small></div><a class="link" href="./index.html">← Dashboard</a></div>
-  <section class="card">
-    <div class="eyebrow">COREVA Business Solutions · Website assistant</div>
-    <h1>How can we help you today?</h1>
-    <p>Ask about COREVA, our divisions, associated brands, services or how to contact the team.</p>
-    <label for="language">Conversation language</label>
-    <select id="language">
-      <option value="en-IN">English</option><option value="kn-IN">Kannada</option><option value="ml-IN">Malayalam</option><option value="hi-IN">Hindi</option><option value="tulu">Tulu (experimental browser support)</option>
-    </select>
-    <div class="controls">
-      <button id="start">🎙 Start speaking</button>
-      <button id="stop" class="secondary">Stop microphone</button>
-      <button id="clear" class="secondary">Clear conversation</button>
+<header>
+  <div class="logo">COREVA <small>AI</small></div>
+  <a href="./index.html">← Dashboard</a>
+</header>
+
+<section class="panel">
+  <div class="eyebrow">COREVA BUSINESS SOLUTIONS · WEBSITE RECEPTIONIST</div>
+  <h1>How can we help you today?</h1>
+  <p class="muted">Ask about our business divisions, associated brands, services, or how to contact our team.</p>
+
+  <label for="language">Conversation language</label>
+  <select id="language">
+    <option value="en-IN">English</option>
+    <option value="kn-IN">Kannada</option>
+    <option value="ml-IN">Malayalam</option>
+    <option value="hi-IN">Hindi</option>
+    <option value="tulu">Tulu (experimental)</option>
+  </select>
+
+  <div class="controls">
+    <button class="primary" id="start">🎙 Start speaking</button>
+    <button id="stop">Stop microphone</button>
+    <button id="clear">Clear conversation</button>
+    <button id="speakToggle">🔊 Voice replies: ON</button>
+  </div>
+
+  <div class="status" id="status" role="status">Ready. Choose a language or type your question.</div>
+  <div class="chat" id="chat" aria-live="polite"></div>
+
+  <form class="composer" id="form">
+    <input id="question" autocomplete="off" placeholder="Type your question here..." aria-label="Your question">
+    <button class="primary" type="submit">Send</button>
+  </form>
+
+  <div class="quick">
+    <button type="button" data-q="What does COREVA do?">What does COREVA do?</button>
+    <button type="button" data-q="Which companies are associated with COREVA?">COREVA brands</button>
+    <button type="button" data-q="Tell me about interior design">Interior design</button>
+    <button type="button" data-q="I need property or plot information">Property enquiries</button>
+    <button type="button" data-q="Tell me about VELORA DIGITAL">VELORA DIGITAL</button>
+    <button type="button" data-q="What is your contact number?">Contact number</button>
+    <button type="button" data-q="How can I arrange an appointment?">Appointments</button>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>COREVA business structure</h2>
+  <div class="grid">
+    <div class="tile">
+      <h3>Digital Services</h3>
+      <p><b>VELORA DIGITAL</b> is the associated technology and digital brand for website development, software development, digital platforms, and related technology work.</p>
     </div>
-    <div id="status" class="status" role="status">Ready. Choose a language or type your question.</div>
-    <div id="chat" class="chat" aria-live="polite">
-      <div class="bubble bot">Hello! Welcome to COREVA Business Solutions. I can help you explore our four main divisions: Digital Services, Property Services, Finance, and Business Support. What would you like to know?</div>
+    <div class="tile">
+      <h3>Property Services</h3>
+      <p><b>TBD GROUP.in</b> is the associated brand family for construction, interior design, and real estate.</p>
     </div>
-    <form id="form" class="row">
-      <input id="question" autocomplete="off" placeholder="Type your question here…" aria-label="Your question">
-      <button type="submit">Send</button>
-    </form>
-    <div class="examples">
-      <button type="button" class="secondary sample">What does COREVA do?</button>
-      <button type="button" class="secondary sample">Which companies are under COREVA?</button>
-      <button type="button" class="secondary sample">Tell me about interior design</button>
-      <button type="button" class="secondary sample">I need property or plot information</button>
-      <button type="button" class="secondary sample">Tell me about Velora Digital</button>
-      <button type="button" class="secondary sample">How can I contact you?</button>
+    <div class="tile">
+      <h3>Finance</h3>
+      <p>COREVA has a Finance division for finance-related enquiries. Specific products, eligibility, terms, and regulated services must be confirmed by the team.</p>
     </div>
-  </section>
-  <section class="card">
-    <h2>COREVA business structure</h2>
-    <div class="grid">
-      <div class="tile"><b>Digital Services</b><span class="small">VELORA DIGITAL: websites, software and digital platforms, subject to confirmed offerings.</span></div>
-      <div class="tile"><b>Property Services</b><span class="small">TBD GROUP.in brand family: construction, interior design and real estate.</span></div>
-      <div class="tile"><b>Finance</b><span class="small">Finance-related enquiries. Specific products and regulated services must be confirmed.</span></div>
-      <div class="tile"><b>Business Support</b><span class="small">Business assistance and support enquiries. The team can confirm the exact service available.</span></div>
+    <div class="tile">
+      <h3>Business Support</h3>
+      <p>COREVA has a Business Support division for business assistance enquiries. The team can confirm the exact services available.</p>
     </div>
-    <p><b>Contact:</b> <a class="link" href="tel:+918088590273">+91 80885 90273</a><br><b>Location:</b> Mangalore, Karnataka, India. The exact street address has not been confirmed.</p>
-  </section>
-  <footer>This is a browser-based prototype with scripted responses, not yet a full AI model. Speech recognition depends on your browser and may use an external speech service. Do not enter sensitive personal, payment or identity information. Live AI, appointment booking and saving voice enquiries require secure backend integration.</footer>
+  </div>
+  <p><b>Contact:</b> <a href="tel:+918088590273">+91 80885 90273</a></p>
+  <p><b>Location:</b> Mangalore, Karnataka, India. Exact street address not yet confirmed.</p>
+</section>
+
+<footer>
+  This page uses browser speech features and built-in business information. It is not connected to a live AI model, booking system, or database in this version. Do not enter passwords, payment details, or sensitive identity information.
+</footer>
 </div>
+
 <script>
 (() => {
-const $ = id => document.getElementById(id);
-const chat = $('chat'), status = $('status'), lang = $('language');
-let recognition = null, listening = false;
-const companyFacts = {
-  parent: "COREVA Business Solutions is the parent business. Its four main divisions are Digital Services, Property Services, Finance, and Business Support.",
-  digital: "VELORA DIGITAL is the technology and digital brand associated with COREVA. It is intended for digital work such as website development, software development and digital platforms. Specific products, integrations and availability should be confirmed by the team.",
-  property: "Property and construction services are handled through the TBD GROUP.in brand family. The associated brands are TBD Builders & Developers for construction and development, the interior design brand, and SR PRIME Properties & Real Estate Developers for property and real estate enquiries.",
-  builders: "TBD Builders & Developers is the construction and development brand within the TBD GROUP.in family. For project scope, estimates, timelines or availability, please contact COREVA directly.",
-  interiors: "For interior design enquiries, the interior design brand associated with TBD GROUP.in is AURELIV Interiors.Design (please confirm the final public-facing spelling). The team can discuss your requirements, project type and next steps. Call COREVA Business Solutions at +91 80885 90273.",
-  realestate: "SR PRIME Properties & Real Estate Developers is the real estate brand within the TBD GROUP.in family. The team can help with property-related enquiries. Plot availability, locations, legal status and prices must be confirmed directly; I do not have verified live listings.",
-  finance: "COREVA Business Solutions has a Finance division for finance-related enquiries. I cannot confirm a specific loan, investment, insurance or regulated financial product unless the team has verified that it is offered. Please call +91 80885 90273 to clarify your requirement.",
-  support: "COREVA Business Solutions also has a Business Support division. Tell me what kind of business assistance you need, or contact the team at +91 80885 90273 so they can confirm whether that service is available.",
-  contact: "You can contact COREVA Business Solutions on +91 80885 90273. The office is in Mangalore, Karnataka, India. The exact street address and directions have not been confirmed, so please call for those details.",
-  appointment: "Appointment booking is not connected to this demo yet. Please call COREVA Business Solutions at +91 80885 90273 to arrange a discussion with the team.",
-  price: "I don't have verified current prices, quotations or availability. Please call COREVA Business Solutions at +91 80885 90273 and the team can confirm details for your specific requirement.",
-  unknown: "I want to give you accurate information rather than guess. I don't have a verified answer to that specific question yet. Please contact COREVA Business Solutions at +91 80885 90273, or tell me whether your question is about digital services, property, finance or business support."
-};
-function addBubble(text, who='bot') {
-  const div = document.createElement('div');
-  div.className = 'bubble ' + who;
-  div.textContent = text;
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
-}
-function normalize(s) {
-  return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\p{L}\p{N}\s+.-]/gu,' ').replace(/\s+/g,' ').trim();
-}
-function includesAny(s, words) { return words.some(w => s.includes(w)); }
-function answerFor(raw) {
-  const s = normalize(raw);
-  if (!s) return companyFacts.unknown;
-  if (includesAny(s,['hello','hi ','hey','good morning','good afternoon','good evening','namaste','ನಮಸ್ಕಾರ','നമസ്കാരം','नमस्ते'])) return "Hello! Welcome to COREVA Business Solutions. We support enquiries across Digital Services, Property Services, Finance and Business Support. What would you like help with?";
-  if (includesAny(s,['phone','contact','mobile number','phone number','call you','whatsapp number','telephone','number of coreva','contact number'])) return companyFacts.contact;
-  if (includesAny(s,['exact address','street address','directions','where are you','where is your office','location','located','address'])) return companyFacts.contact;
-  if (includesAny(s,['appointment','book a meeting','schedule a meeting','meet your team','meeting'])) return companyFacts.appointment;
-  if (includesAny(s,['price','pricing','cost','quotation','quote','how much','rate','budget','availability','available plot','plot price','land price'])) return companyFacts.price;
-  if (includesAny(s,['what does coreva','about coreva','what is coreva','coreva business solutions','what services','your services','services do you offer','what do you do','divisions','four divisions','business areas'])) return companyFacts.parent;
-  if (includesAny(s,['which companies','under coreva','companies under','brands under','associated brands','company structure','who owns','parent company','subsidiary','brand family'])) return "COREVA Business Solutions is the parent business. VELORA DIGITAL handles digital and technology-related work. The TBD GROUP.in family covers construction, interior design and real estate through TBD Builders & Developers, the interior design brand, and SR PRIME Properties & Real Estate Developers. COREVA also has Finance and Business Support divisions.";
-  if (includesAny(s,['velora','software','website development','web development','app development','application development','digital service','digital marketing','technology','tech company','platform development','property software','proptech','crm','website','mobile app','automation','ai solution','artificial intelligence'])) return companyFacts.digital;
-  if (includesAny(s,['interior','interiors','home design','office design','modular kitchen','false ceiling','interior designer','furniture design'])) return companyFacts.interiors;
-  if (includesAny(s,['construction','builder','builders','building work','contractor','civil work','house construction','renovation'])) return companyFacts.builders;
-  if (includesAny(s,['plot','plots','plotting','land','real estate','property','properties','buy a house','sell a house','rental','rent a house','commercial property','residential property','site for sale'])) return companyFacts.realestate;
-  if (includesAny(s,['finance','financial','loan','investment','insurance','funding','accounting','tax'])) return companyFacts.finance;
-  if (includesAny(s,['business support','business setup','business registration','business consulting','consulting','business help','startup support','company setup','marketing plan'])) return companyFacts.support;
-  if (includesAny(s,['thank you','thanks','thank'])) return "You're welcome! Thank you for contacting COREVA Business Solutions. Is there another service you'd like to ask about?";
-  if (includesAny(s,['human','person','agent','representative','staff','speak to someone','talk to someone'])) return "You can speak with the COREVA team by calling +91 80885 90273.";
-  return companyFacts.unknown;
-}
-function speak(text) {
-  if (!('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = lang.value === 'tulu' ? 'kn-IN' : lang.value;
-  u.rate = 0.94;
-  window.speechSynthesis.speak(u);
-}
-function processQuestion(text) {
-  if (!text.trim()) return;
-  addBubble(text,'user');
-  const answer = answerFor(text);
-  addBubble(answer,'bot');
-  speak(answer);
-  status.textContent = 'Response ready. This prototype uses verified facts and scripted intent matching.';
-}
-$('form').addEventListener('submit', e => { e.preventDefault(); const q=$('question'); processQuestion(q.value); q.value=''; });
-document.querySelectorAll('.sample').forEach(b => b.addEventListener('click', () => processQuestion(b.textContent)));
-$('clear').addEventListener('click', () => {
-  if (recognition && listening) recognition.stop();
-  window.speechSynthesis?.cancel();
-  chat.innerHTML='';
-  addBubble("Hello! Welcome to COREVA Business Solutions. I can help with Digital Services, Property Services, Finance and Business Support. What would you like to know?");
-  status.textContent='Conversation cleared.';
-});
-$('stop').addEventListener('click', () => {
-  if (recognition && listening) recognition.stop();
-  listening=false; status.textContent='Microphone stopped.';
-});
-$('start').addEventListener('click', () => {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) { status.textContent='Speech recognition is not supported by this browser. Please type your question instead.'; return; }
-  if (recognition && listening) recognition.stop();
-  recognition = new SR();
-  recognition.lang = lang.value === 'tulu' ? 'kn-IN' : lang.value;
-  recognition.continuous = false;
-  recognition.interimResults = false;
-  recognition.onstart = () => { listening=true; status.textContent='Listening… Please ask your question.'; };
-  recognition.onresult = e => {
-    const heard = e.results[0][0].transcript;
-    status.textContent='Recognized: ' + heard;
-    processQuestion(heard);
-  };
-  recognition.onerror = e => { status.textContent='Microphone issue: ' + e.error + '. You can type your question instead.'; };
-  recognition.onend = () => { listening=false; };
-  try { recognition.start(); } catch(err) { status.textContent='Could not start microphone. Check browser microphone permission, then try again.'; }
-});
-lang.addEventListener('change', () => { status.textContent='Language set to ' + lang.options[lang.selectedIndex].text + '. Recognition and voice availability depend on your browser.'; });
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+  const chat = $("chat");
+  const status = $("status");
+  const input = $("question");
+  const language = $("language");
+
+  let recognition = null;
+  let listening = false;
+  let voiceReplies = true;
+
+  const contact = "+91 80885 90273";
+
+  const welcome = "Hello! Welcome to COREVA Business Solutions. I can help you explore our four main divisions: Digital Services, Property Services, Finance, and Business Support. What would you like to know?";
+
+  function addBubble(text, who) {
+    const div = document.createElement("div");
+    div.className = "bubble " + who;
+    div.textContent = text;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+    return div;
+  }
+
+  function speak(text) {
+    if (!voiceReplies || !("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    const selected = language.value;
+    utterance.lang = selected === "tulu" ? "kn-IN" : selected;
+
+    const voices = window.speechSynthesis.getVoices();
+    const matching = voices.find(v => v.lang.toLowerCase() === utterance.lang.toLowerCase())
+      || voices.find(v => v.lang.toLowerCase().startsWith(utterance.lang.split("-")[0]));
+    if (matching) utterance.voice = matching;
+
+    window.speechSynthesis.speak(utterance);
+  }
+
+  function answerFor(raw) {
+    const q = raw.toLowerCase().trim().replace(/[’']/g, "'");
+
+    const has = (...terms) => terms.some(t => q.includes(t));
+
+    if (/^(hi|hello|hey|hiya|good morning|good afternoon|good evening|namaste|ನಮಸ್ಕಾರ|നമസ്കാരം|नमस्ते)[!. ]*$/.test(q)) {
+      return "Hello! Welcome to COREVA Business Solutions. How can I help you today?";
+    }
+
+    if (has("thank you", "thanks", "thank you so much", "ಧನ್ಯವಾದ", "നന്ദി", "धन्यवाद")) {
+      return "You're welcome! Thank you for contacting COREVA Business Solutions. Is there anything else you'd like to know?";
+    }
+
+    if (has("bye", "goodbye", "see you")) {
+      return "Thank you for contacting COREVA Business Solutions. Have a great day!";
+    }
+
+    if (has("contact", "phone", "telephone", "mobile number", "contact number", "call you", "whatsapp", "number", "reach your team")) {
+      return "You can contact COREVA Business Solutions at " + contact + ". Our location is Mangalore, Karnataka, India. The exact street address has not been confirmed, so please call for directions.";
+    }
+
+    if (has("where", "location", "located", "address", "directions", "office", "map", "which city", "which place")) {
+      return "COREVA Business Solutions is located in Mangalore, Karnataka, India. The exact street address and directions have not been confirmed. Please call " + contact + " for details.";
+    }
+
+    if (has("who are you", "what is coreva", "what does coreva", "about coreva", "your company", "your business", "what do you do", "coreva business solutions")) {
+      return "COREVA Business Solutions is the parent business with four main divisions: Digital Services, Property Services, Finance, and Business Support. VELORA DIGITAL is associated with digital and technology work. TBD GROUP.in is the associated brand family for construction, interior design, and real estate.";
+    }
+
+    if (has("which companies", "under coreva", "associated brands", "subsidiaries", "brand family", "companies under", "company names", "your brands", "tbd group and velora")) {
+      return "COREVA Business Solutions is the parent business. VELORA DIGITAL is associated with digital and technology work. TBD GROUP.in is associated with property-related services. The TBD GROUP.in brand family includes TBD Builders & Developers, AURELIV Interiors.Design, and SR PRIME Properties & Real Estate Developers. COREVA also has Finance and Business Support divisions.";
+    }
+
+    if (has("velora", "website development", "web development", "make a website", "build a website", "software", "app development", "application development", "technology", "digital marketing", "digital services", "saas", "crm", "platform", "automation", "ai development")) {
+      return "VELORA DIGITAL is the technology and digital brand associated with COREVA. It is intended for website development, software development, digital platforms, and related technology work. Tell me what you want to build, and our team can confirm scope, pricing, and availability. Contact " + contact + " to discuss a project.";
+    }
+
+    if (has("interior", "interior design", "home design", "modular kitchen", "wardrobe", "furniture design", "false ceiling", "room design")) {
+      return "For interior design enquiries, the associated brand is AURELIV Interiors.Design within the TBD GROUP.in brand family. You can discuss your home, office, or other interior requirements with the team. Project scope, materials, pricing, and availability must be confirmed directly. Call " + contact + ".";
+    }
+
+    if (has("construction", "builder", "building", "house construction", "civil work", "contractor", "renovation", "tbd builders")) {
+      return "Construction enquiries are handled through TBD Builders & Developers within the TBD GROUP.in brand family. Please share whether your project concerns a new building, renovation, or another construction requirement. The team can confirm service availability and project details at " + contact + ".";
+    }
+
+    if (has("property", "real estate", "plot", "plots", "land", "site for sale", "flat", "apartment", "villa", "house for sale", "property price", "property listing", "rental", "rent", "buy property", "sell property", "sr prime")) {
+      return "Property and real estate enquiries are associated with SR PRIME Properties & Real Estate Developers within the TBD GROUP.in brand family. I don't have verified live listings, prices, locations, or availability. Please call " + contact + " to confirm current options. What type of property are you looking for, and in which area?";
+    }
+
+    if (has("finance", "loan", "investment", "insurance", "interest rate", "financial service", "financial services", "emi", "credit")) {
+      return "COREVA has a Finance division for finance-related enquiries. I don't have confirmed details about specific products, rates, eligibility, or regulated services, so I won't guess. Please call " + contact + " and ask the team to confirm the service you need.";
+    }
+
+    if (has("business support", "business assistance", "business advice", "business registration", "startup help", "company registration", "business plan", "consulting", "consultancy", "support service")) {
+      return "COREVA Business Solutions has a Business Support division. Tell me what kind of business assistance you need, such as help planning a business or an operational enquiry. The team can confirm the exact service and availability at " + contact + ".";
+    }
+
+    if (has("appointment", "book a meeting", "schedule a meeting", "meet your team", "meeting", "visit your office", "consultation", "book a call")) {
+      return "You can request an appointment by calling COREVA Business Solutions at " + contact + ". Online appointment booking is not connected to this page, so a meeting is not confirmed until the team confirms it directly.";
+    }
+
+    if (has("price", "pricing", "cost", "how much", "quotation", "quote", "budget", "charges", "rate")) {
+      return "Pricing depends on the service and the specific requirements. I don't have an approved price list, so I won't invent a figure. Please describe the service you need and contact COREVA at " + contact + " for a confirmed quotation.";
+    }
+
+    if (has("job", "career", "vacancy", "hiring", "internship", "work with you", "recruitment", "apply for a job")) {
+      return "For job, internship, or recruitment enquiries, please contact COREVA Business Solutions at " + contact + ". I don't have a verified current vacancy list, so the team will need to confirm available opportunities.";
+    }
+
+    if (has("email", "email address", "mail id")) {
+      return "I don't have a verified public email address to share. Please contact COREVA Business Solutions at " + contact.";
+    }
+
+    if (has("human", "real person", "representative", "talk to someone", "agent", "staff member", "manager")) {
+      return "Of course. Please call COREVA Business Solutions at " + contact to speak with the team.";
+    }
+
+    if (has("tulu", "ಕನ್ನಡ", "ಕನ್ನಡದಲ್ಲಿ", "മലയാളം", "हिंदी", "translate", "language")) {
+      return "You can choose English, Kannada, Malayalam, Hindi, or experimental Tulu recognition from the language menu. Actual recognition and spoken voice availability depend on your browser and device.";
+    }
+
+    return "Thanks for your question. I want to give you accurate information rather than guess. I don't have a verified answer to that specific question yet. Is your enquiry about Digital Services, Property Services, Finance, or Business Support? You can also call COREVA Business Solutions at " + contact + ".";
+  }
+
+  function processQuestion(raw, fromVoice = false) {
+    const text = raw.trim();
+    if (!text) return;
+
+    addBubble(text, "user");
+    const answer = answerFor(text);
+    addBubble(answer, "bot");
+    status.textContent = "Response ready. Answers use verified business facts and predefined question matching.";
+    speak(answer);
+
+    if (!fromVoice) input.value = "";
+  }
+
+  function stopListening() {
+    listening = false;
+    if (recognition) {
+      try { recognition.stop(); } catch (_) {}
+    }
+    $("start").disabled = false;
+  }
+
+  $("start").addEventListener("click", () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      status.textContent = "Speech recognition is not supported in this browser. Please type your question instead.";
+      return;
+    }
+
+    if (language.value === "tulu") {
+      status.textContent = "Tulu recognition may not be available. This demo uses Kannada as a fallback; accuracy is not guaranteed.";
+    }
+
+    stopListening();
+    recognition = new SpeechRecognition();
+    recognition.lang = language.value === "tulu" ? "kn-IN" : language.value;
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      listening = true;
+      $("start").disabled = true;
+      status.textContent = "Listening… Please speak clearly.";
+    };
+
+    recognition.onresult = event => {
+      const transcript = event.results?.[0]?.[0]?.transcript || "";
+      if (transcript) processQuestion(transcript, true);
+    };
+
+    recognition.onerror = event => {
+      status.textContent = "Microphone issue: " + event.error + ". Check browser microphone permission or type your question.";
+    };
+
+    recognition.onend = () => {
+      listening = false;
+      $("start").disabled = false;
+      if (status.textContent.startsWith("Listening")) {
+        status.textContent = "Microphone stopped. You can speak again or type a question.";
+      }
+    };
+
+    try {
+      recognition.start();
+    } catch (_) {
+      status.textContent = "Could not start the microphone. Please try again or type your question.";
+      $("start").disabled = false;
+    }
+  });
+
+  $("stop").addEventListener("click", () => {
+    stopListening();
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    status.textContent = "Microphone and speech playback stopped.";
+  });
+
+  $("clear").addEventListener("click", () => {
+    stopListening();
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    chat.replaceChildren();
+    addBubble(welcome, "bot");
+    status.textContent = "Conversation cleared.";
+    speak(welcome);
+  });
+
+  $("speakToggle").addEventListener("click", () => {
+    voiceReplies = !voiceReplies;
+    $("speakToggle").textContent = voiceReplies ? "🔊 Voice replies: ON" : "🔇 Voice replies: OFF";
+    if (!voiceReplies && "speechSynthesis" in window) window.speechSynthesis.cancel();
+    status.textContent = voiceReplies ? "Voice replies enabled." : "Voice replies disabled.";
+  });
+
+  $("form").addEventListener("submit", event => {
+    event.preventDefault();
+    processQuestion(input.value);
+  });
+
+  document.querySelectorAll("[data-q]").forEach(button => {
+    button.addEventListener("click", () => processQuestion(button.dataset.q));
+  });
+
+  language.addEventListener("change", () => {
+    stopListening();
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    status.textContent = "Language changed. Browser speech support varies by language.";
+  });
+
+  addBubble(welcome, "bot");
 })();
 </script>
 </body>
