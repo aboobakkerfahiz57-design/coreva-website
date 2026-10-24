@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#05070b">
+<meta name="description" content="Discover COREVA Business Solutions — digital solutions, property services, finance support and business support, with Velora Digital and TBD Group.">
+<title>COREVA Business Solutions | Your Business, Connected</title>
+<link rel="icon" href="coreva-logo.png" type="image/png">
+<style>
+:root{--bg:#05070b;--panel:#101722;--white:#f7f8fb;--muted:#a7b0bf;--line:rgba(255,255,255,.13);--blue:#79c7ff;--max:1180px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--white);font-family:Inter,Arial,Helvetica,sans-serif;line-height:1.6}a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}.wrap{width:min(var(--max),calc(100% - 40px));margin:auto}
+header{position:sticky;top:0;z-index:10;background:rgba(5,7,11,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand img{width:145px;max-height:52px;object-fit:contain}.navlinks{display:flex;gap:24px;color:#d4d9e2;font-size:13px}.nav-cta,.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:12px 19px;font-weight:700;font-size:13px;border:1px solid var(--line);transition:.2s}.nav-cta,.btn.primary{background:#f4f6fa;color:#080b10}.btn.secondary{background:rgba(255,255,255,.04)}.nav-cta:hover,.btn:hover{transform:translateY(-2px)}
+.hero{min-height:670px;display:grid;align-items:center;position:relative;overflow:hidden;border-bottom:1px solid var(--line);background:radial-gradient(ellipse at 78% 35%,rgba(69,155,222,.18),transparent 34%),linear-gradient(110deg,#05070b 15%,rgba(5,7,11,.87) 54%,rgba(5,7,11,.65)),url('coreva-hero-background.png') center/cover}
+.hero:after{content:"";position:absolute;right:-130px;bottom:-240px;width:560px;height:560px;border:1px solid rgba(121,199,255,.2);border-radius:50%;box-shadow:0 0 0 55px rgba(121,199,255,.025),0 0 0 110px rgba(121,199,255,.02);pointer-events:none}
+.hero-content{position:relative;z-index:1;padding:95px 0 110px;max-width:760px}.eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--blue);font-weight:800}.hero h1{font-size:clamp(46px,7vw,88px);line-height:.99;letter-spacing:-.06em;margin:22px 0}.hero h1 span{color:transparent;-webkit-text-stroke:1px #eaf5ff}.hero p{max-width:620px;color:#c2cad5;font-size:17px}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}.trustline{margin-top:35px;color:#aeb8c6;font-size:12px;letter-spacing:.08em}
+section{padding:88px 0}.section-head{max-width:720px;margin-bottom:34px}.kicker{color:var(--blue);font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:800}.section-head h2{font-size:clamp(32px,4.5vw,52px);line-height:1.08;letter-spacing:-.04em;margin:12px 0}.section-head p{color:var(--muted);margin:0}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{border:1px solid var(--line);border-radius:18px;padding:25px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.015));min-height:220px}.card .number{font-size:11px;color:var(--blue);letter-spacing:.15em}.card h3{font-size:21px;margin:14px 0 8px}.card p{color:var(--muted);font-size:14px;margin:0 0 15px}.card a{font-size:13px;font-weight:800;color:#eaf5ff}.card a span{color:var(--blue)}
+.ecosystem{background:linear-gradient(180deg,#090e16,#06080c)}.ecosystem .card{background:#0d131d}.tag{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:5px 9px;color:#c5cfdb;font-size:10px;margin:3px 4px 0 0}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.step{border-left:2px solid var(--blue);padding:4px 0 4px 18px}.step h3{margin:6px 0}.step p{margin:0;color:var(--muted);font-size:14px}
+.contact{background:radial-gradient(ellipse at 80% 0,rgba(73,157,219,.13),transparent 38%),#080c12}.contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:35px;align-items:start}.contact-copy p{color:var(--muted)}.contact-box{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.035);padding:24px}.field{display:grid;gap:7px;margin-bottom:14px}.field label{font-size:12px;color:#dce3ec;font-weight:700}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:10px;background:#080d14;color:white;padding:13px;outline:none}.field select option{background:#080d14;color:white}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue)}.field textarea{min-height:100px;resize:vertical}.form-note{font-size:11px;color:#9ca9b8;margin-top:12px}.contact .btn{border:0;cursor:pointer}
+footer{border-top:1px solid var(--line);padding:28px 0;color:#9da7b5;font-size:12px}.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.whatsapp-float{position:fixed;right:18px;bottom:18px;z-index:20;background:#eaf7ff;color:#07101a;border-radius:999px;padding:13px 17px;font-size:12px;font-weight:900;box-shadow:0 10px 35px #0008}
+@media(max-width:800px){.navlinks{display:none}.hero{min-height:600px}.hero-content{padding:80px 0}.grid{grid-template-columns:1fr 1fr}.contact-grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr}.brand img{width:125px}}
+@media(max-width:540px){.wrap{width:min(var(--max),calc(100% - 28px))}nav{height:66px}.nav-cta{padding:10px 12px;font-size:11px}.hero h1{font-size:clamp(43px,13vw,64px)}.hero p{font-size:15px}.grid{grid-template-columns:1fr}section{padding:64px 0}.card{min-height:0}.hero:after{width:360px;height:360px;right:-190px;bottom:-150px}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><nav>
+<a class="brand" href="#home" aria-label="COREVA home"><img src="coreva-logo.png" alt="COREVA"></a>
+<div class="navlinks"><a href="#solutions">Solutions</a><a href="#ecosystem">Our ecosystem</a><a href="#how">How it works</a><a href="#contact">Contact</a></div>
+<a class="nav-cta" href="#contact">Discuss your needs ↗</a>
+</nav></div></header>
+<main>
+<section class="hero" id="home"><div class="wrap"><div class="hero-content">
+<div class="eyebrow">COREVA Business Solutions · Karnataka</div>
+<h1>Your business.<br><span>Connected.</span><br>Ready to grow.</h1>
+<p>Digital solutions, property services and practical business support — connected through one business ecosystem built to help you take the next step.</p>
+<div class="actions"><a class="btn primary" href="#contact">Tell us what you need ↗</a><a class="btn secondary" href="#solutions">Explore solutions ↓</a></div>
+<div class="trustline">DIGITAL SOLUTIONS&nbsp; · &nbsp;PROPERTY&nbsp; · &nbsp;BUSINESS SUPPORT</div>
+</div></div></section>
+<section id="solutions"><div class="wrap">
+<div class="section-head"><div class="kicker">What we help with</div><h2>One conversation. A clearer next step.</h2><p>Tell us your goal and we’ll help route your enquiry to the relevant service or team.</p></div>
+<div class="grid">
+<article class="card"><div class="number">01 / DIGITAL</div><h3>Websites & software</h3><p>Business websites, web platforms, custom software, automation and digital experiences through our digital division.</p><a href="#contact" data-service="Websites, software and digital solutions">Discuss a digital project <span>↗</span></a></article>
+<article class="card"><div class="number">02 / PROPERTY</div><h3>Property & real estate</h3><p>Property enquiries, real-estate support, construction and interiors through the relevant group businesses.</p><a href="#contact" data-service="Property, construction or interiors">Discuss a property need <span>↗</span></a></article>
+<article class="card"><div class="number">03 / BUSINESS</div><h3>Business support</h3><p>Explore practical support for your business needs, workflows, customer enquiries and growth projects.</p><a href="#contact" data-service="Business support">Discuss business support <span>↗</span></a></article>
+<article class="card"><div class="number">04 / AI & WORKFLOWS</div><h3>AI receptionist & systems</h3><p>Explore customer enquiry handling, lead management and business workflow tools. Live calling features depend on configuration.</p><a href="#contact" data-service="AI receptionist and business systems">Explore AI solutions <span>↗</span></a></article>
+<article class="card"><div class="number">05 / FINANCE SUPPORT</div><h3>Finance-related support</h3><p>Ask about the finance-related services available for your requirement. Eligibility and service scope are confirmed individually.</p><a href="#contact" data-service="Finance-related support">Make an enquiry <span>↗</span></a></article>
+<article class="card"><div class="number">06 / CUSTOM</div><h3>Not sure where to start?</h3><p>Share your goal, challenge or idea. We’ll help identify the most relevant team to contact.</p><a href="#contact" data-service="Help choosing a service">Tell us your goal <span>↗</span></a></article>
+</div></div></section>
+<section class="ecosystem" id="ecosystem"><div class="wrap">
+<div class="section-head"><div class="kicker">Connected business ecosystem</div><h2>Different teams. Shared ambition.</h2><p>COREVA is the entry point. These are the business divisions and brands to explore for the relevant service.</p></div>
+<div class="grid">
+<article class="card"><div class="number">DIGITAL DIVISION</div><h3>VELORA DIGITAL</h3><p>Websites, software development, digital experiences and end-to-end digital solutions.</p><span class="tag">Web development</span><span class="tag">Software</span><span class="tag">Digital solutions</span></article>
+<article class="card"><div class="number">TBD GROUP</div><h3>TBD Builders & Developers</h3><p>Construction and development enquiries.</p><span class="tag">Construction</span><span class="tag">Development</span></article>
+<article class="card"><div class="number">TBD GROUP</div><h3>SR Prime Properties</h3><p>Property and real-estate enquiries.</p><span class="tag">Property</span><span class="tag">Real estate</span></article>
+<article class="card"><div class="number">TBD GROUP</div><h3>AURELIV Interiors. Design</h3><p>Interior design enquiries for spaces and projects.</p><span class="tag">Interiors</span><span class="tag">Design</span></article>
+<article class="card"><div class="number">BUSINESS SOLUTIONS</div><h3>COREVA</h3><p>Your starting point for digital, property, finance-related and business support enquiries.</p><span class="tag">Service guidance</span><span class="tag">Enquiry routing</span></article>
+<article class="card"><div class="number">CUSTOMER EXPERIENCE</div><h3>COREVA AI</h3><p>Explore the AI receptionist concept and customer enquiry workspace.</p><a href="ai-receptionist/voice.html">Open AI receptionist page ↗</a></article>
+</div></div></section>
+<section id="how"><div class="wrap"><div class="section-head"><div class="kicker">Simple process</div><h2>Start with what you need.</h2><p>No complicated brief required. Give us a little context and our team can follow up.</p></div>
+<div class="steps"><div class="step"><div class="kicker">STEP 01</div><h3>Share your requirement</h3><p>Choose a service and describe your goal in a few words.</p></div><div class="step"><div class="kicker">STEP 02</div><h3>We route your enquiry</h3><p>Your message opens in WhatsApp so you can review and send it to our business contact.</p></div><div class="step"><div class="kicker">STEP 03</div><h3>Discuss next steps</h3><p>The relevant team can clarify scope, timing and any information needed to proceed.</p></div></div>
+</div></section>
+<section class="contact" id="contact"><div class="wrap contact-grid">
+<div class="contact-copy"><div class="kicker">Let's talk</div><h2 style="font-size:clamp(36px,5vw,58px);line-height:1.04;letter-spacing:-.05em">What would you like to build next?</h2><p>Use the short form and continue in WhatsApp. Please avoid sharing sensitive financial, identity or account information in the first enquiry.</p><p><strong>COREVA Business Solutions</strong><br>Serving enquiries across Karnataka</p><a class="btn secondary" href="https://wa.me/918088590273?text=Hello%20COREVA%20Business%20Solutions%2C%20I%20would%20like%20to%20make%20an%20enquiry." target="_blank" rel="noopener">Message us on WhatsApp ↗</a></div>
+<form class="contact-box" id="leadForm">
+<div class="field"><label for="name">Your name</label><input id="name" name="name" autocomplete="name" placeholder="Enter your name" required></div>
+<div class="field"><label for="business">Business or organisation (optional)</label><input id="business" name="business" autocomplete="organization" placeholder="Business name"></div>
+<div class="field"><label for="service">What do you need help with?</label><select id="service" name="service" required><option value="">Choose a service</option><option>Websites, software and digital solutions</option><option>Property, construction or interiors</option><option>Business support</option><option>AI receptionist and business systems</option><option>Finance-related support</option><option>Help choosing a service</option></select></div>
+<div class="field"><label for="location">City / district</label><input id="location" name="location" placeholder="e.g. Mangaluru, Bengaluru, Mysuru"></div>
+<div class="field"><label for="details">Briefly describe your requirement</label><textarea id="details" name="details" placeholder="What are you looking to do?"></textarea></div>
+<button class="btn primary" type="submit">Continue in WhatsApp ↗</button>
+<p class="form-note">This form prepares a WhatsApp message; it does not submit data to a database. Your WhatsApp app will open so you can review and send it.</p>
+</form>
+</div></section>
+</main>
+<footer><div class="wrap foot"><div>© <span id="year"></span> COREVA Business Solutions. All rights reserved.</div><div>Digital Solutions · Property · Business Support</div><a href="#home">Back to top ↑</a></div></footer>
+<a class="whatsapp-float" href="https://wa.me/918088590273?text=Hello%20COREVA%2C%20I%20came%20from%20your%20website." target="_blank" rel="noopener" aria-label="Chat with COREVA on WhatsApp">WhatsApp ↗</a>
+<script>
+document.getElementById('year').textContent=new Date().getFullYear();
+document.querySelectorAll('[data-service]').forEach(link=>link.addEventListener('click',()=>{const select=document.getElementById('service');const opt=[...select.options].find(o=>o.textContent===link.dataset.service||o.value===link.dataset.service);if(opt)select.value=opt.value;}));
+document.getElementById('leadForm').addEventListener('submit',function(event){
+ event.preventDefault();
+ const data=new FormData(this);
+ const message=[
+ 'Hello COREVA Business Solutions, I would like to make an enquiry.',
+ 'Name: '+(data.get('name')||'Not provided'),
+ 'Business: '+(data.get('business')||'Not provided'),
+ 'Service: '+(data.get('service')||'Not selected'),
+ 'City / district: '+(data.get('location')||'Not provided'),
+ 'Requirement: '+(data.get('details')||'I would like to discuss this.')
+ ].join('\\n');
+ window.open('https://wa.me/918088590273?text='+encodeURIComponent(message),'_blank','noopener');
+});
+</script>
+</body>
+</html>
