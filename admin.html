@@ -309,7 +309,18 @@ function leadForm(existing={}){
    const {error}=await q;
    if(error)throw error;
    $("modalHost").innerHTML="";toast(existing.id?"Lead updated.":"Lead saved.");await safeFetch("leads");navigate(currentPage);
-  }catch(err){status.textContent=err.message||String(err);status.className="status err"}
+  }catch(err){
+    const raw=String(err?.message||err||"Unknown error");
+    let guidance=raw;
+    if(/row-level security|violates row-level security|RLS/i.test(raw)){
+      guidance="Supabase rejected this save because the leads table RLS INSERT/UPDATE policy does not allow this signed-in user to write for the selected organisation. The HTML cannot safely bypass this. Check that your auth user has a row in public.org_memberships for organization_id " + orgId + " and that the leads INSERT policy checks that membership. Original error: " + raw;
+    } else if(/column .* does not exist|schema cache/i.test(raw)){
+      guidance="The form is sending a column that does not match the current leads table schema. Compare the submitted fields with the columns in Supabase. Original error: " + raw;
+    } else if(/permission denied|not authorized|JWT/i.test(raw)){
+      guidance="Supabase denied this operation. Verify the signed-in Auth user and the table's RLS policies; do not disable RLS. Original error: " + raw;
+    }
+    status.textContent=guidance;status.className="status err";
+  }
  };
 }
 function invoiceForm(customer={}){
