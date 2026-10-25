@@ -1,48 +1,404 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>COREVA | Central Admin</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1020">
+<title>COREVA | Central Admin Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--bg:#0b1220;--panel:#121e31;--panel2:#172740;--line:#263954;--text:#edf4ff;--muted:#a7b8d0;--cyan:#55d8ed;--blue:#72b8ff;--red:#ff8a8a;--green:#72e0ad;--gold:#ffd37c}*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#08101e,#10213a);color:var(--text);font:15px/1.5 Inter,system-ui,Segoe UI,Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:11px 15px;background:var(--cyan);color:#071522;font-weight:750}button.secondary{background:#263b57;color:var(--text);border:1px solid #39516f}button.danger{background:#542b37;color:#ffe5e5}button:disabled{opacity:.55;cursor:not-allowed}input,select,textarea{width:100%;padding:11px 12px;border-radius:9px;border:1px solid #3a506d;background:#0c1728;color:var(--text);outline:none}input:focus,select:focus,textarea:focus{border-color:var(--cyan)}label{display:block;font-size:13px;color:#c2d3e9;margin-bottom:6px}h1,h2,h3,p{margin-top:0}h1{font-size:27px;margin-bottom:4px}h2{font-size:20px}.muted{color:var(--muted)}.small{font-size:12px}.hidden{display:none!important}.app{display:grid;grid-template-columns:245px 1fr;min-height:100vh}.side{padding:22px 15px;background:#091322;border-right:1px solid var(--line)}.brand{display:flex;gap:10px;align-items:center;padding:8px 8px 24px}.logo{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,var(--cyan),var(--blue));color:#071522;font-weight:950}.brand b{font-size:16px;letter-spacing:.5px}.nav{display:grid;gap:7px}.nav button{background:transparent;color:#c3d2e7;text-align:left;border:1px solid transparent;font-weight:600}.nav button.active,.nav button:hover{background:#152841;border-color:#2d4563;color:#fff}.sidefoot{margin-top:35px;border-top:1px solid var(--line);padding:16px 8px}.main{min-width:0;padding:26px}.top{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:24px}.pill{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border:1px solid #34506e;border-radius:99px;color:#b9f5ff;font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:var(--green)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card{background:linear-gradient(145deg,#14233a,#101b2d);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px;min-width:0}.stat{font-size:29px;font-weight:850;margin:5px 0}.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.between{display:flex;align-items:center;justify-content:space-between;gap:12px}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field.full{grid-column:1/-1}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:650px}th,td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;vertical-align:top}th{color:#9fb6d3;font-weight:700}td{color:#e2ebf8}.notice{padding:12px 14px;border-radius:10px;background:#1b2d43;border:1px solid #35516e;color:#d3e7fa;margin:12px 0}.error{background:#3b202b;border-color:#7a3c4b;color:#ffd5dc;white-space:pre-wrap}.success{background:#15382f;border-color:#2a725a;color:#c6ffe9}.loginwrap{min-height:100vh;display:grid;place-items:center;padding:20px}.login{width:min(520px,100%);background:#111e31;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 20px 80px #0005}.login .logo{margin-bottom:15px}.login form{display:grid;gap:14px}.login form .row button{flex:1}.divider{height:1px;background:var(--line);margin:18px 0}.modalback{position:fixed;inset:0;background:#000a;display:grid;place-items:center;padding:18px;z-index:10}.modal{width:min(640px,100%);max-height:90vh;overflow:auto;background:#111e31;border:1px solid var(--line);border-radius:18px;padding:22px}.modalhead{display:flex;justify-content:space-between;gap:10px}.status{font-size:12px;color:var(--muted)}.tag{display:inline-block;border-radius:99px;padding:3px 8px;background:#213b54;color:#d9f7ff;font-size:11px}.empty{text-align:center;padding:28px;color:var(--muted)}@media(max-width:900px){.app{grid-template-columns:1fr}.side{border-right:0;border-bottom:1px solid var(--line);padding:12px}.brand{padding:5px 8px 12px}.nav{grid-template-columns:repeat(3,minmax(0,1fr))}.nav button{font-size:12px;padding:9px}.sidefoot{display:none}.main{padding:17px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.top{align-items:flex-start;flex-direction:column}.grid{gap:9px}.card{padding:14px}}
-</style></head><body>
-<div id="loginScreen" class="loginwrap"><div class="login"><div class="logo">C</div><h1>COREVA <span style="color:var(--cyan)">Central Admin</span></h1><p class="muted">Business Solutions · Secure administration</p><div id="loginMessage" class="notice hidden"></div><form id="loginForm"><div><label for="loginEmail">Email address</label><input id="loginEmail" type="email" autocomplete="username" required placeholder="admin@company.com"></div><div><label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Your Supabase Auth password"></div><button id="loginButton" type="submit">Sign in securely</button></form><div class="divider"></div><button class="secondary" style="width:100%" id="openConfig">Configure Supabase connection</button><p class="small muted" style="margin:14px 0 0">Use your Supabase project URL and public anon/publishable key only. Never put a service-role key in this page.</p></div></div>
-<div id="appScreen" class="app hidden"><aside class="side"><div class="brand"><div class="logo">C</div><div><b>COREVA</b><div class="small muted">Central Admin</div></div></div><div class="nav" id="nav"><button data-page="overview" class="active">◈ Overview</button><button data-page="leads">☷ Leads</button><button data-page="customers">♙ Customers</button><button data-page="divisions">◇ Brand Divisions</button><button data-page="settings">⚙ Settings</button></div><div class="sidefoot"><div class="small muted">SIGNED IN AS</div><div id="sideEmail" style="overflow-wrap:anywhere;margin:4px 0 12px">—</div><button class="secondary" id="signOut" style="width:100%">Sign out</button></div></aside><main class="main"><header class="top"><div><h1 id="pageTitle">Overview</h1><div class="muted" id="pageSub">Your business at a glance.</div></div><div class="row"><span class="pill"><span class="dot"></span><span id="connectionPill">Connected</span></span><button class="secondary" id="reloadBtn">Reload data</button></div></header><div id="pageContent"></div></main></div>
-<div id="configModal" class="modalback hidden"><div class="modal"><div class="modalhead"><div><h2>Supabase connection</h2><p class="muted small">Uses browser-safe public credentials.</p></div><button class="secondary" id="closeConfig">Close</button></div><div class="formgrid"><div class="field full"><label for="projectUrl">Project URL</label><input id="projectUrl" placeholder="https://your-project.supabase.co"></div><div class="field full"><label for="publicKey">Anon / publishable key</label><textarea id="publicKey" rows="3" placeholder="sb_publishable_... or legacy anon key"></textarea></div></div><div class="notice">Do not paste a service_role or secret key here. Database access must be controlled by Supabase Auth and RLS.</div><div class="row"><button id="saveConfig">Save connection</button><button class="secondary" id="testConfig">Test connection</button></div><div id="configMessage" class="notice hidden"></div></div></div>
-<div id="leadModal" class="modalback hidden"><div class="modal"><div class="modalhead"><div><h2 id="leadModalTitle">Add lead</h2><p class="muted small">Saved to your existing public.leads table.</p></div><button class="secondary" id="closeLead">Close</button></div><form id="leadForm"><input id="leadId" type="hidden"><div class="formgrid"><div class="field"><label for="leadName">Full name *</label><input id="leadName" required></div><div class="field"><label for="leadPhone">Phone</label><input id="leadPhone" type="tel"></div><div class="field"><label for="leadEmail">Email</label><input id="leadEmail" type="email"></div><div class="field"><label for="leadService">Service category</label><input id="leadService" placeholder="Property, digital, finance…"></div><div class="field"><label for="leadLanguage">Preferred language</label><select id="leadLanguage"><option>English</option><option>Kannada</option><option>Tulu</option><option>Hindi</option><option>Other</option></select></div><div class="field"><label for="leadStatus">Status</label><select id="leadStatus"><option value="new">New</option><option value="contacted">Contacted</option><option value="qualified">Qualified</option><option value="converted">Converted</option><option value="lost">Lost</option></select></div><div class="field full"><label for="leadRequirements">Requirements</label><textarea id="leadRequirements" rows="3"></textarea></div><div class="field full"><label for="leadNotes">Consent / contact notes</label><textarea id="leadNotes" rows="2"></textarea></div></div><div id="leadMessage" class="notice hidden"></div><div class="row" style="margin-top:16px"><button id="saveLeadBtn" type="submit">Save lead</button><button type="button" class="secondary" id="cancelLead">Cancel</button></div></form></div></div>
+:root{--bg:#0b1020;--panel:#121a2d;--panel2:#18243a;--line:#293750;--text:#edf3ff;--muted:#98a8c2;--blue:#65b9ff;--gold:#d9bd83;--green:#52d5a0;--red:#ff858b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Inter,system-ui,-apple-system,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}input,select,textarea{width:100%;background:#0c1426;color:var(--text);border:1px solid var(--line);padding:11px 12px;border-radius:9px;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--blue)}textarea{min-height:90px;resize:vertical}label{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}.hidden{display:none!important}.muted{color:var(--muted)}.small{font-size:12px}.btn{border:1px solid var(--line);border-radius:9px;padding:9px 13px;background:#19263c;color:var(--text)}.btn:hover{border-color:var(--blue)}.primary{background:var(--blue);color:#081221;border-color:var(--blue);font-weight:700}.gold{color:var(--gold)}.danger{color:var(--red)}.success{color:var(--green)}.layout{display:grid;grid-template-columns:245px minmax(0,1fr);min-height:100vh}.sidebar{background:#0e1628;border-right:1px solid var(--line);padding:22px 14px;position:sticky;top:0;height:100vh;overflow-y:auto}.brand{font-size:25px;letter-spacing:4px;font-weight:900;padding:4px 12px}.brand span{color:var(--gold)}.brand-sub{color:var(--muted);font-size:10px;letter-spacing:2px;padding:0 12px 25px}.nav-label{color:#7185a3;font-size:10px;letter-spacing:1.7px;margin:20px 12px 8px}.nav{width:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:11px 12px;border:0;border-radius:9px;background:transparent;color:#b8c6db;margin:2px 0}.nav:hover,.nav.active{background:#1b2b45;color:white}.nav.active{box-shadow:inset 3px 0 var(--gold)}.nav-icon{width:20px;text-align:center;color:var(--blue)}.side-bottom{margin-top:25px;padding:12px;border:1px solid var(--line);border-radius:10px;color:var(--muted);font-size:12px}.main{min-width:0}.topbar{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 28px;background:#0e1628;position:sticky;top:0;z-index:5}.top-left{display:flex;align-items:center;gap:12px}.hamburger{display:none}.top-right{display:flex;align-items:center;gap:10px}.content{padding:28px;max-width:1600px;margin:auto}.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:24px}.page-head h1{font-size:27px;letter-spacing:-.7px;margin:0 0 5px}.page-head p{color:var(--muted);margin:0}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:20px}.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);gap:8px}.stat-icon{font-size:22px}.stat-value{font-size:29px;font-weight:750;margin:13px 0 3px;overflow-wrap:anywhere}.stat-foot{font-size:12px;color:var(--muted)}.grid2{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(280px,1fr);gap:17px;margin-bottom:18px}.section-title{font-size:16px;font-weight:700;margin:0 0 4px}.section-sub{color:var(--muted);font-size:12px;margin:0 0 17px}.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-bottom:15px}.toolbar input{flex:1;min-width:160px;width:auto}.toolbar select{width:auto;min-width:135px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px}table{width:100%;border-collapse:collapse;white-space:nowrap}th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);font-size:12px}th{background:#172239;color:var(--muted);font-weight:600}tr:last-child td{border-bottom:0}td{max-width:280px;overflow:hidden;text-overflow:ellipsis}.pill{display:inline-block;border-radius:20px;padding:4px 8px;background:#26344a;color:#c9d7e9;font-size:11px}.pill.green{background:#123c32;color:#74e2b8}.pill.gold{background:#403722;color:#efd398}.pill.red{background:#45242e;color:#ffadb1}.empty{padding:28px;text-align:center;color:var(--muted)}.notice{padding:13px 15px;border:1px solid #55482d;background:#292417;color:#efd398;border-radius:10px;margin-bottom:18px}.info-note{padding:11px 13px;border:1px solid var(--line);background:#101a2c;color:var(--muted);border-radius:9px;margin:12px 0;font-size:12px}.status{font-size:12px;color:var(--muted)}.status.ok{color:var(--green)}.status.err{color:var(--red)}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field.full{grid-column:1/-1}.field label{margin-bottom:7px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}.quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.quick{padding:15px;border:1px solid var(--line);border-radius:10px;background:#141f33;text-align:left;color:var(--text)}.quick strong{display:block;margin-bottom:5px}.quick span{font-size:12px;color:var(--muted)}.bar-list{display:grid;gap:13px}.bar-row{display:grid;grid-template-columns:100px minmax(30px,1fr) 35px;gap:10px;align-items:center;font-size:12px}.bar-track{height:8px;border-radius:9px;background:#26334a;overflow:hidden}.bar-fill{height:100%;border-radius:9px;background:linear-gradient(90deg,#488fe9,#72d0ff)}.login-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at top,#1a3150 0,transparent 60%),var(--bg)}.login-card{width:min(480px,100%);background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:30px}.login-card h1{margin:12px 0}.login-card .field{margin:16px 0}.login-card .btn{width:100%;margin-top:12px}.footer{padding:20px;text-align:center;color:#7587a3;font-size:11px}.mobile-only{display:none}.toast{position:fixed;right:20px;bottom:20px;background:#1c2d45;border:1px solid var(--line);border-radius:12px;padding:14px 18px;max-width:min(380px,calc(100vw - 40px));z-index:100;box-shadow:0 10px 35px #0007}.modal-backdrop{position:fixed;inset:0;background:#000a;display:grid;place-items:center;padding:16px;z-index:30}.modal{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:22px;width:min(620px,100%);max-height:90vh;overflow:auto}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.invoice-paper{background:white;color:#182033;padding:28px;max-width:760px;margin:15px auto;border-radius:8px}.invoice-paper table th{background:#e9edf4;color:#25334a}.invoice-paper table td,.invoice-paper table th{border-color:#d8deea}.invoice-paper .muted{color:#647087}.invoice-paper input{background:white;color:#182033;border-color:#d8deea}.invoice-paper .btn{color:#182033}.config-box{max-width:780px}.divider{border:0;border-top:1px solid var(--line);margin:18px 0}
+@media(max-width:1050px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){.layout{grid-template-columns:1fr}.sidebar{position:fixed;left:-270px;top:0;width:250px;z-index:20;transition:left .2s;box-shadow:15px 0 40px #0005}.sidebar.open{left:0}.hamburger,.mobile-only{display:inline-flex}.topbar{height:62px;padding:0 14px}.content{padding:18px 13px}.page-head h1{font-size:23px}.cards{gap:9px}.card{padding:13px}.stat-value{font-size:24px}.quick-grid{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.top-right .hide-mobile{display:none}.brand-sub{padding-bottom:15px}}
+@media print{body{background:white;color:#111}.sidebar,.topbar,.page-head,.no-print,.footer{display:none!important}.layout{display:block}.content{padding:0;max-width:none}.invoice-paper{box-shadow:none;margin:0;width:100%;max-width:none}.invoice-paper .no-print{display:none!important}}
+</style>
+</head>
+<body>
+<div id="toast" class="toast hidden" role="status"></div>
+
+<section id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="brand" style="padding:0">COREVA<span>.</span></div>
+    <div class="brand-sub" style="padding-left:0">BUSINESS SOLUTIONS · CENTRAL WORKSPACE</div>
+    <h1>Welcome back</h1>
+    <p class="muted">Sign in to manage your organisation's business operations.</p>
+    <div id="configWarning" class="notice">First configure your Supabase project below. Use your project URL and public anon/publishable key only.</div>
+    <form id="loginForm">
+      <div class="field"><label for="loginEmail">Email address</label><input id="loginEmail" type="email" autocomplete="username" required placeholder="you@company.com"></div>
+      <div class="field"><label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Your account password"></div>
+      <button class="btn primary" type="submit" id="loginButton">Sign in securely</button>
+    </form>
+    <div class="actions"><button class="btn" id="showConfig" type="button">Configure connection</button><button class="btn" id="resetPassword" type="button">Forgot password?</button></div>
+    <p id="loginStatus" class="status" aria-live="polite"></p>
+    <p class="small muted">An authorised Supabase Auth account is required. This page does not create an admin account or bypass database permissions.</p>
+  </div>
+</section>
+
+<div id="app" class="layout hidden">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">COREVA<span>.</span></div>
+    <div class="brand-sub">BUSINESS OPERATING SYSTEM</div>
+    <div class="nav-label">WORKSPACE</div>
+    <button class="nav active" data-page="overview"><span class="nav-icon">◈</span>Overview</button>
+    <button class="nav" data-page="leads"><span class="nav-icon">♙</span>Leads & Enquiries</button>
+    <button class="nav" data-page="customers"><span class="nav-icon">♧</span>Customers</button>
+    <button class="nav" data-page="appointments"><span class="nav-icon">▦</span>Appointments</button>
+    <button class="nav" data-page="calls"><span class="nav-icon">◉</span>AI Call History</button>
+    <button class="nav" data-page="agents"><span class="nav-icon">✧</span>AI Agents</button>
+    <button class="nav" data-page="followups"><span class="nav-icon">✓</span>Follow-up Tasks</button>
+    <div class="nav-label">BUSINESS OPERATIONS</div>
+    <button class="nav" data-page="projects"><span class="nav-icon">▤</span>Projects & Work</button>
+    <button class="nav" data-page="employees"><span class="nav-icon">♙</span>Employees & Access</button>
+    <button class="nav" data-page="finance"><span class="nav-icon">₹</span>Finance</button>
+    <button class="nav" data-page="invoices"><span class="nav-icon">▧</span>Invoices & Receipts</button>
+    <button class="nav" data-page="reports"><span class="nav-icon">▥</span>Reports</button>
+    <div class="nav-label">COMPANY</div>
+    <button class="nav" data-page="divisions"><span class="nav-icon">⌘</span>Brand Divisions</button>
+    <button class="nav" data-page="settings"><span class="nav-icon">⚙</span>Settings & Setup</button>
+    <div class="side-bottom">
+      <div id="connectionStatus">● Connecting status unavailable</div>
+      <div id="userEmail" style="margin-top:6px;overflow-wrap:anywhere"></div>
+      <button class="btn" id="logoutButton" style="margin-top:12px;width:100%">Sign out</button>
+    </div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div class="top-left"><button class="btn hamburger" id="menuToggle" aria-label="Open menu">☰</button><div><strong id="topTitle">Overview</strong><div class="small muted" id="topSubtitle">Your organisation at a glance</div></div></div>
+      <div class="top-right"><span class="pill" id="orgBadge">Organisation not selected</span><button class="btn hide-mobile" id="refreshButton">↻ Refresh</button><button class="btn" id="topSettings">⚙</button></div>
+    </header>
+    <div class="content" id="pageContent"></div>
+    <div class="footer">COREVA BUSINESS SOLUTIONS · Secure workspace · Data access depends on your Supabase policies</div>
+  </main>
+</div>
+
+<div id="modalHost"></div>
+
 <script>
-(()=>{'use strict';
-const CONFIG_KEY='coreva_admin_public_config_v1';const ORG_FALLBACK='b6d8c068-56be-421e-92e1-d08a5f079679';let sb=null,user=null,orgId=null,orgs=[],leads=[],currentPage='overview',voicePlayed=false;
-const $=id=>document.getElementById(id);const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const cfg=()=>{try{return JSON.parse(localStorage.getItem(CONFIG_KEY)||'{}')}catch{return {}}};
-function msg(el,text,type=''){el.className='notice'+(type?' '+type:'');el.textContent=text;el.classList.remove('hidden')}function hideMsg(el){el.classList.add('hidden');el.textContent=''}function setBusy(btn,busy,text){btn.disabled=busy;if(busy){btn.dataset.old=btn.textContent;btn.textContent=text||'Please wait…'}else{btn.textContent=btn.dataset.old||btn.textContent;delete btn.dataset.old}}
-function newClient(){const c=cfg();if(!c.url||!c.key)return null;try{return window.supabase.createClient(c.url.replace(/\/$/,''),c.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})}catch(e){console.error(e);return null}}
-function speakWelcome(){if(voicePlayed||!('speechSynthesis'in window))return;voicePlayed=true;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance('Welcome, founder of COREVA Business Solutions, Mr. Aboobakkar Fahiz.');u.lang='en-IN';u.rate=.9;u.pitch=1;window.setTimeout(()=>speechSynthesis.speak(u),450)}catch(e){console.warn('Voice welcome unavailable',e)}}
-function openConfig(){const c=cfg();$('projectUrl').value=c.url||'';$('publicKey').value=c.key||'';hideMsg($('configMessage'));$('configModal').classList.remove('hidden')}
-function saveConfig(){const url=$('projectUrl').value.trim(),key=$('publicKey').value.trim();if(!/^https:\/\/.+\.supabase\.co\/?$/.test(url)){msg($('configMessage'),'Enter your valid Supabase project URL, such as https://xxxx.supabase.co.','error');return}if(!key){msg($('configMessage'),'Paste the public anon/publishable key. Do not use a service-role key.','error');return}localStorage.setItem(CONFIG_KEY,JSON.stringify({url,key}));sb=newClient();msg($('configMessage'),'Connection details saved in this browser. Use Test connection to verify.','success')}
-async function testConfig(){saveConfig();if(!sb)return;try{const {data,error}=await sb.auth.getSession();if(error)throw error;msg($('configMessage'),'Supabase client initialized. '+(data.session?'An authenticated session exists.':'No active login session yet; sign in from the login screen.'),'success')}catch(e){msg($('configMessage'),e.message||String(e),'error')}}
-async function init(){sb=newClient();if(!sb){$('loginScreen').classList.remove('hidden');$('appScreen').classList.add('hidden');return}try{const {data,error}=await sb.auth.getSession();if(error)throw error;if(data.session)await enterApp(data.session.user,false)}catch(e){msg($('loginMessage'),'Could not restore session: '+(e.message||e),'error')}}
-$('openConfig').onclick=openConfig;$('closeConfig').onclick=()=>$('configModal').classList.add('hidden');$('saveConfig').onclick=saveConfig;$('testConfig').onclick=testConfig;
-$('loginForm').addEventListener('submit',async e=>{e.preventDefault();if(!sb){openConfig();msg($('configMessage'),'Save your Supabase URL and public key first.','');return}setBusy($('loginButton'),true,'Signing in…');hideMsg($('loginMessage'));try{const {data,error}=await sb.auth.signInWithPassword({email:$('loginEmail').value.trim(),password:$('loginPassword').value});if(error)throw error;await enterApp(data.user,true)}catch(err){msg($('loginMessage'),err.message||String(err),'error')}finally{setBusy($('loginButton'),false)}});
-async function enterApp(authUser,playVoice){user=authUser;const {data:sessionData}=await sb.auth.getSession();if(!sessionData.session||sessionData.session.user.id!==user.id)throw new Error('Authentication session could not be verified. Please sign in again.');$('loginScreen').classList.add('hidden');$('appScreen').classList.remove('hidden');$('sideEmail').textContent=user.email||user.id;$('connectionPill').textContent='Authenticated';orgId=null;orgs=[];await loadOrganisations();await loadLeads();render();if(playVoice)speakWelcome()}
-async function loadOrganisations(){let {data,error}=await sb.from('org_memberships').select('organization_id,role,created_at').eq('user_id',user.id).order('created_at',{ascending:false});if(error){console.warn('Membership lookup:',error.message);data=[]}if(data&&data.length){const ids=[...new Set(data.map(x=>x.organization_id).filter(Boolean))];let q=await sb.from('organizations').select('id,name,slug').in('id',ids);if(!q.error&&q.data)orgs=q.data.map(o=>({...o,role:data.find(m=>m.organization_id===o.id)?.role}));if(!orgs.length)orgs=ids.map(id=>({id,name:id===ORG_FALLBACK?'COREVA Business Solutions':'Organisation',role:data.find(m=>m.organization_id===id)?.role}));}
-if(!orgs.length){const q=await sb.from('organizations').select('id,name,slug');if(!q.error&&q.data)orgs=q.data}const c=cfg();orgId=(c.orgId&&orgs.find(o=>o.id===c.orgId)?.id)||orgs[0]?.id||null;if(!orgId&&user){console.warn('No organisation visible for current auth user.');}}
-async function loadLeads(){if(!sb||!user||!orgId){leads=[];return}const {data,error}=await sb.from('leads').select('*').eq('organization_id',orgId).order('created_at',{ascending:false}).limit(500);if(error){console.error('Load leads failed',error);leads=[];window.lastLeadLoadError=error}else{leads=data||[];window.lastLeadLoadError=null}}
-const pageInfo={overview:['Overview','Your business at a glance.'],leads:['Leads Management','Create, view and edit enquiries.'],customers:['Customers','Customer records from your existing leads table.'],divisions:['Brand Divisions','COREVA group brands.'],settings:['Settings & Setup','Connection and organisation status.']};
-$('nav').addEventListener('click',e=>{const b=e.target.closest('button[data-page]');if(!b)return;currentPage=b.dataset.page;document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x===b));render()});$('reloadBtn').onclick=async()=>{setBusy($('reloadBtn'),true,'Reloading…');try{await loadOrganisations();await loadLeads();render()}finally{setBusy($('reloadBtn'),false)}};
-function render(){const [title,sub]=pageInfo[currentPage]||pageInfo.overview;$('pageTitle').textContent=title;$('pageSub').textContent=sub;document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===currentPage));const content=$('pageContent');if(currentPage==='overview')content.innerHTML=renderOverview();else if(currentPage==='leads')content.innerHTML=renderLeads();else if(currentPage==='customers')content.innerHTML=renderCustomers();else if(currentPage==='divisions')content.innerHTML=renderDivisions();else content.innerHTML=renderSettings();const err=window.lastLeadLoadError;if(err&&['leads','customers','overview'].includes(currentPage)){const n=document.createElement('div');n.className='notice error';n.textContent='Could not load leads: '+err.message;content.prepend(n)}if(currentPage==='leads'){$('addLeadBtn')?.addEventListener('click',()=>showLead());content.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>showLead(leads.find(x=>x.id===b.dataset.edit))));content.querySelectorAll('[data-refresh]').forEach(b=>b.addEventListener('click',async()=>{await loadLeads();render()}))}}
-function renderOverview(){return `<div class="grid"><div class="card"><div class="muted">Total leads</div><div class="stat">${leads.length}</div><div class="small muted">In selected organisation</div></div><div class="card"><div class="muted">New leads</div><div class="stat">${leads.filter(x=>String(x.status||'new').toLowerCase()==='new').length}</div><div class="small muted">Need follow-up</div></div><div class="card"><div class="muted">Contacted</div><div class="stat">${leads.filter(x=>String(x.status||'').toLowerCase()==='contacted').length}</div><div class="small muted">Contact initiated</div></div><div class="card"><div class="muted">Organisations</div><div class="stat">${orgs.length}</div><div class="small muted">Visible to this user</div></div></div><div class="card"><div class="between"><div><h2>Recent leads</h2><p class="muted small">Latest records in your organisation.</p></div><button onclick="window.goLeads()">Open leads</button></div>${leads.length?`<div class="tablewrap"><table><thead><tr><th>Name</th><th>Contact</th><th>Service</th><th>Status</th><th></th></tr></thead><tbody>${leads.slice(0,6).map(leadRow).join('')}</tbody></table></div>`:'<div class="empty">No leads loaded yet. Open Leads Management to add a record.</div>'}</div>`}
-function leadRow(x){return `<tr><td><b>${esc(x.full_name||x.name||'Unnamed')}</b><div class="small muted">${esc(x.created_at?new Date(x.created_at).toLocaleDateString():'')}</div></td><td>${esc(x.phone||'—')}<div class="small muted">${esc(x.email||'')}</div></td><td>${esc(x.service_category||x.service||'—')}</td><td><span class="tag">${esc(x.status||'new')}</span></td><td><button class="secondary" data-edit="${esc(x.id)}">Edit</button></td></tr>`}
-function renderLeads(){return `<div class="card"><div class="between"><div><h2>Leads</h2><p class="muted small">Records are scoped to the selected organisation.</p></div><div class="row"><button class="secondary" data-refresh>Refresh</button><button id="addLeadBtn">+ Add lead</button></div></div>${leads.length?`<div class="tablewrap"><table><thead><tr><th>Name</th><th>Contact</th><th>Service</th><th>Status</th><th>Action</th></tr></thead><tbody>${leads.map(leadRow).join('')}</tbody></table></div>`:'<div class="empty">No leads found for this organisation, or the current user cannot read them.</div>'}</div><div class="notice">If saving is rejected, the dashboard will show the actual Supabase error code and message. It will not disable RLS or bypass database permissions.</div>`}
-function renderCustomers(){const customers=leads.filter(x=>x.status&&String(x.status).toLowerCase()==='converted');return `<div class="card"><h2>Customers</h2><p class="muted">Customers currently use converted leads from the existing leads table. This avoids pretending a separate customers table exists when it may not.</p><div class="grid"><div class="card"><div class="muted">Converted leads</div><div class="stat">${customers.length}</div></div></div>${customers.length?`<div class="tablewrap"><table><thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Status</th></tr></thead><tbody>${customers.map(x=>`<tr><td>${esc(x.full_name||x.name||'')}</td><td>${esc(x.phone||'—')}</td><td>${esc(x.email||'—')}</td><td>${esc(x.status)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No converted leads yet.</div>'}</div>`}
-function renderDivisions(){const brands=['COREVA Business Solutions','VELORA DIGITAL','TBD BUILDERS & DEVELOPERS','SR PRIME Properties & Real Estate Developers','AURELIV INTERIORS. DESIGN'];return `<div class="grid">${brands.map((b,i)=>`<div class="card"><div class="logo" style="margin-bottom:12px">${['C','V','T','S','A'][i]}</div><h2>${esc(b)}</h2><p class="muted small">Brand division</p></div>`).join('')}</div><div class="notice">These are brand identities shown in the dashboard. They do not automatically create separate accounting or legal entities.</div>`}
-function renderSettings(){return `<div class="card"><h2>Connection status</h2><p><b>Supabase:</b> ${sb?'Configured':'Not configured'}</p><p><b>Authentication:</b> ${esc(user?.email||'Not signed in')}</p><p><b>User ID:</b> <span class="small">${esc(user?.id||'—')}</span></p><p><b>Organisation ID:</b> <span class="small">${esc(orgId||'No organisation selected')}</span></p><p><b>Visible organisations:</b> ${orgs.length}</p><div class="row"><button id="editConnection">Edit connection</button><button class="secondary" id="selectOrg">Select organisation</button><button class="secondary" id="settingsReload">Reload data</button></div></div><div class="card"><h2>Security and production checks</h2><ul class="muted"><li>Supabase Auth session is checked before the dashboard loads.</li><li>Lead writes use the signed-in browser session and existing Row Level Security policies.</li><li>Never place a service-role key in this HTML file.</li><li>Voice welcome runs in the browser after sign-in; browser audio settings can affect playback.</li></ul></div>`}
-window.goLeads=()=>{currentPage='leads';render()};$('pageContent').addEventListener('click',e=>{if(e.target.id==='editConnection')openConfig();if(e.target.id==='settingsReload')$('reloadBtn').click();if(e.target.id==='selectOrg')showOrgPicker()});
-function showOrgPicker(){if(!orgs.length){alert('No organisations are visible to this signed-in user. Check organisation membership permissions.');return}const current=orgs.find(o=>o.id===orgId);const options=orgs.map(o=>`${o.name||o.slug||o.id} (${o.id})`).join('\n');const choice=prompt('Enter the number of the organisation to select:\n'+orgs.map((o,i)=>`${i+1}. ${o.name||o.slug||o.id} — ${o.id}`).join('\n'),String(orgs.findIndex(o=>o.id===orgId)+1));if(choice===null)return;const n=Number(choice)-1;if(!Number.isInteger(n)||!orgs[n]){alert('Invalid selection.');return}orgId=orgs[n].id;const c=cfg();c.orgId=orgId;localStorage.setItem(CONFIG_KEY,JSON.stringify(c));loadLeads().then(render)}
-function showLead(lead=null){$('leadForm').reset();$('leadId').value=lead?.id||'';$('leadModalTitle').textContent=lead?'Edit lead':'Add lead';$('leadName').value=lead?.full_name||lead?.name||'';$('leadPhone').value=lead?.phone||'';$('leadEmail').value=lead?.email||'';$('leadService').value=lead?.service_category||lead?.service||'';$('leadLanguage').value=lead?.preferred_language||'English';$('leadStatus').value=lead?.status||'new';$('leadRequirements').value=lead?.requirements||'';$('leadNotes').value=lead?.consent_notes||lead?.contact_notes||'';hideMsg($('leadMessage'));$('leadModal').classList.remove('hidden')}
-$('closeLead').onclick=$('cancelLead').onclick=()=>$('leadModal').classList.add('hidden');
-$('leadForm').addEventListener('submit',async e=>{e.preventDefault();if(!sb||!user){msg($('leadMessage'),'You are not signed in. Please sign in again.','error');return}if(!orgId){msg($('leadMessage'),'No organisation is selected for this user. Select an organisation in Settings first.','error');return}setBusy($('saveLeadBtn'),true,'Saving…');hideMsg($('leadMessage'));try{const {data:sessionWrap,error:sessionError}=await sb.auth.getSession();if(sessionError)throw sessionError;const session=sessionWrap.session;if(!session||session.user.id!==user.id)throw new Error('Your login session is missing or has changed. Sign out and sign in again.');const id=$('leadId').value.trim();const payload={organization_id:orgId,full_name:$('leadName').value.trim(),phone:$('leadPhone').value.trim()||null,email:$('leadEmail').value.trim()||null,service_category:$('leadService').value.trim()||null,preferred_language:$('leadLanguage').value,status:$('leadStatus').value,requirements:$('leadRequirements').value.trim()||null,consent_notes:$('leadNotes').value.trim()||null};if(!id)payload.source='admin_dashboard';let query;if(id){delete payload.organization_id;delete payload.source;query=sb.from('leads').update(payload).eq('id',id).eq('organization_id',orgId)}else query=sb.from('leads').insert(payload);const result=await query.select('*');if(result.error)throw result.error;if(id&&(!result.data||result.data.length===0))throw new Error('Update returned no row. The record may not be visible to this user under the current RLS policy.');msg($('leadMessage'),id?'Lead updated successfully.':'Lead saved successfully.','success');await loadLeads();render();setTimeout(()=>$('leadModal').classList.add('hidden'),650)}catch(err){console.error('Lead save error',err);const details=[err.code?`Code: ${err.code}`:'',err.message?`Message: ${err.message}`:'',err.details?`Details: ${err.details}`:'',err.hint?`Hint: ${err.hint}`:''].filter(Boolean).join('\n');msg($('leadMessage'),'Supabase could not save this lead.\n'+(details||String(err))+'\n\nNo security policy was bypassed. The exact error above identifies what needs correcting.','error')}finally{setBusy($('saveLeadBtn'),false)}});
-$('signOut').onclick=async()=>{if(sb)await sb.auth.signOut();user=null;orgId=null;leads=[];voicePlayed=false;$('appScreen').classList.add('hidden');$('loginScreen').classList.remove('hidden');speechSynthesis?.cancel?.()};
-if(sb){sb.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_OUT'){$('appScreen').classList.add('hidden');$('loginScreen').classList.remove('hidden')}else if(event==='TOKEN_REFRESHED'&&session)user=session.user})}init();
+(() => {
+"use strict";
+
+/* CONFIGURATION
+   Use your Supabase project URL and PUBLIC anon/publishable key.
+   NEVER paste a service_role or secret key into this browser file.
+*/
+const STORE_KEY = "coreva_admin_public_config_v1";
+const $ = id => document.getElementById(id);
+const esc = v => String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money = n => new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:2}).format(Number(n)||0);
+const dateFmt = v => { if(!v)return "—";const d=new Date(v);return Number.isNaN(d.getTime())?esc(v):d.toLocaleString("en-IN",{dateStyle:"medium",timeStyle:"short"});};
+const dateInput = () => {const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,16);};
+const norm = v => String(v??"").toLowerCase();
+const statusPill = v => {const s=String(v||"new");let c=/complete|paid|confirm|success|done/i.test(s)?"green":/cancel|fail|overdue|lost/i.test(s)?"red":/follow|progress|pending|scheduled|open/i.test(s)?"gold":"";return `<span class="pill ${c}">${esc(s.replace(/_/g," "))}</span>`;};
+let config = readConfig(), sb = null, session = null, currentPage="overview", orgId="", orgs=[], cache={}, searchTerm="", pageMessage="", busy=false;
+
+function readConfig(){try{return JSON.parse(localStorage.getItem(STORE_KEY)||"{}")}catch{return {}}}
+function saveConfig(c){config=c;localStorage.setItem(STORE_KEY,JSON.stringify(c))}
+function toast(message,isError=false){const el=$("toast");el.textContent=message;el.classList.remove("hidden");el.style.borderColor=isError?"#ff858b":"#52d5a0";setTimeout(()=>el.classList.add("hidden"),4500)}
+function setStatus(msg,error=false){const el=$("loginStatus");if(el){el.textContent=msg;el.className="status "+(error?"err":"ok")}}
+function configured(){return Boolean(config.url&&config.key&&window.supabase)}
+function initClient(){if(!configured())return false;try{const url=new URL(config.url);if(url.protocol!=="https:"&&url.hostname!=="localhost")throw Error("Use your HTTPS Supabase project URL.");sb=window.supabase.createClient(config.url,config.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});return true}catch(e){sb=null;setStatus(e.message,true);return false}}
+function showLogin(){ $("loginScreen").classList.remove("hidden");$("app").classList.add("hidden");$("configWarning").classList.toggle("hidden",configured()); }
+function showApp(){ $("loginScreen").classList.add("hidden");$("app").classList.remove("hidden");$("userEmail").textContent=session?.user?.email||""; }
+function configForm(){
+ $("modalHost").innerHTML=`<div class="modal-backdrop" id="modalBackdrop"><section class="modal config-box"><div class="modal-head"><h2>Supabase connection</h2><button class="btn" id="closeModal">Close</button></div><div class="notice">Use the Project URL and public anon/publishable key from Supabase → Project Settings → API. Never use a service-role or secret key here.</div><form id="configForm"><div class="field"><label>Project URL</label><input id="cfgUrl" type="url" required placeholder="https://your-project.supabase.co" value="${esc(config.url||"")}"></div><div class="field" style="margin-top:14px"><label>Public anon / publishable key</label><textarea id="cfgKey" required placeholder="Paste the public browser key">${esc(config.key||"")}</textarea></div><div class="field" style="margin-top:14px"><label>Organisation UUID (optional)</label><input id="cfgOrg" placeholder="Your organisation ID from organizations" value="${esc(config.orgId||"")}"></div><div class="actions"><button class="btn primary" type="submit">Save connection settings</button><button class="btn" type="button" id="clearConfig">Clear saved settings</button></div><p class="small muted">Settings are stored in this browser only. Access to data is still controlled by Supabase Auth and Row Level Security (RLS).</p></form></section></div>`;
+ $("closeModal").onclick=()=>$("modalHost").innerHTML="";
+ $("modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")$("modalHost").innerHTML=""});
+ $("clearConfig").onclick=()=>{localStorage.removeItem(STORE_KEY);config={};$("modalHost").innerHTML="";sb=null;showLogin();toast("Saved browser configuration cleared.");};
+ $("configForm").onsubmit=e=>{e.preventDefault();const url=$("cfgUrl").value.trim().replace(/\/+$/,""),key=$("cfgKey").value.trim(),oid=$("cfgOrg").value.trim();try{const u=new URL(url);if(u.protocol!=="https:"&&u.hostname!=="localhost")throw Error();}catch{toast("Enter a valid HTTPS Supabase project URL.",true);return}if(/service_role|sb_secret_/i.test(key)){toast("Do not use a secret or service-role key in browser code.",true);return}saveConfig({url,key,orgId:oid});$("modalHost").innerHTML="";if(initClient()){showLogin();setStatus("Configuration saved. Sign in to continue.");toast("Connection settings saved.");}else toast("Could not configure Supabase.",true);};
+}
+$("showConfig").onclick=configForm;
+$("resetPassword").onclick=async()=>{if(!configured()&&!initClient()){configForm();return}const email=$("loginEmail").value.trim();if(!email){setStatus("Enter your email first.",true);return}const {error}=await sb.auth.resetPasswordForEmail(email);setStatus(error?error.message:"If password recovery is enabled, a reset link will be sent to your email.",!!error);};
+$("loginForm").onsubmit=async e=>{e.preventDefault();if(!configured()){configForm();return}if(!sb&&!initClient())return;const b=$("loginButton");b.disabled=true;b.textContent="Signing in…";const {data,error}=await sb.auth.signInWithPassword({email:$("loginEmail").value.trim(),password:$("loginPassword").value});b.disabled=false;b.textContent="Sign in securely";if(error){setStatus(error.message,true);return}session=data.session;await enterApp();};
+$("logoutButton").onclick=async()=>{if(sb)await sb.auth.signOut();session=null;cache={};orgs=[];orgId="";showLogin();setStatus("You have signed out.");};
+$("refreshButton").onclick=()=>loadPage(true);
+$("topSettings").onclick=()=>navigate("settings");
+$("menuToggle").onclick=()=>$("sidebar").classList.toggle("open");
+document.querySelectorAll(".nav").forEach(b=>b.addEventListener("click",()=>navigate(b.dataset.page)));
+
+async function enterApp(){
+ if(!sb){showLogin();return}
+ const {data:{session:s},error:sessionError}=await sb.auth.getSession();
+ if(sessionError||!s){session=null;showLogin();setStatus(sessionError?.message||"Your session expired. Please sign in again.",true);return}
+ session=s;
+ showApp();
+ $("userEmail").textContent=s.user.email||"";
+ const {data,error}=await sb.from("organizations").select("*").limit(100);
+ if(error){cache.organizationsError=error.message;orgs=[];}
+ else {cache.organizationsError=null;orgs=data||[];}
+ const preferred=String(config.orgId||"").trim();
+ // Keep an explicitly configured organisation even when RLS hides the organisation list;
+ // the actual read/write remains enforced by Supabase policies.
+ orgId=preferred||(orgs[0]?.id||"");
+ $("orgBadge").textContent=orgId?("Org · "+orgId.slice(0,8)):"No organisation selected";
+ $("connectionStatus").textContent=error?"● Organisation list unavailable; configured scope retained":"● Supabase connected";
+ $("connectionStatus").className=error?"danger":"success";
+ await navigate(currentPage);
+}
+if(configured()&&initClient()){
+ sb.auth.getSession().then(async({data:{session:s}})=>{if(s){session=s;await enterApp()}else showLogin()});
+ sb.auth.onAuthStateChange((event,s)=>{if(event==="SIGNED_OUT"){session=null;showLogin()}});
+}else showLogin();
+
+function navigate(page){
+ currentPage=page;searchTerm="";document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.page===page));$("sidebar").classList.remove("open");
+ const titles={overview:["Overview","Your organisation at a glance"],leads:["Leads & Enquiries","Website enquiries and prospective customers"],customers:["Customers","Customer records and relationships"],appointments:["Appointments","Scheduled meetings and appointments"],calls:["AI Call History","Existing receptionist call records"],agents:["AI Agents","Your existing receptionist agents"],followups:["Follow-up Tasks","Keep enquiries moving"],projects:["Projects & Work","Manage delivery and assignments"],employees:["Employees & Access","Organisation membership and team access"],finance:["Finance","Income, expenses and outstanding balances"],invoices:["Invoices & Receipts","Create printable invoice and receipt documents"],reports:["Reports","Operational summaries from available records"],divisions:["Brand Divisions","Manage your business ecosystem"],settings:["Settings & Setup","Connection and integration status"]};
+ $("topTitle").textContent=titles[page]?.[0]||"COREVA";$("topSubtitle").textContent=titles[page]?.[1]||"Central workspace";loadPage();
+}
+
+async function fetchTable(table,select="*",extra=q=>q,limit=500){
+ if(!sb)throw Error("Supabase is not configured.");
+ let q=sb.from(table).select(select).limit(limit);
+ if(orgId)q=q.eq("organization_id",orgId);
+ /* Keep the query builder when an optional modifier returns nothing. */
+ const modified=extra(q);
+ if(modified)q=modified;
+ const result=await q;
+ if(!result || typeof result!=="object")throw Error("Supabase returned no query result. Check the network and Supabase client.");
+ const {data,error}=result;
+ if(error)throw error;
+ return data||[];
+}
+async function safeFetch(table,select="*",extra=()=>{},limit=500){
+ try{const rows=await fetchTable(table,select,extra,limit);cache[table]=rows;cache[table+"Error"]=null;return rows}
+ catch(e){cache[table]=[];cache[table+"Error"]=e.message||String(e);return []}
+}
+function errorNotice(table){return cache[table+"Error"]?`<div class="notice">Could not load <b>${esc(table)}</b>: ${esc(cache[table+"Error"])}. Check the table name, columns, login and RLS policies.</div>`:""}
+function head(title,desc,button=""){return `<div class="page-head"><div><h1>${title}</h1><p>${desc}</p></div>${button}</div>`}
+function stat(label,value,icon,foot="Current organisation"){return `<div class="card"><div class="stat-top"><span>${label}</span><span class="stat-icon">${icon}</span></div><div class="stat-value">${value}</div><div class="stat-foot">${foot}</div></div>`}
+function tableHTML(headers,rows,empty="No records found"){return `<div class="table-wrap"><table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.length?rows.join(""):`<tr><td colspan="${headers.length}"><div class="empty">${empty}</div></td></tr>`}</tbody></table></div>`}
+function recordSearch(row){return norm(Object.values(row||{}).join(" ")).includes(norm(searchTerm))}
+function searchToolbar(placeholder="Search records…",extra=""){return `<div class="toolbar"><input id="tableSearch" type="search" placeholder="${esc(placeholder)}" value="${esc(searchTerm)}">${extra}<button class="btn" id="doSearch">Search</button></div>`}
+function bindSearch(){const b=$("doSearch"),i=$("tableSearch");if(b)b.onclick=()=>{searchTerm=i.value;renderCachedPage()};if(i)i.addEventListener("keydown",e=>{if(e.key==="Enter"){searchTerm=i.value;renderCachedPage()}})}
+function renderCachedPage(){
+ const renderers={overview:renderOverview,leads:renderLeads,customers:renderCustomers,appointments:renderAppointments,calls:renderCalls,agents:renderAgents,followups:renderFollowups,projects:renderProjects,employees:renderEmployees,finance:renderFinance,invoices:renderInvoices,reports:renderReports,divisions:renderDivisions,settings:renderSettings};
+ const render=renderers[currentPage];
+ if(render){render();return}
+ $("pageContent").innerHTML=head("Page unavailable","This dashboard section is not configured yet.")+`<div class="notice">No renderer is registered for this section. Other dashboard sections remain available.</div>`;
+}
+async function loadPage(force=false){
+ if(!sb||!session){showLogin();return}
+ $("pageContent").innerHTML=`<div class="empty">Loading your workspace…</div>`;
+ if(currentPage==="overview"){await Promise.all(["leads","appointments","ai_calls","ai_agents","follow_up_tasks"].map(t=>safeFetch(t)));renderOverview();return}
+ const loaders={leads:()=>safeFetch("leads"),customers:()=>safeFetch("leads"),appointments:()=>safeFetch("appointments"),calls:()=>safeFetch("ai_calls"),agents:()=>safeFetch("ai_agents"),followups:()=>safeFetch("follow_up_tasks"),projects:()=>safeFetch("projects"),employees:()=>safeFetch("org_memberships"),finance:async()=>{await Promise.all(["invoices","payments","expenses","projects"].map(t=>safeFetch(t)))},invoices:()=>safeFetch("invoices"),reports:async()=>{await Promise.all(["leads","appointments","ai_calls","projects","invoices","payments","expenses"].map(t=>safeFetch(t)))},divisions:async()=>{},settings:async()=>{}};
+ if(loaders[currentPage])await loaders[currentPage]();
+ renderCachedPage();
+}
+function renderOverview(){
+ const leads=cache.leads||[],apps=cache.appointments||[],calls=cache.ai_calls||[],agents=cache.ai_agents||[],tasks=cache.follow_up_tasks||[];
+ const recent=[...leads].sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0)).slice(0,6);
+ const counts={new:leads.filter(x=>/new/i.test(x.status||"new")).length,follow:leads.filter(x=>/follow|progress/i.test(x.status||"")).length,done:leads.filter(x=>/complete|won|converted/i.test(x.status||"")).length};
+ const bars=[["New leads",counts.new],["Follow-up",counts.follow],["Converted / done",counts.done]];
+ $("pageContent").innerHTML=head("Good to see you","Your COREVA workspace overview.",`<button class="btn primary" onclick="window.corevaAction('lead')">＋ Add lead</button>`)+
+ (cache.organizationsError?`<div class="notice">Organisation list: ${esc(cache.organizationsError)}</div>`:"")+
+ (!orgId?`<div class="notice">No organisation is selected. Set your organisation UUID in Settings before reading or saving organisation-specific records.</div>`:"")+
+ `<div class="cards">${stat("Total leads",leads.length,"♙",cache.leadsError?"Could not load":counts.new+" new")}${stat("Appointments",apps.length,"▦",cache.appointmentsError?"Could not load":"Existing records")}${stat("AI calls",calls.length,"◉",cache.ai_callsError?"Could not load":"Existing records")}${stat("AI agents",agents.length,"✧",cache.ai_agentsError?"Could not load":"Existing records")}</div>`+
+ `<div class="grid2"><section class="card"><h2 class="section-title">Recent leads</h2><p class="section-sub">Latest enquiries recorded in Supabase.</p>${errorNotice("leads")}${tableHTML(["Customer","Service","Status","Source","Received"],recent.map(x=>`<tr><td>${esc(x.full_name||"Unnamed")}<div class="small muted">${esc(x.phone||"")}</div></td><td>${esc(x.service_category||"—")}</td><td>${statusPill(x.status)}</td><td>${esc(x.source||"—")}</td><td>${dateFmt(x.created_at)}</td></tr>`),"No leads yet") }<div class="actions"><button class="btn" onclick="window.corevaNavigate('leads')">View all leads →</button></div></section>
+ <section class="card"><h2 class="section-title">Lead pipeline</h2><p class="section-sub">Basic counts based on current lead status.</p><div class="bar-list">${bars.map(([l,n])=>`<div class="bar-row"><span>${l}</span><div class="bar-track"><div class="bar-fill" style="width:${leads.length?Math.min(100,n/leads.length*100):0}%"></div></div><b>${n}</b></div>`).join("")}</div><hr class="divider"><p class="muted small">Follow-up tasks: ${tasks.length} · Appointments: ${apps.length}</p><button class="btn" onclick="window.corevaNavigate('followups')">Review follow-ups →</button></section></div>
+ <section class="card"><h2 class="section-title">Quick actions</h2><p class="section-sub">Start common business workflows.</p><div class="quick-grid">
+ <button class="quick" onclick="window.corevaAction('lead')"><strong>＋ Add enquiry</strong><span>Record a new prospective customer</span></button>
+ <button class="quick" onclick="window.corevaNavigate('appointments')"><strong>▦ Appointments</strong><span>View scheduled meetings</span></button>
+ <button class="quick" onclick="window.corevaNavigate('calls')"><strong>◉ AI calls</strong><span>Review receptionist call history</span></button>
+ <button class="quick" onclick="window.corevaNavigate('projects')"><strong>▤ Projects</strong><span>Track work and delivery</span></button>
+ <button class="quick" onclick="window.corevaNavigate('invoices')"><strong>▧ Create invoice</strong><span>Prepare a printable invoice or receipt</span></button>
+ <button class="quick" onclick="window.corevaNavigate('settings')"><strong>⚙ Connection</strong><span>Check organisation and configuration</span></button>
+ </div></section>
+ <div class="grid2" style="margin-top:18px">${["leads","appointments","ai_calls","ai_agents","follow_up_tasks"].map(errorNotice).join("")}</div>`;
+}
+function renderLeads(){
+ const all=cache.leads||[],rows=all.filter(recordSearch).map(x=>`<tr><td>${esc(x.full_name||"—")}</td><td>${esc(x.phone||"—")}</td><td>${esc(x.email||"—")}</td><td>${esc(x.service_category||"—")}</td><td>${statusPill(x.status)}</td><td>${esc(x.source||"—")}</td><td>${dateFmt(x.created_at)}</td><td><button class="btn" onclick="window.corevaAction('editLead',${JSON.stringify(x.id)})">View / edit</button></td></tr>`);
+ $("pageContent").innerHTML=head("Leads & Enquiries","Track website, Instagram, WhatsApp and receptionist enquiries.",`<button class="btn primary" onclick="window.corevaAction('lead')">＋ Add lead</button>`)+errorNotice("leads")+searchToolbar("Search name, phone, email, service…")+tableHTML(["Name","Phone","Email","Service","Status","Source","Created","Action"],rows,"No matching leads");
+ bindSearch();
+}
+function renderCustomers(){
+ const all=cache.leads||[],unique=new Map();
+ all.filter(recordSearch).forEach(x=>{const k=x.phone||x.email||x.id;if(!unique.has(k))unique.set(k,x)});
+ const rows=[...unique.values()].map(x=>`<tr><td>${esc(x.full_name||"—")}</td><td>${esc(x.phone||"—")}</td><td>${esc(x.email||"—")}</td><td>${esc(x.service_category||"—")}</td><td>${dateFmt(x.created_at)}</td><td><button class="btn" onclick="window.corevaAction('invoiceFor',${JSON.stringify(x.id)})">Create invoice</button></td></tr>`);
+ $("pageContent").innerHTML=head("Customers","Customer list derived from your existing leads until a dedicated customer table is configured.",`<button class="btn primary" onclick="window.corevaAction('lead')">＋ Add customer enquiry</button>`)+`<div class="info-note">Customer records are currently derived from leads. A dedicated customer table and permanent duplicate merging are not configured.</div>`+searchToolbar("Search customers…")+tableHTML(["Customer","Phone","Email","Last requested service","Record created","Action"],rows);
+ bindSearch();
+}
+function renderAppointments(){
+ const rows=(cache.appointments||[]).filter(recordSearch).map(x=>`<tr><td>${esc(x.title||"Appointment")}</td><td>${esc(x.lead_id||"—")}</td><td>${dateFmt(x.start_at)}</td><td>${statusPill(x.status)}</td><td>${esc(x.notes||"—")}</td><td>${dateFmt(x.created_at)}</td></tr>`);
+ $("pageContent").innerHTML=head("Appointments","Existing appointments connected to your organisation.")+errorNotice("appointments")+searchToolbar("Search title, status, lead…")+tableHTML(["Title","Lead ID","Start time","Status","Notes","Created"],rows);
+ bindSearch();
+}
+function renderCalls(){
+ const rows=(cache.ai_calls||[]).filter(recordSearch).map(x=>`<tr><td>${dateFmt(x.started_at||x.created_at)}</td><td>${esc(x.caller_phone||"—")}</td><td>${esc(x.detected_language||x.language||"—")}</td><td>${x.duration_seconds==null?esc(x.duration??"—"):esc(x.duration_seconds)+" sec"}</td><td>${statusPill(x.status)}</td><td>${esc(x.outcome||"—")}</td><td>${esc(x.summary||"—")}</td><td>${x.recording_url&&/^https:\/\//i.test(x.recording_url)?`<a href="${esc(x.recording_url)}" target="_blank" rel="noopener noreferrer" class="btn">Open</a>`:"—"}</td></tr>`);
+ $("pageContent").innerHTML=head("AI Call History","Existing call records; live calling requires your existing voice provider integration.")+errorNotice("ai_calls")+searchToolbar("Search phone, language, status, summary…")+tableHTML(["Started","Caller","Language","Duration","Status","Outcome","Summary","Recording"],rows);
+ bindSearch();
+}
+function renderAgents(){
+ const rows=(cache.ai_agents||[]).filter(recordSearch).map(x=>`<tr><td>${esc(x.name||x.title||"AI Agent")}</td><td>${esc(x.id||"—")}</td><td>${statusPill(x.status||"configured")}</td><td>${dateFmt(x.created_at)}</td><td><span class="muted small">Edit using existing receptionist controls</span></td></tr>`);
+ $("pageContent").innerHTML=head("AI Agents","View your existing AI agent records without replacing the receptionist integration.") + errorNotice("ai_agents")+tableHTML(["Agent","ID","Status","Created","Management"],rows,"No agents were returned. Check the table columns and access policies.")+`<div class="info-note" style="margin-top:15px">This screen currently displays existing agents only. Agent editing and provider credentials must be managed through a verified secure backend; secrets must never be stored in this browser page.</div>`;
+}
+function renderFollowups(){
+ const rows=(cache.follow_up_tasks||[]).filter(recordSearch).map(x=>`<tr><td>${esc(x.title||x.task_title||"Follow-up")}</td><td>${esc(x.lead_id||"—")}</td><td>${dateFmt(x.due_at)}</td><td>${statusPill(x.status)}</td><td>${esc(x.assigned_to||"—")}</td><td>${esc(x.notes||"—")}</td></tr>`);
+ $("pageContent").innerHTML=head("Follow-up Tasks","Existing follow-up records.")+errorNotice("follow_up_tasks")+searchToolbar("Search tasks, lead ID, status…")+tableHTML(["Task","Lead ID","Due","Status","Assigned to","Notes"],rows);
+ bindSearch();
+}
+function renderProjects(){
+ const rows=(cache.projects||[]).filter(recordSearch).map(x=>`<tr><td>${esc(x.name||x.title||"Project")}</td><td>${esc(x.customer_name||x.customer_id||"—")}</td><td>${statusPill(x.status)}</td><td>${money(x.amount||x.budget||0)}</td><td>${dateFmt(x.due_date||x.deadline)}</td></tr>`);
+ $("pageContent").innerHTML=head("Projects & Work","Project records, delivery and assigned work.")+(cache.projectsError?errorNotice("projects"):"")+`<div class="info-note">This screen reads the existing projects table. If it is missing or access is denied, the error above identifies that condition; no project data is fabricated.</div>`+searchToolbar("Search projects…")+tableHTML(["Project","Customer","Status","Budget / amount","Due"],rows,"No project records available");
+ bindSearch();
+}
+function renderEmployees(){
+ const rows=(cache.org_memberships||[]).filter(recordSearch).map(x=>`<tr><td>${esc(x.user_id||"—")}</td><td>${esc(x.role||"—")}</td><td>${esc(x.organization_id||"—")}</td><td>${dateFmt(x.created_at)}</td></tr>`);
+ $("pageContent").innerHTML=head("Employees & Access","View organisation memberships allowed by your existing access policies.") + errorNotice("org_memberships")+`<div class="info-note">This screen only lists memberships visible to your account. Invitations and role changes require a trusted server-side flow; this page does not grant access from the browser.</div>`+tableHTML(["User ID","Role","Organisation ID","Membership created"],rows,"No memberships visible");
+}
+function renderFinance(){
+ const invoices=cache.invoices||[],payments=cache.payments||[],expenses=cache.expenses||[];
+ const total=arr=>arr.reduce((s,x)=>s+Number(x.amount||x.total||0),0);
+ $("pageContent").innerHTML=head("Finance","Financial totals are shown only for tables that exist and can be read.",`<button class="btn primary" onclick="window.corevaNavigate('invoices')">＋ Create document</button>`)+["invoices","payments","expenses","projects"].map(errorNotice).join("")+
+ `<div class="cards">${stat("Invoice totals",money(total(invoices)),"▧",invoices.length+" records")}${stat("Recorded payments",money(total(payments)),"₹",payments.length+" records")}${stat("Recorded expenses",money(total(expenses)),"↘",expenses.length+" records")}${stat("Recorded balance",money(total(invoices)-total(payments)),"◈","Simple totals, not an accounting reconciliation")}</div>
+ <div class="info-note">Figures below are simple sums of readable records, not reconciled accounting balances. Payment allocation, refunds, tax treatment and permissions must be verified before using them for accounts.</div>
+ <section class="card"><h2 class="section-title">Financial data availability</h2><p class="section-sub">The following tables are checked by this dashboard.</p>${tableHTML(["Module","Records found","Status"],["invoices","payments","expenses","projects"].map(t=>`<tr><td>${t}</td><td>${(cache[t]||[]).length}</td><td>${cache[t+"Error"]?statusPill("Not configured / unavailable"):statusPill("Readable")}</td></tr>`))}</section>`;
+}
+function renderReports(){
+ const leads=cache.leads||[],calls=cache.ai_calls||[],apps=cache.appointments||[],projects=cache.projects||[];
+ const sources={};leads.forEach(x=>{const k=x.source||"Unknown";sources[k]=(sources[k]||0)+1});
+ const max=Math.max(1,...Object.values(sources));
+ $("pageContent").innerHTML=head("Reports & Analytics","Summary of currently accessible organisation records.")+["leads","appointments","ai_calls","projects","invoices","payments","expenses"].map(errorNotice).join("")+
+ `<div class="cards">${stat("Leads",leads.length,"♙")}${stat("Appointments",apps.length,"▦")}${stat("AI calls",calls.length,"◉")}${stat("Projects",projects.length,"▤")}</div>
+ <div class="grid2"><section class="card"><h2 class="section-title">Lead sources</h2><p class="section-sub">Distribution by source field.</p><div class="bar-list">${Object.entries(sources).length?Object.entries(sources).map(([k,v])=>`<div class="bar-row"><span>${esc(k)}</span><div class="bar-track"><div class="bar-fill" style="width:${v/max*100}%"></div></div><b>${v}</b></div>`).join(""):`<p class="muted">No lead data available.</p>`}</div></section><section class="card"><h2 class="section-title">Data coverage</h2><p class="section-sub">Available modules</p>${tableHTML(["Module","Records"],["leads","appointments","ai_calls","ai_agents","follow_up_tasks","projects","invoices","payments","expenses"].map(t=>`<tr><td>${t}</td><td>${(cache[t]||[]).length}${cache[t+"Error"]?" · unavailable":""}</td></tr>`))}</section></div>`;
+}
+function renderDivisions(){
+ const brands=[
+ ["COREVA Business Solutions","Central business support, property services, finance workflows and operations."],
+ ["VELORA DIGITAL","Websites, software, digital products, automation and technology solutions."],
+ ["TBD BUILDERS & DEVELOPERS","Construction and development services."],
+ ["SR PRIME Properties & Real Estate Developers","Property services and real estate."],
+ ["AURELIV INTERIORS. DESIGN","Interior design and related services."]
+ ];
+ $("pageContent").innerHTML=head("Brand Divisions","The business ecosystem represented in your central workspace.")+`<div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr))">${brands.map(([n,d])=>`<section class="card"><div class="gold small">COREVA ECOSYSTEM</div><h2 class="section-title" style="margin-top:12px">${esc(n)}</h2><p class="muted">${esc(d)}</p></section>`).join("")}</div><div class="notice">These are informational brand entries. No separate accounting entities or company records are created automatically by this page.</div>`;
+}
+function renderSettings(){
+ $("pageContent").innerHTML=head("Settings & Setup","Review your database connection and current organisation scope.")+
+ `<section class="card config-box"><h2 class="section-title">Connection status</h2><p class="section-sub">This browser uses the Supabase public key and authenticated session.</p>
+ <p><b>Supabase:</b> ${configured()?"Configured":"Not configured"}</p><p><b>Authentication:</b> ${session?esc(session.user.email):"Not signed in"}</p><p><b>Organisation ID:</b> ${orgId?esc(orgId):"Not selected"}</p><p><b>Visible organisations:</b> ${orgs.length}</p>
+ <div class="actions"><button class="btn primary" onclick="window.corevaAction('config')">Edit connection</button><button class="btn" onclick="window.corevaAction('org')">Select organisation</button><button class="btn" onclick="window.corevaAction('reload')">Reload data</button></div></section>
+ <section class="card" style="margin-top:17px"><h2 class="section-title">Required production checks</h2><ul class="muted"><li>Enable and test Supabase Auth and RLS for every table.</li><li>Confirm organisation membership checks for every read and write.</li><li>Keep service-role keys and voice-provider secrets on a trusted server only.</li><li>Use a secure backend or Edge Function for privileged actions and integrations.</li><li>Back up your database before applying schema migrations.</li><li>Test enquiry submissions, duplicate prevention, PDF totals and permissions.</li></ul></section>
+ <section class="card" style="margin-top:17px"><h2 class="section-title">Schema status</h2><p class="muted">Existing receptionist tables are reused by name. New business modules are shown as unavailable if their tables do not exist or the current user cannot access them.</p></section>`;
+}
+function modal(title,body){
+ $("modalHost").innerHTML=`<div class="modal-backdrop" id="modalBackdrop"><section class="modal"><div class="modal-head"><h2>${title}</h2><button class="btn" id="closeModal">Close</button></div>${body}</section></div>`;
+ $("closeModal").onclick=()=>$("modalHost").innerHTML="";
+ $("modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")$("modalHost").innerHTML=""});
+}
+function leadForm(existing={}){
+ modal(existing.id?"Edit lead":"Add new lead",`<form id="leadForm"><div class="form-grid">
+ <div class="field"><label>Full name *</label><input name="full_name" required maxlength="150" value="${esc(existing.full_name||"")}"></div>
+ <div class="field"><label>Phone</label><input name="phone" maxlength="30" value="${esc(existing.phone||"")}"></div>
+ <div class="field"><label>Email</label><input name="email" type="email" maxlength="200" value="${esc(existing.email||"")}"></div>
+ <div class="field"><label>Service category</label><input name="service_category" maxlength="150" value="${esc(existing.service_category||"")}" placeholder="Web development, property…"></div>
+ <div class="field"><label>Preferred language</label><select name="preferred_language"><option value="en">English</option><option value="kn">Kannada</option><option value="hi">Hindi</option><option value="ml">Malayalam</option><option value="tcy">Tulu</option></select></div>
+ <div class="field"><label>Status</label><select name="status"><option>new</option><option>contacted</option><option>follow_up</option><option>in_progress</option><option>converted</option><option>lost</option></select></div>
+ <div class="field full"><label>Requirements</label><textarea name="requirements" maxlength="5000">${esc(existing.requirements||"")}</textarea></div>
+ <div class="field full"><label>Consent / contact notes</label><textarea name="consent_notes" maxlength="3000">${esc(existing.consent_notes||"")}</textarea></div>
+ </div><p class="small muted">Records are saved to your existing leads table under the selected organisation. Database permissions still apply.</p><div class="actions"><button class="btn primary" type="submit">${existing.id?"Save changes":"Save lead"}</button></div><p id="leadFormStatus" class="status"></p></form>`);
+ const f=$("leadForm");
+ if(existing.preferred_language)f.elements.preferred_language.value=existing.preferred_language;
+ if(existing.status)f.elements.status.value=existing.status;
+ f.onsubmit=async e=>{
+  e.preventDefault();
+  if(busy)return;
+  if(!orgId){toast("Select your organisation in Settings first.",true);return}
+  const status=$("leadFormStatus");
+  const submit=f.querySelector('button[type="submit"]');
+  busy=true;if(submit)submit.disabled=true;
+  status.textContent="Checking session and saving…";status.className="status";
+  try{
+   // Refresh the current session before writing so an expired/stale client session
+   // is reported clearly instead of being mistaken for a missing membership.
+   const {data:sessionData,error:sessionError}=await sb.auth.getSession();
+   if(sessionError)throw sessionError;
+   if(!sessionData?.session?.user?.id)throw Error("Your sign-in session has expired. Sign out, sign in again, and retry.");
+   session=sessionData.session;
+   const data=Object.fromEntries(new FormData(f).entries());
+   Object.keys(data).forEach(k=>{if(typeof data[k]==="string")data[k]=data[k].trim()});
+   data.organization_id=orgId;
+   data.source="admin_dashboard";
+   if(!data.status)data.status="new";
+   let q;
+   if(existing.id){
+    // Never allow the form to change the owning organisation or original source.
+    delete data.organization_id;delete data.source;
+    q=sb.from("leads").update(data).eq("id",existing.id).eq("organization_id",orgId);
+   }else{
+    q=sb.from("leads").insert(data);
+   }
+   const {error}=await q;
+   if(error)throw error;
+   $("modalHost").innerHTML="";toast(existing.id?"Lead updated.":"Lead saved.");
+   await safeFetch("leads");await loadPage(true);
+  }catch(err){
+   const raw=String(err?.message||err||"Unknown error");
+   let guidance=raw;
+   if(/row-level security|violates row-level security|RLS/i.test(raw)){
+    guidance="Supabase RLS rejected this write. Your owner membership was previously confirmed, so do not add another membership or disable RLS. The database policy function must evaluate the authenticated browser user's membership for organisation " + orgId + ". This HTML cannot bypass that database check. Original error: " + raw;
+   }else if(/column .* does not exist|schema cache/i.test(raw)){
+    guidance="The submitted lead fields do not match the current leads table schema. The database column list must be checked before changing the form. Original error: " + raw;
+   }else if(/permission denied|not authorized|JWT|token/i.test(raw)){
+    guidance="Supabase could not authorise this request. Refresh the page, sign in again, and verify the project's authenticated-user policies. Original error: " + raw;
+   }
+   status.textContent=guidance;status.className="status err";
+  }finally{busy=false;if(submit)submit.disabled=false;}
+ };
+}
+function invoiceForm(customer={}){
+ const customerName=customer.full_name||"";
+ const customerPhone=customer.phone||"";
+ modal("Create invoice / receipt",`<form id="invoiceForm"><div class="notice">This creates a printable document in your browser. It does not save an invoice to Supabase until an invoice schema and secure save operation are configured.</div><div class="form-grid">
+ <div class="field"><label>Business name</label><input name="business" value="COREVA Business Solutions" required></div>
+ <div class="field"><label>Invoice / receipt number</label><input name="number" value="CR-${Date.now().toString().slice(-8)}" required></div>
+ <div class="field"><label>Customer name *</label><input name="customer" value="${esc(customerName)}" required></div>
+ <div class="field"><label>Customer phone</label><input name="phone" value="${esc(customerPhone)}"></div>
+ <div class="field"><label>Service / description *</label><input name="service" required placeholder="Website development"></div>
+ <div class="field"><label>Amount (INR) *</label><input name="amount" type="number" min="0" step=".01" required></div>
+ <div class="field"><label>Tax % (if applicable)</label><input name="tax" type="number" min="0" max="100" step=".01" value="0"></div>
+ <div class="field"><label>Payment status</label><select name="payment_status"><option>Unpaid</option><option>Partially paid</option><option>Paid</option></select></div>
+ <div class="field full"><label>Notes / payment details</label><textarea name="notes"></textarea></div>
+ </div><div class="actions"><button class="btn primary" type="submit">Preview document</button></div></form>`);
+ $("invoiceForm").onsubmit=e=>{
+  e.preventDefault();const d=Object.fromEntries(new FormData(e.target).entries());
+  const amount=Number(d.amount),tax=Number(d.tax||0);
+  if(!Number.isFinite(amount)||amount<0||!Number.isFinite(tax)||tax<0||tax>100){toast("Check the amount and tax values.",true);return}
+  const total=amount*(1+tax/100);
+  $("modalHost").innerHTML="";
+  $("pageContent").innerHTML=`<div class="no-print">${head("Document preview","Review the details before printing or saving as PDF.",`<button class="btn" onclick="window.corevaNavigate('invoices')">← Back</button> <button class="btn primary" onclick="window.print()">Print / Save PDF</button> <button class="btn" onclick="window.corevaAction('shareInvoice')">Share on WhatsApp</button>`)}</div>
+  <article class="invoice-paper" id="invoicePaper"><div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap"><div><h1 style="letter-spacing:3px;margin:0">${esc(d.business)}</h1><p class="muted">Business services · Digital solutions · Property · Support</p></div><div style="text-align:right"><h2>${esc(d.payment_status==="Paid"?"RECEIPT":"INVOICE")}</h2><b>${esc(d.number)}</b><p>${new Date().toLocaleDateString("en-IN")}</p></div></div><hr class="divider" style="border-color:#ddd"><h3>Bill to</h3><p><b>${esc(d.customer)}</b><br>${esc(d.phone||"")}</p><table><thead><tr><th>Description</th><th>Amount</th></tr></thead><tbody><tr><td>${esc(d.service)}</td><td>${money(amount)}</td></tr><tr><td>Tax (${tax}%)</td><td>${money(amount*tax/100)}</td></tr><tr><td><b>Total</b></td><td><b>${money(total)}</b></td></tr></tbody></table><p><b>Payment status:</b> ${esc(d.payment_status)}</p><p><b>Notes:</b> ${esc(d.notes||"—")}</p><hr class="divider" style="border-color:#ddd"><p class="muted small">Please verify applicable taxes, legal business details and payment information before issuing this document.</p><p style="margin-top:35px">Thank you for choosing ${esc(d.business)}.</p></article>`;
+  window.corevaInvoice={...d,total,amount,tax};
+ };
+}
+function invoiceShare(){
+ const d=window.corevaInvoice;if(!d){toast("Create a document preview first.",true);return}
+ const msg=`${d.payment_status==="Paid"?"Receipt":"Invoice"} from ${d.business}\nNumber: ${d.number}\nCustomer: ${d.customer}\nService: ${d.service}\nAmount: ${money(d.total)}\nPayment status: ${d.payment_status}\n\nPlease contact us if you have questions.`;
+ window.open("https://wa.me/"+String(d.phone||"").replace(/\D/g,"")+"?text="+encodeURIComponent(msg),"_blank","noopener,noreferrer");
+ toast("WhatsApp opened with a message. Attach the saved PDF separately.");
+}
+function selectOrg(){
+ const opts=orgs.map(o=>`<option value="${esc(o.id)}" ${o.id===orgId?"selected":""}>${esc(o.name||o.title||o.id)} · ${esc(o.id)}</option>`).join("");
+ modal("Select organisation",`<p class="muted">Choose an organisation you are authorised to access.</p><form id="orgForm"><div class="field"><label>Organisation</label><select name="id" required>${opts||`<option value="">No organisations returned</option>`}</select></div><div class="actions"><button class="btn primary">Use organisation</button></div></form>`);
+ $("orgForm").onsubmit=e=>{e.preventDefault();orgId=e.target.elements.id.value;if(!orgId)return;config.orgId=orgId;saveConfig(config);$("orgBadge").textContent="Org · "+orgId.slice(0,8);$("modalHost").innerHTML="";loadPage(true)};
+}
+window.corevaNavigate=navigate;
+window.corevaAction=(action,id)=>{
+ if(action==="config")return configForm();
+ if(action==="org")return selectOrg();
+ if(action==="reload")return loadPage(true);
+ if(action==="lead")return leadForm();
+ if(action==="editLead"){const x=(cache.leads||[]).find(a=>a.id===id);if(x)return leadForm(x);return toast("Lead not found. Refresh the list.",true)}
+ if(action==="invoiceFor"){const x=(cache.leads||[]).find(a=>a.id===id);return invoiceForm(x||{})}
+ if(action==="invoice")return invoiceForm();
+ if(action==="shareInvoice")return invoiceShare();
+};
+function renderInvoices(){
+ $("pageContent").innerHTML=head("Invoices & Receipts","Prepare printable documents and save them as PDF.",`<button class="btn primary" onclick="window.corevaAction('invoice')">＋ Create invoice</button>`)+
+ `<div class="grid2"><section class="card"><h2 class="section-title">Create a document</h2><p class="section-sub">Generate a print-ready invoice or receipt for a customer.</p><button class="btn primary" onclick="window.corevaAction('invoice')">Create invoice / receipt</button></section><section class="card"><h2 class="section-title">How to save as PDF</h2><p class="muted">After previewing your document, click Print / Save PDF. In the print dialog choose “Save as PDF”.</p><p class="muted">To send the PDF over WhatsApp, save it first and attach it in WhatsApp. The share action only prepares a message.</p></section></div><div class="info-note">Document previews are local to this browser and are not saved as database invoices. Verify invoice persistence, GST treatment, numbering and payment reconciliation before issuing official accounting documents.</div>`;
+}
+// Renderers for every navigation section are registered in renderCachedPage above.
+// Do not wrap renderCachedPage/loadPage here: doing so caused recursive reloads
+// on informational pages such as Brand Divisions and Settings.
 })();
-</script></body></html>
+</script>
+</body>
+</html>
