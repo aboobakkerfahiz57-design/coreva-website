@@ -166,7 +166,12 @@ function tableHTML(headers,rows,empty="No records found"){return `<div class="ta
 function recordSearch(row){return norm(Object.values(row||{}).join(" ")).includes(norm(searchTerm))}
 function searchToolbar(placeholder="Search records…",extra=""){return `<div class="toolbar"><input id="tableSearch" type="search" placeholder="${esc(placeholder)}" value="${esc(searchTerm)}">${extra}<button class="btn" id="doSearch">Search</button></div>`}
 function bindSearch(){const b=$("doSearch"),i=$("tableSearch");if(b)b.onclick=()=>{searchTerm=i.value;renderCachedPage()};if(i)i.addEventListener("keydown",e=>{if(e.key==="Enter"){searchTerm=i.value;renderCachedPage()}})}
-function renderCachedPage(){const renderers={leads:renderLeads,customers:renderCustomers,appointments:renderAppointments,calls:renderCalls,agents:renderAgents,followups:renderFollowups,projects:renderProjects,employees:renderEmployees,finance:renderFinance,reports:renderReports};if(renderers[currentPage])renderers[currentPage]();else loadPage(true)}
+function renderCachedPage(){
+ const renderers={overview:renderOverview,leads:renderLeads,customers:renderCustomers,appointments:renderAppointments,calls:renderCalls,agents:renderAgents,followups:renderFollowups,projects:renderProjects,employees:renderEmployees,finance:renderFinance,invoices:renderInvoices,reports:renderReports,divisions:renderDivisions,settings:renderSettings};
+ const render=renderers[currentPage];
+ if(render){render();return}
+ $("pageContent").innerHTML=head("Page unavailable","This dashboard section is not configured yet.")+`<div class="notice">No renderer is registered for this section. Other dashboard sections remain available.</div>`;
+}
 async function loadPage(force=false){
  if(!sb||!session){showLogin();return}
  $("pageContent").innerHTML=`<div class="empty">Loading your workspace…</div>`;
@@ -358,17 +363,9 @@ function renderInvoices(){
  $("pageContent").innerHTML=head("Invoices & Receipts","Prepare printable documents and save them as PDF.",`<button class="btn primary" onclick="window.corevaAction('invoice')">＋ Create invoice</button>`)+
  `<div class="grid2"><section class="card"><h2 class="section-title">Create a document</h2><p class="section-sub">Generate a print-ready invoice or receipt for a customer.</p><button class="btn primary" onclick="window.corevaAction('invoice')">Create invoice / receipt</button></section><section class="card"><h2 class="section-title">How to save as PDF</h2><p class="muted">After previewing your document, click Print / Save PDF. In the print dialog choose “Save as PDF”.</p><p class="muted">To send the PDF over WhatsApp, save it first and attach it in WhatsApp. The share action only prepares a message.</p></section></div><div class="notice">Document preview is local to your browser. Database persistence, automatic numbering, GST calculation and payment reconciliation must be implemented against a verified invoice schema before use for official accounting.</div>`;
 }
-const oldRenderCached=renderCachedPage;
-renderCachedPage=function(){
- if(currentPage==="invoices"){renderInvoices();return}
- oldRenderCached();
-};
-const oldLoad=loadPage;
-loadPage=async function(force=false){
- if(currentPage==="invoices"){renderInvoices();return}
- return oldLoad(force);
-};
-// Replace the initial settings link and safely expose actions.
+// Renderers for every navigation section are registered in renderCachedPage above.
+// Do not wrap renderCachedPage/loadPage here: doing so caused recursive reloads
+// on informational pages such as Brand Divisions and Settings.
 })();
 </script>
 </body>
