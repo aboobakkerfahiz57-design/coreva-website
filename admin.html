@@ -8,7 +8,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--bg:#0b1020;--panel:#121a2d;--panel2:#18243a;--line:#293750;--text:#edf3ff;--muted:#98a8c2;--blue:#65b9ff;--gold:#d9bd83;--green:#52d5a0;--red:#ff858b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Inter,system-ui,-apple-system,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}input,select,textarea{width:100%;background:#0c1426;color:var(--text);border:1px solid var(--line);padding:11px 12px;border-radius:9px;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--blue)}textarea{min-height:90px;resize:vertical}label{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}.hidden{display:none!important}.muted{color:var(--muted)}.small{font-size:12px}.btn{border:1px solid var(--line);border-radius:9px;padding:9px 13px;background:#19263c;color:var(--text)}.btn:hover{border-color:var(--blue)}.primary{background:var(--blue);color:#081221;border-color:var(--blue);font-weight:700}.gold{color:var(--gold)}.danger{color:var(--red)}.success{color:var(--green)}.layout{display:grid;grid-template-columns:245px minmax(0,1fr);min-height:100vh}.sidebar{background:#0e1628;border-right:1px solid var(--line);padding:22px 14px;position:sticky;top:0;height:100vh;overflow-y:auto}.brand{font-size:25px;letter-spacing:4px;font-weight:900;padding:4px 12px}.brand span{color:var(--gold)}.brand-sub{color:var(--muted);font-size:10px;letter-spacing:2px;padding:0 12px 25px}.nav-label{color:#7185a3;font-size:10px;letter-spacing:1.7px;margin:20px 12px 8px}.nav{width:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:11px 12px;border:0;border-radius:9px;background:transparent;color:#b8c6db;margin:2px 0}.nav:hover,.nav.active{background:#1b2b45;color:white}.nav.active{box-shadow:inset 3px 0 var(--gold)}.nav-icon{width:20px;text-align:center;color:var(--blue)}.side-bottom{margin-top:25px;padding:12px;border:1px solid var(--line);border-radius:10px;color:var(--muted);font-size:12px}.main{min-width:0}.topbar{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 28px;background:#0e1628;position:sticky;top:0;z-index:5}.top-left{display:flex;align-items:center;gap:12px}.hamburger{display:none}.top-right{display:flex;align-items:center;gap:10px}.content{padding:28px;max-width:1600px;margin:auto}.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:24px}.page-head h1{font-size:27px;letter-spacing:-.7px;margin:0 0 5px}.page-head p{color:var(--muted);margin:0}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:20px}.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);gap:8px}.stat-icon{font-size:22px}.stat-value{font-size:29px;font-weight:750;margin:13px 0 3px;overflow-wrap:anywhere}.stat-foot{font-size:12px;color:var(--muted)}.grid2{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(280px,1fr);gap:17px;margin-bottom:18px}.section-title{font-size:16px;font-weight:700;margin:0 0 4px}.section-sub{color:var(--muted);font-size:12px;margin:0 0 17px}.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-bottom:15px}.toolbar input{flex:1;min-width:160px;width:auto}.toolbar select{width:auto;min-width:135px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px}table{width:100%;border-collapse:collapse;white-space:nowrap}th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);font-size:12px}th{background:#172239;color:var(--muted);font-weight:600}tr:last-child td{border-bottom:0}td{max-width:280px;overflow:hidden;text-overflow:ellipsis}.pill{display:inline-block;border-radius:20px;padding:4px 8px;background:#26344a;color:#c9d7e9;font-size:11px}.pill.green{background:#123c32;color:#74e2b8}.pill.gold{background:#403722;color:#efd398}.pill.red{background:#45242e;color:#ffadb1}.empty{padding:28px;text-align:center;color:var(--muted)}.notice{padding:13px 15px;border:1px solid #55482d;background:#292417;color:#efd398;border-radius:10px;margin-bottom:18px}.status{font-size:12px;color:var(--muted)}.status.ok{color:var(--green)}.status.err{color:var(--red)}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field.full{grid-column:1/-1}.field label{margin-bottom:7px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}.quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.quick{padding:15px;border:1px solid var(--line);border-radius:10px;background:#141f33;text-align:left;color:var(--text)}.quick strong{display:block;margin-bottom:5px}.quick span{font-size:12px;color:var(--muted)}.bar-list{display:grid;gap:13px}.bar-row{display:grid;grid-template-columns:100px minmax(30px,1fr) 35px;gap:10px;align-items:center;font-size:12px}.bar-track{height:8px;border-radius:9px;background:#26334a;overflow:hidden}.bar-fill{height:100%;border-radius:9px;background:linear-gradient(90deg,#488fe9,#72d0ff)}.login-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at top,#1a3150 0,transparent 60%),var(--bg)}.login-card{width:min(480px,100%);background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:30px}.login-card h1{margin:12px 0}.login-card .field{margin:16px 0}.login-card .btn{width:100%;margin-top:12px}.footer{padding:20px;text-align:center;color:#7587a3;font-size:11px}.mobile-only{display:none}.toast{position:fixed;right:20px;bottom:20px;background:#1c2d45;border:1px solid var(--line);border-radius:12px;padding:14px 18px;max-width:min(380px,calc(100vw - 40px));z-index:100;box-shadow:0 10px 35px #0007}.modal-backdrop{position:fixed;inset:0;background:#000a;display:grid;place-items:center;padding:16px;z-index:30}.modal{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:22px;width:min(620px,100%);max-height:90vh;overflow:auto}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.invoice-paper{background:white;color:#182033;padding:28px;max-width:760px;margin:15px auto;border-radius:8px}.invoice-paper table th{background:#e9edf4;color:#25334a}.invoice-paper table td,.invoice-paper table th{border-color:#d8deea}.invoice-paper .muted{color:#647087}.invoice-paper input{background:white;color:#182033;border-color:#d8deea}.invoice-paper .btn{color:#182033}.config-box{max-width:780px}.divider{border:0;border-top:1px solid var(--line);margin:18px 0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Inter,system-ui,-apple-system,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}input,select,textarea{width:100%;background:#0c1426;color:var(--text);border:1px solid var(--line);padding:11px 12px;border-radius:9px;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--blue)}textarea{min-height:90px;resize:vertical}label{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}.hidden{display:none!important}.muted{color:var(--muted)}.small{font-size:12px}.btn{border:1px solid var(--line);border-radius:9px;padding:9px 13px;background:#19263c;color:var(--text)}.btn:hover{border-color:var(--blue)}.primary{background:var(--blue);color:#081221;border-color:var(--blue);font-weight:700}.gold{color:var(--gold)}.danger{color:var(--red)}.success{color:var(--green)}.layout{display:grid;grid-template-columns:245px minmax(0,1fr);min-height:100vh}.sidebar{background:#0e1628;border-right:1px solid var(--line);padding:22px 14px;position:sticky;top:0;height:100vh;overflow-y:auto}.brand{font-size:25px;letter-spacing:4px;font-weight:900;padding:4px 12px}.brand span{color:var(--gold)}.brand-sub{color:var(--muted);font-size:10px;letter-spacing:2px;padding:0 12px 25px}.nav-label{color:#7185a3;font-size:10px;letter-spacing:1.7px;margin:20px 12px 8px}.nav{width:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:11px 12px;border:0;border-radius:9px;background:transparent;color:#b8c6db;margin:2px 0}.nav:hover,.nav.active{background:#1b2b45;color:white}.nav.active{box-shadow:inset 3px 0 var(--gold)}.nav-icon{width:20px;text-align:center;color:var(--blue)}.side-bottom{margin-top:25px;padding:12px;border:1px solid var(--line);border-radius:10px;color:var(--muted);font-size:12px}.main{min-width:0}.topbar{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 28px;background:#0e1628;position:sticky;top:0;z-index:5}.top-left{display:flex;align-items:center;gap:12px}.hamburger{display:none}.top-right{display:flex;align-items:center;gap:10px}.content{padding:28px;max-width:1600px;margin:auto}.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:24px}.page-head h1{font-size:27px;letter-spacing:-.7px;margin:0 0 5px}.page-head p{color:var(--muted);margin:0}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:20px}.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);gap:8px}.stat-icon{font-size:22px}.stat-value{font-size:29px;font-weight:750;margin:13px 0 3px;overflow-wrap:anywhere}.stat-foot{font-size:12px;color:var(--muted)}.grid2{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(280px,1fr);gap:17px;margin-bottom:18px}.section-title{font-size:16px;font-weight:700;margin:0 0 4px}.section-sub{color:var(--muted);font-size:12px;margin:0 0 17px}.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-bottom:15px}.toolbar input{flex:1;min-width:160px;width:auto}.toolbar select{width:auto;min-width:135px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px}table{width:100%;border-collapse:collapse;white-space:nowrap}th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);font-size:12px}th{background:#172239;color:var(--muted);font-weight:600}tr:last-child td{border-bottom:0}td{max-width:280px;overflow:hidden;text-overflow:ellipsis}.pill{display:inline-block;border-radius:20px;padding:4px 8px;background:#26344a;color:#c9d7e9;font-size:11px}.pill.green{background:#123c32;color:#74e2b8}.pill.gold{background:#403722;color:#efd398}.pill.red{background:#45242e;color:#ffadb1}.empty{padding:28px;text-align:center;color:var(--muted)}.notice{padding:13px 15px;border:1px solid #55482d;background:#292417;color:#efd398;border-radius:10px;margin-bottom:18px}.info-note{padding:11px 13px;border:1px solid var(--line);background:#101a2c;color:var(--muted);border-radius:9px;margin:12px 0;font-size:12px}.status{font-size:12px;color:var(--muted)}.status.ok{color:var(--green)}.status.err{color:var(--red)}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field.full{grid-column:1/-1}.field label{margin-bottom:7px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}.quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.quick{padding:15px;border:1px solid var(--line);border-radius:10px;background:#141f33;text-align:left;color:var(--text)}.quick strong{display:block;margin-bottom:5px}.quick span{font-size:12px;color:var(--muted)}.bar-list{display:grid;gap:13px}.bar-row{display:grid;grid-template-columns:100px minmax(30px,1fr) 35px;gap:10px;align-items:center;font-size:12px}.bar-track{height:8px;border-radius:9px;background:#26334a;overflow:hidden}.bar-fill{height:100%;border-radius:9px;background:linear-gradient(90deg,#488fe9,#72d0ff)}.login-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at top,#1a3150 0,transparent 60%),var(--bg)}.login-card{width:min(480px,100%);background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:30px}.login-card h1{margin:12px 0}.login-card .field{margin:16px 0}.login-card .btn{width:100%;margin-top:12px}.footer{padding:20px;text-align:center;color:#7587a3;font-size:11px}.mobile-only{display:none}.toast{position:fixed;right:20px;bottom:20px;background:#1c2d45;border:1px solid var(--line);border-radius:12px;padding:14px 18px;max-width:min(380px,calc(100vw - 40px));z-index:100;box-shadow:0 10px 35px #0007}.modal-backdrop{position:fixed;inset:0;background:#000a;display:grid;place-items:center;padding:16px;z-index:30}.modal{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:22px;width:min(620px,100%);max-height:90vh;overflow:auto}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.invoice-paper{background:white;color:#182033;padding:28px;max-width:760px;margin:15px auto;border-radius:8px}.invoice-paper table th{background:#e9edf4;color:#25334a}.invoice-paper table td,.invoice-paper table th{border-color:#d8deea}.invoice-paper .muted{color:#647087}.invoice-paper input{background:white;color:#182033;border-color:#d8deea}.invoice-paper .btn{color:#182033}.config-box{max-width:780px}.divider{border:0;border-top:1px solid var(--line);margin:18px 0}
 @media(max-width:1050px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:720px){.layout{grid-template-columns:1fr}.sidebar{position:fixed;left:-270px;top:0;width:250px;z-index:20;transition:left .2s;box-shadow:15px 0 40px #0005}.sidebar.open{left:0}.hamburger,.mobile-only{display:inline-flex}.topbar{height:62px;padding:0 14px}.content{padding:18px 13px}.page-head h1{font-size:23px}.cards{gap:9px}.card{padding:13px}.stat-value{font-size:24px}.quick-grid{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.top-right .hide-mobile{display:none}.brand-sub{padding-bottom:15px}}
 @media print{body{background:white;color:#111}.sidebar,.topbar,.page-head,.no-print,.footer{display:none!important}.layout{display:block}.content{padding:0;max-width:none}.invoice-paper{box-shadow:none;margin:0;width:100%;max-width:none}.invoice-paper .no-print{display:none!important}}
@@ -117,17 +117,21 @@ $("menuToggle").onclick=()=>$("sidebar").classList.toggle("open");
 document.querySelectorAll(".nav").forEach(b=>b.addEventListener("click",()=>navigate(b.dataset.page)));
 
 async function enterApp(){
+ if(!sb){showLogin();return}
+ const {data:{session:s},error:sessionError}=await sb.auth.getSession();
+ if(sessionError||!s){session=null;showLogin();setStatus(sessionError?.message||"Your session expired. Please sign in again.",true);return}
+ session=s;
  showApp();
- const {data:{session:s}}=await sb.auth.getSession();
- if(!s){showLogin();return}
- session=s;$("userEmail").textContent=s.user.email||"";
+ $("userEmail").textContent=s.user.email||"";
  const {data,error}=await sb.from("organizations").select("*").limit(100);
  if(error){cache.organizationsError=error.message;orgs=[];}
- else orgs=data||[];
- const preferred=config.orgId;
+ else {cache.organizationsError=null;orgs=data||[];}
+ const preferred=String(config.orgId||"").trim();
+ // Keep an explicitly configured organisation even when RLS hides the organisation list;
+ // the actual read/write remains enforced by Supabase policies.
  orgId=preferred||(orgs[0]?.id||"");
  $("orgBadge").textContent=orgId?("Org · "+orgId.slice(0,8)):"No organisation selected";
- $("connectionStatus").textContent=error?"● Database access needs checking":"● Supabase connected";
+ $("connectionStatus").textContent=error?"● Organisation list unavailable; configured scope retained":"● Supabase connected";
  $("connectionStatus").className=error?"danger":"success";
  await navigate(currentPage);
 }
@@ -210,7 +214,7 @@ function renderCustomers(){
  const all=cache.leads||[],unique=new Map();
  all.filter(recordSearch).forEach(x=>{const k=x.phone||x.email||x.id;if(!unique.has(k))unique.set(k,x)});
  const rows=[...unique.values()].map(x=>`<tr><td>${esc(x.full_name||"—")}</td><td>${esc(x.phone||"—")}</td><td>${esc(x.email||"—")}</td><td>${esc(x.service_category||"—")}</td><td>${dateFmt(x.created_at)}</td><td><button class="btn" onclick="window.corevaAction('invoiceFor',${JSON.stringify(x.id)})">Create invoice</button></td></tr>`);
- $("pageContent").innerHTML=head("Customers","Customer list derived from your existing leads until a dedicated customer table is configured.",`<button class="btn primary" onclick="window.corevaAction('lead')">＋ Add customer enquiry</button>`)+`<div class="notice">This view reuses existing lead records. It does not yet create a separate customer database or merge duplicate records permanently.</div>`+searchToolbar("Search customers…")+tableHTML(["Customer","Phone","Email","Last requested service","Record created","Action"],rows);
+ $("pageContent").innerHTML=head("Customers","Customer list derived from your existing leads until a dedicated customer table is configured.",`<button class="btn primary" onclick="window.corevaAction('lead')">＋ Add customer enquiry</button>`)+`<div class="info-note">Customer records are currently derived from leads. A dedicated customer table and permanent duplicate merging are not configured.</div>`+searchToolbar("Search customers…")+tableHTML(["Customer","Phone","Email","Last requested service","Record created","Action"],rows);
  bindSearch();
 }
 function renderAppointments(){
@@ -225,7 +229,7 @@ function renderCalls(){
 }
 function renderAgents(){
  const rows=(cache.ai_agents||[]).filter(recordSearch).map(x=>`<tr><td>${esc(x.name||x.title||"AI Agent")}</td><td>${esc(x.id||"—")}</td><td>${statusPill(x.status||"configured")}</td><td>${dateFmt(x.created_at)}</td><td><span class="muted small">Edit using existing receptionist controls</span></td></tr>`);
- $("pageContent").innerHTML=head("AI Agents","View your existing AI agent records without replacing the receptionist integration.") + errorNotice("ai_agents")+tableHTML(["Agent","ID","Status","Created","Management"],rows,"No agents were returned. Check the table columns and access policies.")+`<div class="notice" style="margin-top:15px">This view is read-only. Provider credentials and agent configuration should remain in your existing secure setup.</div>`;
+ $("pageContent").innerHTML=head("AI Agents","View your existing AI agent records without replacing the receptionist integration.") + errorNotice("ai_agents")+tableHTML(["Agent","ID","Status","Created","Management"],rows,"No agents were returned. Check the table columns and access policies.")+`<div class="info-note" style="margin-top:15px">This screen currently displays existing agents only. Agent editing and provider credentials must be managed through a verified secure backend; secrets must never be stored in this browser page.</div>`;
 }
 function renderFollowups(){
  const rows=(cache.follow_up_tasks||[]).filter(recordSearch).map(x=>`<tr><td>${esc(x.title||x.task_title||"Follow-up")}</td><td>${esc(x.lead_id||"—")}</td><td>${dateFmt(x.due_at)}</td><td>${statusPill(x.status)}</td><td>${esc(x.assigned_to||"—")}</td><td>${esc(x.notes||"—")}</td></tr>`);
@@ -234,19 +238,19 @@ function renderFollowups(){
 }
 function renderProjects(){
  const rows=(cache.projects||[]).filter(recordSearch).map(x=>`<tr><td>${esc(x.name||x.title||"Project")}</td><td>${esc(x.customer_name||x.customer_id||"—")}</td><td>${statusPill(x.status)}</td><td>${money(x.amount||x.budget||0)}</td><td>${dateFmt(x.due_date||x.deadline)}</td></tr>`);
- $("pageContent").innerHTML=head("Projects & Work","Project records, delivery and assigned work.")+(cache.projectsError?errorNotice("projects"):"")+`<div class="notice">If the projects table does not exist yet, this module will remain unavailable until we add a schema that matches your organisation and RLS rules.</div>`+searchToolbar("Search projects…")+tableHTML(["Project","Customer","Status","Budget / amount","Due"],rows,"No project records available");
+ $("pageContent").innerHTML=head("Projects & Work","Project records, delivery and assigned work.")+(cache.projectsError?errorNotice("projects"):"")+`<div class="info-note">This screen reads the existing projects table. If it is missing or access is denied, the error above identifies that condition; no project data is fabricated.</div>`+searchToolbar("Search projects…")+tableHTML(["Project","Customer","Status","Budget / amount","Due"],rows,"No project records available");
  bindSearch();
 }
 function renderEmployees(){
  const rows=(cache.org_memberships||[]).filter(recordSearch).map(x=>`<tr><td>${esc(x.user_id||"—")}</td><td>${esc(x.role||"—")}</td><td>${esc(x.organization_id||"—")}</td><td>${dateFmt(x.created_at)}</td></tr>`);
- $("pageContent").innerHTML=head("Employees & Access","View organisation memberships allowed by your existing access policies.") + errorNotice("org_memberships")+`<div class="notice">Adding an employee securely requires creating/inviting a Supabase Auth user and assigning an organisation role. This page intentionally does not grant access by editing membership rows from the browser.</div>`+tableHTML(["User ID","Role","Organisation ID","Membership created"],rows,"No memberships visible");
+ $("pageContent").innerHTML=head("Employees & Access","View organisation memberships allowed by your existing access policies.") + errorNotice("org_memberships")+`<div class="info-note">This screen only lists memberships visible to your account. Invitations and role changes require a trusted server-side flow; this page does not grant access from the browser.</div>`+tableHTML(["User ID","Role","Organisation ID","Membership created"],rows,"No memberships visible");
 }
 function renderFinance(){
  const invoices=cache.invoices||[],payments=cache.payments||[],expenses=cache.expenses||[];
  const total=arr=>arr.reduce((s,x)=>s+Number(x.amount||x.total||0),0);
  $("pageContent").innerHTML=head("Finance","Financial totals are shown only for tables that exist and can be read.",`<button class="btn primary" onclick="window.corevaNavigate('invoices')">＋ Create document</button>`)+["invoices","payments","expenses","projects"].map(errorNotice).join("")+
  `<div class="cards">${stat("Invoice totals",money(total(invoices)),"▧",invoices.length+" records")}${stat("Recorded payments",money(total(payments)),"₹",payments.length+" records")}${stat("Recorded expenses",money(total(expenses)),"↘",expenses.length+" records")}${stat("Recorded balance",money(total(invoices)-total(payments)),"◈","Simple totals, not an accounting reconciliation")}</div>
- <div class="notice">These are basic sums from available records. A verified balance requires an agreed invoice schema, payment allocations, refunds, tax treatment and permissions. Missing tables are not treated as zero actual business activity.</div>
+ <div class="info-note">Figures below are simple sums of readable records, not reconciled accounting balances. Payment allocation, refunds, tax treatment and permissions must be verified before using them for accounts.</div>
  <section class="card"><h2 class="section-title">Financial data availability</h2><p class="section-sub">The following tables are checked by this dashboard.</p>${tableHTML(["Module","Records found","Status"],["invoices","payments","expenses","projects"].map(t=>`<tr><td>${t}</td><td>${(cache[t]||[]).length}</td><td>${cache[t+"Error"]?statusPill("Not configured / unavailable"):statusPill("Readable")}</td></tr>`))}</section>`;
 }
 function renderReports(){
@@ -295,32 +299,49 @@ function leadForm(existing={}){
  if(existing.preferred_language)f.elements.preferred_language.value=existing.preferred_language;
  if(existing.status)f.elements.status.value=existing.status;
  f.onsubmit=async e=>{
-  e.preventDefault();if(!orgId){toast("Select your organisation in Settings first.",true);return}
-  const data=Object.fromEntries(new FormData(f).entries());
-  Object.keys(data).forEach(k=>{if(typeof data[k]==="string")data[k]=data[k].trim()});
-  data.organization_id=orgId;
-  if(!data.source)data.source="admin_dashboard";
-  if(!data.status)data.status="new";
-  const status=$("leadFormStatus");status.textContent="Saving…";
+  e.preventDefault();
+  if(busy)return;
+  if(!orgId){toast("Select your organisation in Settings first.",true);return}
+  const status=$("leadFormStatus");
+  const submit=f.querySelector('button[type="submit"]');
+  busy=true;if(submit)submit.disabled=true;
+  status.textContent="Checking session and saving…";status.className="status";
   try{
+   // Refresh the current session before writing so an expired/stale client session
+   // is reported clearly instead of being mistaken for a missing membership.
+   const {data:sessionData,error:sessionError}=await sb.auth.getSession();
+   if(sessionError)throw sessionError;
+   if(!sessionData?.session?.user?.id)throw Error("Your sign-in session has expired. Sign out, sign in again, and retry.");
+   session=sessionData.session;
+   const data=Object.fromEntries(new FormData(f).entries());
+   Object.keys(data).forEach(k=>{if(typeof data[k]==="string")data[k]=data[k].trim()});
+   data.organization_id=orgId;
+   data.source="admin_dashboard";
+   if(!data.status)data.status="new";
    let q;
-   if(existing.id){delete data.organization_id;delete data.source;q=sb.from("leads").update(data).eq("id",existing.id).eq("organization_id",orgId)}
-   else {data.source="admin_dashboard";q=sb.from("leads").insert(data)}
+   if(existing.id){
+    // Never allow the form to change the owning organisation or original source.
+    delete data.organization_id;delete data.source;
+    q=sb.from("leads").update(data).eq("id",existing.id).eq("organization_id",orgId);
+   }else{
+    q=sb.from("leads").insert(data);
+   }
    const {error}=await q;
    if(error)throw error;
-   $("modalHost").innerHTML="";toast(existing.id?"Lead updated.":"Lead saved.");await safeFetch("leads");navigate(currentPage);
+   $("modalHost").innerHTML="";toast(existing.id?"Lead updated.":"Lead saved.");
+   await safeFetch("leads");await loadPage(true);
   }catch(err){
-    const raw=String(err?.message||err||"Unknown error");
-    let guidance=raw;
-    if(/row-level security|violates row-level security|RLS/i.test(raw)){
-      guidance="Supabase rejected this save because the leads table RLS INSERT/UPDATE policy does not allow this signed-in user to write for the selected organisation. The HTML cannot safely bypass this. Check that your auth user has a row in public.org_memberships for organization_id " + orgId + " and that the leads INSERT policy checks that membership. Original error: " + raw;
-    } else if(/column .* does not exist|schema cache/i.test(raw)){
-      guidance="The form is sending a column that does not match the current leads table schema. Compare the submitted fields with the columns in Supabase. Original error: " + raw;
-    } else if(/permission denied|not authorized|JWT/i.test(raw)){
-      guidance="Supabase denied this operation. Verify the signed-in Auth user and the table's RLS policies; do not disable RLS. Original error: " + raw;
-    }
-    status.textContent=guidance;status.className="status err";
-  }
+   const raw=String(err?.message||err||"Unknown error");
+   let guidance=raw;
+   if(/row-level security|violates row-level security|RLS/i.test(raw)){
+    guidance="Supabase RLS rejected this write. Your owner membership was previously confirmed, so do not add another membership or disable RLS. The database policy function must evaluate the authenticated browser user's membership for organisation " + orgId + ". This HTML cannot bypass that database check. Original error: " + raw;
+   }else if(/column .* does not exist|schema cache/i.test(raw)){
+    guidance="The submitted lead fields do not match the current leads table schema. The database column list must be checked before changing the form. Original error: " + raw;
+   }else if(/permission denied|not authorized|JWT|token/i.test(raw)){
+    guidance="Supabase could not authorise this request. Refresh the page, sign in again, and verify the project's authenticated-user policies. Original error: " + raw;
+   }
+   status.textContent=guidance;status.className="status err";
+  }finally{busy=false;if(submit)submit.disabled=false;}
  };
 }
 function invoiceForm(customer={}){
@@ -372,7 +393,7 @@ window.corevaAction=(action,id)=>{
 };
 function renderInvoices(){
  $("pageContent").innerHTML=head("Invoices & Receipts","Prepare printable documents and save them as PDF.",`<button class="btn primary" onclick="window.corevaAction('invoice')">＋ Create invoice</button>`)+
- `<div class="grid2"><section class="card"><h2 class="section-title">Create a document</h2><p class="section-sub">Generate a print-ready invoice or receipt for a customer.</p><button class="btn primary" onclick="window.corevaAction('invoice')">Create invoice / receipt</button></section><section class="card"><h2 class="section-title">How to save as PDF</h2><p class="muted">After previewing your document, click Print / Save PDF. In the print dialog choose “Save as PDF”.</p><p class="muted">To send the PDF over WhatsApp, save it first and attach it in WhatsApp. The share action only prepares a message.</p></section></div><div class="notice">Document preview is local to your browser. Database persistence, automatic numbering, GST calculation and payment reconciliation must be implemented against a verified invoice schema before use for official accounting.</div>`;
+ `<div class="grid2"><section class="card"><h2 class="section-title">Create a document</h2><p class="section-sub">Generate a print-ready invoice or receipt for a customer.</p><button class="btn primary" onclick="window.corevaAction('invoice')">Create invoice / receipt</button></section><section class="card"><h2 class="section-title">How to save as PDF</h2><p class="muted">After previewing your document, click Print / Save PDF. In the print dialog choose “Save as PDF”.</p><p class="muted">To send the PDF over WhatsApp, save it first and attach it in WhatsApp. The share action only prepares a message.</p></section></div><div class="info-note">Document previews are local to this browser and are not saved as database invoices. Verify invoice persistence, GST treatment, numbering and payment reconciliation before issuing official accounting documents.</div>`;
 }
 // Renderers for every navigation section are registered in renderCachedPage above.
 // Do not wrap renderCachedPage/loadPage here: doing so caused recursive reloads
