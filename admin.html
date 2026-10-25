@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -99,6 +99,11 @@ function setStatus(msg,error=false){const el=$("loginStatus");if(el){el.textCont
 function configured(){return Boolean(config.url&&config.key&&window.supabase)}
 function initClient(){if(!configured())return false;try{const url=new URL(config.url);if(url.protocol!=="https:"&&url.hostname!=="localhost")throw Error("Use your HTTPS Supabase project URL.");sb=window.supabase.createClient(config.url,config.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});return true}catch(e){sb=null;setStatus(e.message,true);return false}}
 function showLogin(){ $("loginScreen").classList.remove("hidden");$("app").classList.add("hidden");$("configWarning").classList.toggle("hidden",configured()); }
+function speakFounderWelcome(){
+  if(!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
+  try{ window.speechSynthesis.cancel(); const greeting=new SpeechSynthesisUtterance('Welcome, founder of COREVA Business Solutions, Mr. Aboobakkar Fahiz.'); greeting.lang='en-IN'; greeting.rate=0.92; greeting.pitch=1; window.speechSynthesis.speak(greeting); }
+  catch(e){ console.warn('Voice greeting unavailable:',e); }
+}
 function showApp(){ $("loginScreen").classList.add("hidden");$("app").classList.remove("hidden");$("userEmail").textContent=session?.user?.email||""; }
 function configForm(){
  $("modalHost").innerHTML=`<div class="modal-backdrop" id="modalBackdrop"><section class="modal config-box"><div class="modal-head"><h2>Supabase connection</h2><button class="btn" id="closeModal">Close</button></div><div class="notice">Use the Project URL and public anon/publishable key from Supabase → Project Settings → API. Never use a service-role or secret key here.</div><form id="configForm"><div class="field"><label>Project URL</label><input id="cfgUrl" type="url" required placeholder="https://your-project.supabase.co" value="${esc(config.url||"")}"></div><div class="field" style="margin-top:14px"><label>Public anon / publishable key</label><textarea id="cfgKey" required placeholder="Paste the public browser key">${esc(config.key||"")}</textarea></div><div class="field" style="margin-top:14px"><label>Organisation UUID (optional)</label><input id="cfgOrg" placeholder="Your organisation ID from organizations" value="${esc(config.orgId||"")}"></div><div class="actions"><button class="btn primary" type="submit">Save connection settings</button><button class="btn" type="button" id="clearConfig">Clear saved settings</button></div><p class="small muted">Settings are stored in this browser only. Access to data is still controlled by Supabase Auth and Row Level Security (RLS).</p></form></section></div>`;
@@ -109,7 +114,7 @@ function configForm(){
 }
 $("showConfig").onclick=configForm;
 $("resetPassword").onclick=async()=>{if(!configured()&&!initClient()){configForm();return}const email=$("loginEmail").value.trim();if(!email){setStatus("Enter your email first.",true);return}const {error}=await sb.auth.resetPasswordForEmail(email);setStatus(error?error.message:"If password recovery is enabled, a reset link will be sent to your email.",!!error);};
-$("loginForm").onsubmit=async e=>{e.preventDefault();if(!configured()){configForm();return}if(!sb&&!initClient())return;const b=$("loginButton");b.disabled=true;b.textContent="Signing in…";const {data,error}=await sb.auth.signInWithPassword({email:$("loginEmail").value.trim(),password:$("loginPassword").value});b.disabled=false;b.textContent="Sign in securely";if(error){setStatus(error.message,true);return}session=data.session;await enterApp();};
+$("loginForm").onsubmit=async e=>{e.preventDefault();if(!configured()){configForm();return}if(!sb&&!initClient())return;const b=$("loginButton");b.disabled=true;b.textContent="Signing in…";const {data,error}=await sb.auth.signInWithPassword({email:$("loginEmail").value.trim(),password:$("loginPassword").value});b.disabled=false;b.textContent="Sign in securely";if(error){setStatus(error.message,true);return}session=data.session;await enterApp();speakFounderWelcome();};
 $("logoutButton").onclick=async()=>{if(sb)await sb.auth.signOut();session=null;cache={};orgs=[];orgId="";showLogin();setStatus("You have signed out.");};
 $("refreshButton").onclick=()=>loadPage(true);
 $("topSettings").onclick=()=>navigate("settings");
@@ -189,7 +194,7 @@ function renderOverview(){
  const recent=[...leads].sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0)).slice(0,6);
  const counts={new:leads.filter(x=>/new/i.test(x.status||"new")).length,follow:leads.filter(x=>/follow|progress/i.test(x.status||"")).length,done:leads.filter(x=>/complete|won|converted/i.test(x.status||"")).length};
  const bars=[["New leads",counts.new],["Follow-up",counts.follow],["Converted / done",counts.done]];
- $("pageContent").innerHTML=head("Good to see you","Your COREVA workspace overview.",`<button class="btn primary" onclick="window.corevaAction('lead')">＋ Add lead</button>`)+
+ $("pageContent").innerHTML=head("Welcome, Founder","COREVA Business Solutions · Mr. Aboobakkar Fahiz",`<button class="btn primary" onclick="window.corevaAction('lead')">＋ Add lead</button>`)+
  (cache.organizationsError?`<div class="notice">Organisation list: ${esc(cache.organizationsError)}</div>`:"")+
  (!orgId?`<div class="notice">No organisation is selected. Set your organisation UUID in Settings before reading or saving organisation-specific records.</div>`:"")+
  `<div class="cards">${stat("Total leads",leads.length,"♙",cache.leadsError?"Could not load":counts.new+" new")}${stat("Appointments",apps.length,"▦",cache.appointmentsError?"Could not load":"Existing records")}${stat("AI calls",calls.length,"◉",cache.ai_callsError?"Could not load":"Existing records")}${stat("AI agents",agents.length,"✧",cache.ai_agentsError?"Could not load":"Existing records")}</div>`+
@@ -318,28 +323,32 @@ function leadForm(existing={}){
    data.organization_id=orgId;
    data.source="admin_dashboard";
    if(!data.status)data.status="new";
-   let q;
+   let result;
    if(existing.id){
-    // Never allow the form to change the owning organisation or original source.
     delete data.organization_id;delete data.source;
-    q=sb.from("leads").update(data).eq("id",existing.id).eq("organization_id",orgId);
+    result=await sb.from("leads").update(data).eq("id",existing.id).eq("organization_id",orgId)
+      .select("id,organization_id,full_name,phone,email,status").maybeSingle();
    }else{
-    q=sb.from("leads").insert(data);
+    result=await sb.from("leads").insert(data)
+      .select("id,organization_id,full_name,phone,email,status").single();
    }
-   const {error}=await q;
-   if(error)throw error;
-   $("modalHost").innerHTML="";toast(existing.id?"Lead updated.":"Lead saved.");
+   if(result.error)throw result.error;
+   if(existing.id && !result.data) throw Error("No lead was updated. The record may belong to another organisation, or the UPDATE policy may hide/block it. Check the selected organisation and leads UPDATE policy.");
+   $("modalHost").innerHTML="";toast(existing.id?"Lead updated successfully.":"Lead saved successfully.");
    await safeFetch("leads");await loadPage(true);
   }catch(err){
    const raw=String(err?.message||err||"Unknown error");
    let guidance=raw;
    if(/row-level security|violates row-level security|RLS/i.test(raw)){
-    guidance="Supabase RLS rejected this write. Your owner membership was previously confirmed, so do not add another membership or disable RLS. The database policy function must evaluate the authenticated browser user's membership for organisation " + orgId + ". This HTML cannot bypass that database check. Original error: " + raw;
+    guidance="DATABASE PERMISSION BLOCK: Supabase rejected this write under the leads table Row Level Security (RLS). HTML cannot safely bypass this. Request organisation: " + orgId + "; signed-in user: " + (session?.user?.id||"unknown") + ". Check the actual leads INSERT/UPDATE policy and its membership function for this authenticated user. Do not disable RLS or add duplicate memberships. Supabase message: " + raw;
    }else if(/column .* does not exist|schema cache/i.test(raw)){
     guidance="The submitted lead fields do not match the current leads table schema. The database column list must be checked before changing the form. Original error: " + raw;
    }else if(/permission denied|not authorized|JWT|token/i.test(raw)){
     guidance="Supabase could not authorise this request. Refresh the page, sign in again, and verify the project's authenticated-user policies. Original error: " + raw;
    }
+   if(err?.details)guidance += " Details: " + err.details;
+   if(err?.hint)guidance += " Hint: " + err.hint;
+   if(err?.code)guidance += " Code: " + err.code;
    status.textContent=guidance;status.className="status err";
   }finally{busy=false;if(submit)submit.disabled=false;}
  };
