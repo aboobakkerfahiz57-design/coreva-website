@@ -314,10 +314,17 @@ function leadForm(existing={}){
   try{
    // Refresh the current session before writing so an expired/stale client session
    // is reported clearly instead of being mistaken for a missing membership.
+
+  
    const {data:sessionData,error:sessionError}=await sb.auth.getSession();
    if(sessionError)throw sessionError;
    if(!sessionData?.session?.user?.id)throw Error("Your sign-in session has expired. Sign out, sign in again, and retry.");
    session=sessionData.session;
+   console.log("COREVA SESSION CHECK:", {
+  userId: sessionData.session.user.id,
+  email: sessionData.session.user.email,
+  organizationId: orgId
+});
    const data=Object.fromEntries(new FormData(f).entries());
    Object.keys(data).forEach(k=>{if(typeof data[k]==="string")data[k]=data[k].trim()});
    data.organization_id=orgId;
